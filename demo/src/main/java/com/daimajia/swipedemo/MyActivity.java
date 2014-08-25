@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
+import com.nineoldandroids.view.ViewHelper;
 
 public class MyActivity extends Activity {
 
@@ -23,7 +24,8 @@ public class MyActivity extends Activity {
         SwipeLayout swipeLayout = (SwipeLayout)findViewById(R.id.godfather);
         swipeLayout.setDragEdge(SwipeLayout.DragEdge.Bottom);
 
-        //
+        //sample1
+
         sample1 = (SwipeLayout)findViewById(R.id.sample1);
         sample1.setShowMode(SwipeLayout.ShowMode.LayDown);
         sample1.setDragEdge(SwipeLayout.DragEdge.Left);
@@ -33,6 +35,8 @@ public class MyActivity extends Activity {
 
             }
         });
+
+        //sample2
 
         sample2 = (SwipeLayout)findViewById(R.id.sample2);
         sample2.setShowMode(SwipeLayout.ShowMode.LayDown);
@@ -57,12 +61,6 @@ public class MyActivity extends Activity {
                 Toast.makeText(MyActivity.this, "Magnifier", Toast.LENGTH_SHORT).show();
             }
         });
-//        sample2.addRevealListener(new int[]{R.id.magnifier, R.id.star, R.id.trash}, new SwipeLayout.OnRevealListener() {
-//            @Override
-//            public void onReveal(View child, SwipeLayout.DragEdge edge, float fraction, int distance) {
-//                child.setScaleX(fraction);
-//            }
-//        });
 
         sample2.findViewById(R.id.click).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +69,7 @@ public class MyActivity extends Activity {
             }
         });
 
+        //sample3
 
         sample3 = (SwipeLayout)findViewById(R.id.sample3);
         sample3.setDragEdge(SwipeLayout.DragEdge.Top);
@@ -79,9 +78,9 @@ public class MyActivity extends Activity {
             public void onReveal(View child, SwipeLayout.DragEdge edge, float fraction, int distance) {
                 View star = child.findViewById(R.id.star);
                 float d = child.getHeight() / 2 - star.getHeight() / 2;
-                star.setTranslationY(d * fraction);
-                star.setScaleX(fraction+0.6f);
-                star.setScaleY(fraction+0.6f);
+                ViewHelper.setTranslationY(star, d * fraction);
+                ViewHelper.setScaleX(star, fraction + 0.6f);
+                ViewHelper.setScaleY(star, fraction + 0.6f);
                 int c = (Integer)evaluate(fraction, Color.parseColor("#dddddd"), Color.parseColor("#4C535B"));
                 child.setBackgroundColor(c);
             }
@@ -92,39 +91,6 @@ public class MyActivity extends Activity {
                 Toast.makeText(MyActivity.this, "Yo!", Toast.LENGTH_SHORT).show();
             }
         });
-
-//        final int[] res = new int[]{R.id.changeLeft, R.id.changeRight, R.id.changeTop, R.id.changeBottom};
-//        final SwipeLayout.DragEdge[] edges = new SwipeLayout.DragEdge[]{SwipeLayout.DragEdge.Left, SwipeLayout.DragEdge.Right, SwipeLayout.DragEdge.Top, SwipeLayout.DragEdge.Bottom};
-//        final SwipeLayout[] layouts = new SwipeLayout[]{sample1,sample2,sample3};
-//        for(int i = 0; i < res.length; i++){
-//            findViewById(res[i]).setTag(edges[i]);
-//            findViewById(res[i]).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    for (SwipeLayout l : layouts) {
-//                        l.setDragEdge((SwipeLayout.DragEdge) v.getTag());
-//                    }
-//                }
-//            });
-//        }
-//
-//        findViewById(R.id.pullout).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                for (SwipeLayout l : layouts) {
-//                    l.setShowMode(SwipeLayout.ShowMode.PullOut);
-//                }
-//            }
-//        });
-//
-//        findViewById(R.id.laydown).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                for(SwipeLayout l : layouts){
-//                    l.setShowMode(SwipeLayout.ShowMode.LayDown);
-//                }
-//            }
-//        });
 
     }
 
@@ -151,6 +117,9 @@ public class MyActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    /*
+    Color transition method.
+     */
     public Object evaluate(float fraction, Object startValue, Object endValue) {
         int startInt = (Integer) startValue;
         int startA = (startInt >> 24) & 0xff;

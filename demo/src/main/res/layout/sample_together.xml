@@ -1,77 +1,20 @@
-<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent"
-        android:padding="10dp"
-        tools:context=".MyActivity">
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:padding="10dp">
 
-        <include android:id="@+id/sample1" layout="@layout/sample1"
-            android:layout_width="match_parent" android:layout_height="80dp"/>
+    <include android:id="@+id/sample1" layout="@layout/sample1"
+        android:layout_width="match_parent" android:layout_height="80dp"/>
 
 
-        <include android:id="@+id/sample2" layout="@layout/sample2"
-            android:layout_width="match_parent" android:layout_height="80dp"
-            android:layout_marginTop="20dp"/>
+    <include android:id="@+id/sample2" layout="@layout/sample2"
+        android:layout_width="match_parent" android:layout_height="80dp"
+        android:layout_marginTop="20dp"/>
 
-        <include android:id="@+id/sample3" layout="@layout/sample3"
-            android:layout_width="match_parent" android:layout_height="80dp"
-            android:layout_marginTop="20dp"/>
+    <include android:id="@+id/sample3" layout="@layout/sample3"
+        android:layout_width="match_parent" android:layout_height="80dp"
+        android:layout_marginTop="20dp"/>
 
-        <LinearLayout
-            android:visibility="invisible"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:weightSum="4"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/changeLeft"
-                android:text="Left"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <Button
-                android:id="@+id/changeRight"
-                android:text="Right"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <Button
-                android:id="@+id/changeTop"
-                android:text="Top"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <Button
-                android:id="@+id/changeBottom"
-                android:text="Bottom"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            </LinearLayout>
-
-        <LinearLayout
-            android:visibility="invisible"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:weightSum="2"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/pullout"
-                android:text="PullOut"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <Button
-                android:id="@+id/laydown"
-                android:text="LayDown"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>

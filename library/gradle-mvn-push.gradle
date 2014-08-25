@@ -104,10 +104,6 @@ afterEvaluate { project ->
         }
     }
 
-    task jar(type: Jar) {
-        from android.sourceSets.main.java
-    }
-
     task androidJavadocs(type: Javadoc) {
         source = android.sourceSets.main.java.srcDirs
         classpath += project.files(android.getBootClasspath() .join(File.pathSeparator))
@@ -127,6 +123,5 @@ afterEvaluate { project ->
         archives androidSourcesJar
         archives androidJavadocsJar
         archives apklib
-        archives jar
     }
 }
