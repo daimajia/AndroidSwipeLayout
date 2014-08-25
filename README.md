@@ -87,10 +87,11 @@ There are some preset examples: [example1](./demo/src/main/res/layout/sample1.xm
 ### Step3
 
 [Source code](./demo/src/main/java/com/daimajia/swipedemo/MyActivity.java).
+[Wiki Usage](https://github.com/daimajia/AndroidSwipeLayout/wiki/usage)
 
 ## Wiki
 
-Wiki is under construction.
+[Go to Wiki](https://github.com/daimajia/AndroidSwipeLayout/wiki)
 
 ## About me
 
