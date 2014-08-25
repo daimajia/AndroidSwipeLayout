@@ -6,9 +6,9 @@ One year ago, I started to make an app named [EverMemo](https://play.google.com/
 
 ![](http://ww1.sinaimg.cn/mw690/610dc034jw1ejoquidvvsg208i0630u4.gif)
 
-I found it's pretty hard to archive this effect, cause you have to be very familiar with the Android Touch System. It was beyond my ability that moment, and I also noticed that there was no such a concept library...
+I found it was pretty hard to achieve this effect, cause you had to be very familiar with the Android Touch System. It was beyond my ability that moment, and I also noticed that there was no such a concept library...
 
-So... as you see right now.
+Time passed, finally...as you see right now.
 
 ## Demo
 
