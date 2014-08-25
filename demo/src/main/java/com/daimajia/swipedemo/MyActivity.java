@@ -40,7 +40,7 @@ public class MyActivity extends Activity {
 
         sample2 = (SwipeLayout)findViewById(R.id.sample2);
         sample2.setShowMode(SwipeLayout.ShowMode.LayDown);
-        sample2.setShowMode(SwipeLayout.ShowMode.PullOut);
+//        sample2.setShowMode(SwipeLayout.ShowMode.PullOut);
         sample2.findViewById(R.id.star).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +66,27 @@ public class MyActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MyActivity.this, "Yo",Toast.LENGTH_SHORT).show();
+            }
+        });
+        sample1.addSwipeListener(new SwipeLayout.SwipeListener() {
+            @Override
+            public void onClose(SwipeLayout layout) {
+
+            }
+
+            @Override
+            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+
+            }
+
+            @Override
+            public void onOpen(SwipeLayout layout) {
+
+            }
+
+            @Override
+            public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+
             }
         });
 

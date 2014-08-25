@@ -47,6 +47,7 @@ public abstract class SwipeAdapter extends BaseAdapter {
                 OnLayoutListener onLayoutListener = new OnLayoutListener(position);
                 SwipeMemory swipeMemory = new SwipeMemory(position);
                 swipeLayout.addSwipeListener(swipeMemory);
+                swipeLayout.addOnLayoutListener(onLayoutListener);
                 swipeLayout.setTag(swipeResourceId, new ValueBox(position, swipeMemory, onLayoutListener));
             }
         }else{
@@ -58,7 +59,6 @@ public abstract class SwipeAdapter extends BaseAdapter {
                 valueBox.position = position;
             }
         }
-        swipeLayout.addOnLayoutListener(new OnLayoutListener(position));
         fillValues(position, v);
         return v;
     }
@@ -89,7 +89,6 @@ public abstract class SwipeAdapter extends BaseAdapter {
 
         @Override
         public void onLayout(SwipeLayout v) {
-            v.removeOnLayoutListener(this);
             if(mOpenPositions.contains(position))
                 v.open(false);
             else{
