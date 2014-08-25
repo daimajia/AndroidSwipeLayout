@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gridview"
+    android:padding="10dp"
+    android:verticalSpacing="10dp"
+    android:horizontalSpacing="10dp"
+    android:numColumns="2"
+    android:listSelector="@drawable/hover_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
+

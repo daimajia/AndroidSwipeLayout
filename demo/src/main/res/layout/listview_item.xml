@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<com.daimajia.swipe.SwipeLayout
+    android:id="@+id/swipe"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="800dp"
+    >
+
+    <LinearLayout
+        android:background="#FF5534"
+        android:tag="Bottom3"
+        android:weightSum="10"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+        <ImageView
+            android:id="@+id/trash"
+            android:src="@drawable/trash"
+            android:layout_weight="1"
+            android:layout_width="27dp"
+            android:layout_height="30dp" />
+        <TextView
+            android:text="Delete Item?"
+            android:textSize="17sp"
+            android:textColor="#fff"
+            android:layout_weight="5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/delete"
+            android:textColor="#FF5534"
+            android:background="#ffffff"
+            android:text="Yes,Delete"
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_height="40dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="10dp"
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:tag="Hover"
+            android:text="Do not, for one repulse, forgo the purpose that you resolved to effort. "
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</com.daimajia.swipe.SwipeLayout>
