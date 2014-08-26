@@ -12,6 +12,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.daimajia.swipe.SwipeAdapter;
 import com.daimajia.swipedemo.adapter.ListViewAdapter;
 
 public class ListViewExample extends Activity {
@@ -26,6 +27,7 @@ public class ListViewExample extends Activity {
         mListView = (ListView)findViewById(R.id.listview);
         mAdapter = new ListViewAdapter(this);
         mListView.setAdapter(mAdapter);
+        mAdapter.setMode(SwipeAdapter.Mode.Single);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

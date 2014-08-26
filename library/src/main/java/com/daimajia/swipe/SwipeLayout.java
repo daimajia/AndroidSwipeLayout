@@ -529,6 +529,10 @@ public class SwipeLayout extends FrameLayout {
         }
     }
 
+    /**
+     * {@link android.view.View.OnLayoutChangeListener} added in API 11.
+     * I need to support it from API 8.
+     */
     public interface OnLayout{
         public void onLayout(SwipeLayout v);
     }

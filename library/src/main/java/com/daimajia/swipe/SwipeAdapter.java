@@ -9,7 +9,16 @@ import java.util.Set;
 
 public abstract class SwipeAdapter extends BaseAdapter {
 
+    public static enum Mode {
+        Single, Multiple
+    };
+
+    private Mode mode = Mode.Single;
+
+    public final int INVALID_POSITION = -1;
     private Set<Integer> mOpenPositions = new HashSet<Integer>();
+    private int mOpenPosition = INVALID_POSITION;
+    private SwipeLayout mPrevious;
 
     /**
      * return the {@link com.daimajia.swipe.SwipeLayout} resource id, int the view item.
@@ -63,6 +72,25 @@ public abstract class SwipeAdapter extends BaseAdapter {
         return v;
     }
 
+
+    /**
+     * set open mode
+     * @param mode
+     */
+    public void setMode(Mode mode){
+        if(mode == Mode.Multiple){
+            mOpenPositions.clear();
+        }else{
+            mOpenPosition = INVALID_POSITION;
+        }
+        this.mode = mode;
+        notifyDataSetChanged();
+    }
+
+    public Mode getMode(){
+        return mode;
+    }
+
     class ValueBox {
         OnLayoutListener onLayoutListener;
         SwipeMemory swipeMemory;
@@ -89,10 +117,18 @@ public abstract class SwipeAdapter extends BaseAdapter {
 
         @Override
         public void onLayout(SwipeLayout v) {
-            if(mOpenPositions.contains(position))
-                v.open(false);
-            else{
-                v.close(false);
+            if(mode == Mode.Multiple){
+                if(mOpenPositions.contains(position))
+                    v.open(false);
+                else{
+                    v.close(false);
+                }
+            }else{
+                if(mOpenPosition == position){
+                    v.open(false);
+                }else{
+                    v.close(false);
+                }
             }
         }
     }
@@ -107,7 +143,15 @@ public abstract class SwipeAdapter extends BaseAdapter {
 
         @Override
         public void onClose(SwipeLayout layout) {
-            mOpenPositions.remove(position);
+            if(mode == Mode.Multiple)
+                mOpenPositions.remove(position);
+            else{
+                if(position == mOpenPosition){
+                    mOpenPosition = INVALID_POSITION;
+                    mPrevious = null;
+                }
+
+            }
         }
 
 
@@ -118,7 +162,16 @@ public abstract class SwipeAdapter extends BaseAdapter {
 
         @Override
         public void onOpen(SwipeLayout layout) {
-            mOpenPositions.add(position);
+            if(mode == Mode.Multiple)
+                mOpenPositions.add(position);
+            else{
+                if(mOpenPosition != position){
+                    if(mPrevious != null)
+                        mPrevious.close();
+                }
+                mOpenPosition = position;
+                mPrevious = layout;
+            }
         }
 
         @Override
@@ -130,5 +183,7 @@ public abstract class SwipeAdapter extends BaseAdapter {
             this.position = position;
         }
     }
+
+
 
 }
