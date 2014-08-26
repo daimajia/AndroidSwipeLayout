@@ -32,7 +32,7 @@ When I start to make this library, I set some goals:
 
 ```groovy
 dependencies {
-        compile "com.daimajia.swipelayout:library:1.0.1@aar"
+        compile "com.daimajia.swipelayout:library:1.0.2@aar"
 }
 ```
 
@@ -42,14 +42,14 @@ dependencies {
 <dependency>
     <groupId>com.daimajia.swipelayout</groupId>
     <artifactId>library</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <type>apklib</type>
 </dependency>
 ```
 
 #### Eclipse
 
-[AndroidSwipeLayout-v1.0.1.jar](https://github.com/daimajia/AndroidSwipeLayout/releases/download/v1.0.1/AndroidSwipeLayout-v1.0.1.jar)
+[AndroidSwipeLayout-v1.0.2.jar](https://github.com/daimajia/AndroidSwipeLayout/releases/download/v1.0.1/AndroidSwipeLayout-v1.0.2.jar)
 
 ### Step 2
 
