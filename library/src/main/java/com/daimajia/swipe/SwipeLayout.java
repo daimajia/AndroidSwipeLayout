@@ -11,13 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SwipeLayout extends ViewGroup{
+public class SwipeLayout extends FrameLayout {
 
     private ViewDragHelper mDragHelper;
 
@@ -588,57 +589,12 @@ public class SwipeLayout extends ViewGroup{
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-
-        int width, height;
-
-        if(heightMode == MeasureSpec.UNSPECIFIED)
-            heightSize = Integer.MAX_VALUE;
-
-        if(widthMode == MeasureSpec.UNSPECIFIED)
-            widthSize = Integer.MAX_VALUE;
-
-        measure(getSurfaceView(), widthSize, heightSize);
-        measure(getBottomView(), widthSize, heightSize);
-
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        
         if(mDragEdge == DragEdge.Left || mDragEdge == DragEdge.Right)
             mDragDistance = getBottomView().getMeasuredWidth();
         else
             mDragDistance = getBottomView().getMeasuredHeight();
-
-        width = Math.max(getSurfaceView().getMeasuredWidth(), getBottomView().getMeasuredWidth());
-        height = Math.max(getBottomView().getMeasuredHeight(), getBottomView().getMeasuredHeight());
-
-        setMeasuredDimension(width, height);
-    }
-
-    private void measure(View child, int maxWidth, int maxHeight){
-        LayoutParams lp = child.getLayoutParams();
-        int childWidthSpec, childHeightSpec;
-        if(lp.width == LayoutParams.WRAP_CONTENT){
-            childWidthSpec = MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.AT_MOST);
-        }else if(lp.width == LayoutParams.MATCH_PARENT){
-            childWidthSpec = MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.EXACTLY);
-        }else{
-            childWidthSpec = MeasureSpec.makeMeasureSpec(Math.min(maxWidth, lp.width), MeasureSpec.EXACTLY);
-        }
-
-        if(lp.height == LayoutParams.WRAP_CONTENT){
-            childHeightSpec = MeasureSpec.makeMeasureSpec(maxHeight, MeasureSpec.AT_MOST);
-        }else if(lp.height == LayoutParams.MATCH_PARENT) {
-            if(maxHeight == Integer.MAX_VALUE){
-                maxHeight = dp2px(80);
-            }
-            childHeightSpec = MeasureSpec.makeMeasureSpec(maxHeight, MeasureSpec.EXACTLY);
-        }else{
-            childHeightSpec = MeasureSpec.makeMeasureSpec(Math.min(maxHeight, lp.height), MeasureSpec.EXACTLY);
-        }
-
-        child.measure(childWidthSpec, childHeightSpec);
-
     }
 
     @Override
