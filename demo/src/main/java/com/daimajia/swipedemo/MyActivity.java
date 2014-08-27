@@ -21,8 +21,8 @@ public class MyActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        SwipeLayout swipeLayout = (SwipeLayout)findViewById(R.id.godfather);
-        swipeLayout.setDragEdge(SwipeLayout.DragEdge.Bottom);
+//        SwipeLayout swipeLayout = (SwipeLayout)findViewById(R.id.godfather);
+//        swipeLayout.setDragEdge(SwipeLayout.DragEdge.Bottom); // Set in XML
 
         //sample1
 
