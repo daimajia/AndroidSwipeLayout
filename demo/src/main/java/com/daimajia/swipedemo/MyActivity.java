@@ -9,12 +9,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.nineoldandroids.view.ViewHelper;
 
 public class MyActivity extends Activity {
 
-    private SwipeLayout sample1, sample2,sample3;
+    private SwipeLayout sample1, sample2, sample3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,7 @@ public class MyActivity extends Activity {
 
         //sample1
 
-        sample1 = (SwipeLayout)findViewById(R.id.sample1);
+        sample1 = (SwipeLayout) findViewById(R.id.sample1);
         sample1.setShowMode(SwipeLayout.ShowMode.LayDown);
         sample1.setDragEdge(SwipeLayout.DragEdge.Left);
         sample1.addRevealListener(R.id.delete, new SwipeLayout.OnRevealListener() {
@@ -38,7 +39,7 @@ public class MyActivity extends Activity {
 
         //sample2
 
-        sample2 = (SwipeLayout)findViewById(R.id.sample2);
+        sample2 = (SwipeLayout) findViewById(R.id.sample2);
         sample2.setShowMode(SwipeLayout.ShowMode.LayDown);
 //        sample2.setShowMode(SwipeLayout.ShowMode.PullOut);
         sample2.findViewById(R.id.star).setOnClickListener(new View.OnClickListener() {
@@ -65,34 +66,19 @@ public class MyActivity extends Activity {
         sample2.findViewById(R.id.click).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MyActivity.this, "Yo",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyActivity.this, "Yo", Toast.LENGTH_SHORT).show();
             }
         });
-        sample1.addSwipeListener(new SwipeLayout.SwipeListener() {
-            @Override
-            public void onClose(SwipeLayout layout) {
-
-            }
-
-            @Override
-            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
-
-            }
-
+        sample1.addSwipeListener(new SimpleSwipeListener() {
             @Override
             public void onOpen(SwipeLayout layout) {
-
-            }
-
-            @Override
-            public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
-
+                Toast.makeText(MyActivity.this, "Opened", Toast.LENGTH_SHORT).show();
             }
         });
 
         //sample3
 
-        sample3 = (SwipeLayout)findViewById(R.id.sample3);
+        sample3 = (SwipeLayout) findViewById(R.id.sample3);
         sample3.setDragEdge(SwipeLayout.DragEdge.Top);
         sample3.addRevealListener(R.id.bottom_wrapper_child1, new SwipeLayout.OnRevealListener() {
             @Override
@@ -102,7 +88,7 @@ public class MyActivity extends Activity {
                 ViewHelper.setTranslationY(star, d * fraction);
                 ViewHelper.setScaleX(star, fraction + 0.6f);
                 ViewHelper.setScaleY(star, fraction + 0.6f);
-                int c = (Integer)evaluate(fraction, Color.parseColor("#dddddd"), Color.parseColor("#4C535B"));
+                int c = (Integer) evaluate(fraction, Color.parseColor("#dddddd"), Color.parseColor("#4C535B"));
                 child.setBackgroundColor(c);
             }
         });
@@ -131,7 +117,7 @@ public class MyActivity extends Activity {
         if (id == R.id.action_listview) {
             startActivity(new Intent(this, ListViewExample.class));
             return true;
-        }else if(id == R.id.action_gridview){
+        } else if (id == R.id.action_gridview) {
             startActivity(new Intent(this, GridViewExample.class));
             return true;
         }
@@ -154,9 +140,9 @@ public class MyActivity extends Activity {
         int endG = (endInt >> 8) & 0xff;
         int endB = endInt & 0xff;
 
-        return (int)((startA + (int)(fraction * (endA - startA))) << 24) |
-                (int)((startR + (int)(fraction * (endR - startR))) << 16) |
-                (int)((startG + (int)(fraction * (endG - startG))) << 8) |
-                (int)((startB + (int)(fraction * (endB - startB))));
+        return (int) ((startA + (int) (fraction * (endA - startA))) << 24) |
+                (int) ((startR + (int) (fraction * (endR - startR))) << 16) |
+                (int) ((startG + (int) (fraction * (endG - startG))) << 8) |
+                (int) ((startB + (int) (fraction * (endB - startB))));
     }
 }
