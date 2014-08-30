@@ -682,6 +682,11 @@ public class SwipeLayout extends FrameLayout {
      * @return
      */
     private View childNeed(ViewGroup v, MotionEvent event){
+        if(v == null) return null;
+
+        if(v.onTouchEvent(event))
+            return v;
+
         int childCount = v.getChildCount();
         for(int i = childCount - 1; i >= 0; i--){
             View child = v.getChildAt(i);
@@ -704,6 +709,8 @@ public class SwipeLayout extends FrameLayout {
      * @return
      */
     private boolean childNeed(View v, MotionEvent event){
+        if(v == null)   return false;
+
         if(event.getX() > v.getLeft() && event.getX() < v.getRight()
                 && event.getY() > v.getTop() && event.getY() < v.getBottom()){
             return v.onTouchEvent(event);
