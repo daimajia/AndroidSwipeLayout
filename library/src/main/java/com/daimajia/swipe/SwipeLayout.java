@@ -639,6 +639,8 @@ public class SwipeLayout extends FrameLayout {
         return super.dispatchTouchEvent(ev);
     }
 
+    private View childNeeded = null;
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         for (SwipeDenier denier : mSwipeDeniers) {
@@ -646,13 +648,73 @@ public class SwipeLayout extends FrameLayout {
                 return false;
             }
         }
+        //
+        //if a child in SurfaceView wants to handle the touch event,
+        //then let it do it.
+        //
+        int action = ev.getActionMasked();
+        switch (action){
+            case MotionEvent.ACTION_DOWN:
+                View child = childNeed(getSurfaceView(), ev);
+                if(child != null){
+                    childNeeded = child;
+                    return false;
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if(childNeeded != null){
+                    return false;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                childNeeded = null;
+                return false;
+        }
 
         return mDragHelper.shouldInterceptTouchEvent(ev);
+    }
+
+    /**
+     * if the ViewGroup children want to handle this event.
+     * @param v
+     * @param event
+     * @return
+     */
+    private View childNeed(ViewGroup v, MotionEvent event){
+        int childCount = v.getChildCount();
+        for(int i = childCount - 1; i >= 0; i--){
+            View child = v.getChildAt(i);
+            if(child instanceof ViewGroup){
+                View grandChild = childNeed((ViewGroup)child, event);
+                if(grandChild != null)
+                    return grandChild;
+            }else{
+                if(childNeed(v.getChildAt(i), event))
+                    return v.getChildAt(i);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * if the view (v) wants to handle this event.
+     * @param v
+     * @param event
+     * @return
+     */
+    private boolean childNeed(View v, MotionEvent event){
+        if(event.getX() > v.getLeft() && event.getX() < v.getRight()
+                && event.getY() > v.getTop() && event.getY() < v.getBottom()){
+            return v.onTouchEvent(event);
+        }
+        return false;
     }
 
     private float sX = -1 , sY = -1;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
         int action = event.getActionMasked();
         ViewParent parent = getParent();
         gestureDetector.onTouchEvent(event);
