@@ -3,7 +3,6 @@ package com.daimajia.swipedemo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -73,30 +72,6 @@ public class ListViewExample extends Activity {
                 Log.e("ListView", "onNothingSelected:");
             }
         });
-
-        final Handler handler = (new Handler());
-        mPositionToTest = 0;
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                mAdapter.openItem(mPositionToTest++);
-                if(mPositionToTest < 5)
-                    handler.postDelayed(this, 1000);
-            }
-        };
-        // Open up some items in the list
-        handler.postDelayed(runnable, 1000);
-
-
-        // Close some items in the list
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mAdapter.closeItem(1);
-                mAdapter.closeItem(4);
-                mAdapter.closeItem(4);
-            }
-        }, 8000);
 
     }
 

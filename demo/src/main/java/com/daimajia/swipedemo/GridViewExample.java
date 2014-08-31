@@ -2,7 +2,6 @@ package com.daimajia.swipedemo;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -48,29 +47,6 @@ public class GridViewExample extends Activity{
 
             }
         });
-
-        Handler handler = (new Handler());
-        // Open up some items in the list
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                adapter.openItem(1);
-                adapter.openItem(2);
-                adapter.openItem(3);
-                adapter.openItem(1);
-            }
-        }, 1000);
-
-
-        // Close some items in the list
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                adapter.closeItem(1);
-                adapter.closeItem(1);
-                adapter.closeItem(3);
-            }
-        }, 3000);
 
     }
 }

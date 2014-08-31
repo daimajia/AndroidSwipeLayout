@@ -653,9 +653,17 @@ public class SwipeLayout extends FrameLayout {
         //then let it do it.
         //
         int action = ev.getActionMasked();
+        Status status = getOpenStatus();
         switch (action){
             case MotionEvent.ACTION_DOWN:
-                View child = childNeed(getSurfaceView(), ev);
+                View child;
+                if(status == Status.Close){
+                    child = childNeed(getSurfaceView(), ev);
+                }else if(status == Status.Open){
+                    child = childNeed(getBottomView(), ev);
+                }else{
+                    break;
+                }
                 if(child != null){
                     childNeeded = child;
                     return false;
