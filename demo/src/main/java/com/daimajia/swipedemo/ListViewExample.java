@@ -3,6 +3,7 @@ package com.daimajia.swipedemo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ public class ListViewExample extends Activity {
 
     private ListView mListView;
     private ListViewAdapter mAdapter;
+    private int mPositionToTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,31 @@ public class ListViewExample extends Activity {
                 Log.e("ListView", "onNothingSelected:");
             }
         });
+
+        final Handler handler = (new Handler());
+        mPositionToTest = 0;
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                mAdapter.openItem(mPositionToTest++);
+                if(mPositionToTest < 5)
+                    handler.postDelayed(this, 1000);
+            }
+        };
+        // Open up some items in the list
+        handler.postDelayed(runnable, 1000);
+
+
+        // Close some items in the list
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mAdapter.closeItem(1);
+                mAdapter.closeItem(4);
+                mAdapter.closeItem(4);
+            }
+        }, 8000);
+
     }
 
 
@@ -89,9 +116,11 @@ public class ListViewExample extends Activity {
         int id = item.getItemId();
         if (id == R.id.action_listview) {
             startActivity(new Intent(this, ListViewExample.class));
+            finish();
             return true;
         }else if(id == R.id.action_gridview){
             startActivity(new Intent(this, GridViewExample.class));
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

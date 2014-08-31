@@ -91,6 +91,36 @@ public abstract class SwipeAdapter extends BaseAdapter {
         return mode;
     }
 
+    /**
+     * Open and item in the list
+     *
+     * @param position Position of the item
+     */
+    public void openItem(int position) {
+        if(mode == Mode.Multiple){
+            if(!mOpenPositions.contains(position))
+                mOpenPositions.add(position);
+        }else{
+            mOpenPosition = position;
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Close an item in the list
+     *
+     * @param position Position of the item
+     */
+    public void closeItem(int position) {
+        if(mode == Mode.Multiple){
+            mOpenPositions.remove(position);
+        }else{
+            if(mOpenPosition == position)
+                mOpenPosition = INVALID_POSITION;
+        }
+        notifyDataSetChanged();
+    }
+
     class ValueBox {
         OnLayoutListener onLayoutListener;
         SwipeMemory swipeMemory;

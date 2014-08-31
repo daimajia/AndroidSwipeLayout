@@ -1,8 +1,12 @@
 package com.daimajia.swipedemo;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -17,7 +21,7 @@ public class GridViewExample extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gridview);
         final GridView gridView = (GridView)findViewById(R.id.gridview);
-        GridViewAdapter adapter = new GridViewAdapter(this);
+        final GridViewAdapter adapter = new GridViewAdapter(this);
         adapter.setMode(SwipeAdapter.Mode.Multiple);
         gridView.setAdapter(adapter);
         gridView.setSelected(false);
@@ -47,5 +51,29 @@ public class GridViewExample extends Activity{
 
             }
         });
+
+        Handler handler = (new Handler());
+        // Open up some items in the list
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                adapter.openItem(1);
+                adapter.openItem(2);
+                adapter.openItem(3);
+                adapter.openItem(1);
+            }
+        }, 1000);
+
+
+        // Close some items in the list
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                adapter.closeItem(1);
+                adapter.closeItem(1);
+                adapter.closeItem(3);
+            }
+        }, 3000);
+
     }
 }
