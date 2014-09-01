@@ -78,11 +78,9 @@ public abstract class SwipeAdapter extends BaseAdapter {
      * @param mode
      */
     public void setMode(Mode mode){
-        if(mode == Mode.Multiple){
-            mOpenPositions.clear();
-        }else{
-            mOpenPosition = INVALID_POSITION;
-        }
+        // Clear currently set values
+        mOpenPositions.clear();
+        mOpenPosition = INVALID_POSITION;
         this.mode = mode;
         notifyDataSetChanged();
     }
