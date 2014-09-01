@@ -930,7 +930,7 @@ public class SwipeLayout extends FrameLayout {
      */
     private void processSurfaceRelease(float xvel, float yvel){
         if(xvel == 0 && getOpenStatus() == Status.Middle)
-            open();
+            close();
 
         if(mDragEdge == DragEdge.Left || mDragEdge == DragEdge.Right){
             if(xvel > 0){
