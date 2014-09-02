@@ -719,10 +719,15 @@ public class SwipeLayout extends FrameLayout {
     private boolean childNeed(View v, MotionEvent event){
         if(v == null)   return false;
 
-        if(event.getX() > v.getLeft() && event.getX() < v.getRight()
-                && event.getY() > v.getTop() && event.getY() < v.getBottom()){
+        int[] loc = new int[2];
+        v.getLocationOnScreen(loc);
+        int left = loc[0], top = loc[1];
+
+        if(event.getRawX() > left && event.getRawX() < left + v.getWidth()
+                && event.getRawY() > top && event.getRawY() < top + v.getHeight()){
             return v.onTouchEvent(event);
         }
+
         return false;
     }
 
@@ -930,7 +935,7 @@ public class SwipeLayout extends FrameLayout {
      */
     private void processSurfaceRelease(float xvel, float yvel){
         if(xvel == 0 && getOpenStatus() == Status.Middle)
-            close();
+            open();
 
         if(mDragEdge == DragEdge.Left || mDragEdge == DragEdge.Right){
             if(xvel > 0){
