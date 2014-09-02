@@ -28,7 +28,9 @@ public abstract class SwipeAdapter extends BaseAdapter {
     public abstract int getSwipeLayoutResourceId(int position);
 
     /**
-     * generate a new view item, you don't need to fill any value to this view, you have a chance
+     * generate a new view item.
+     * Never bind SwipeListener or fill values here, every item has a chance to fill value or bind
+     * listeners in fillValues.
      * to fill it in {@code fillValues} method.
      * @param position
      * @param parent
@@ -37,7 +39,7 @@ public abstract class SwipeAdapter extends BaseAdapter {
     public abstract View generateView(int position, ViewGroup parent);
 
     /**
-     * fill values to the view.
+     * fill values or bind listeners to the view.
      * @param position
      * @param convertView
      */
