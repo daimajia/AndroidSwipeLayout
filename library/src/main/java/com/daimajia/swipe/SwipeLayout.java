@@ -634,12 +634,7 @@ public class SwipeLayout extends FrameLayout {
             mDragDistance = getBottomView().getMeasuredHeight();
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        return super.dispatchTouchEvent(ev);
-    }
-
-    private View childNeeded = null;
+    private boolean mTouchConsumedByChild = false;
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -649,37 +644,27 @@ public class SwipeLayout extends FrameLayout {
             }
         }
         //
-        //if a child in SurfaceView wants to handle the touch event,
+        //if a child wants to handle the touch event,
         //then let it do it.
         //
         int action = ev.getActionMasked();
-        Status status = getOpenStatus();
         switch (action){
             case MotionEvent.ACTION_DOWN:
-                View child;
+                Status status = getOpenStatus();
                 if(status == Status.Close){
-                    child = childNeed(getSurfaceView(), ev);
+                    mTouchConsumedByChild = childNeedHandleTouchEvent(getSurfaceView(), ev) != null;
                 }else if(status == Status.Open){
-                    child = childNeed(getBottomView(), ev);
+                    mTouchConsumedByChild = childNeedHandleTouchEvent(getBottomView(), ev) != null;
                 }else{
                     break;
-                }
-                if(child != null){
-                    childNeeded = child;
-                    return false;
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if(childNeeded != null){
-                    return false;
                 }
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                childNeeded = null;
-                return false;
+                mTouchConsumedByChild = false;
         }
 
+        if(mTouchConsumedByChild) return false;
         return mDragHelper.shouldInterceptTouchEvent(ev);
     }
 
@@ -689,9 +674,8 @@ public class SwipeLayout extends FrameLayout {
      * @param event
      * @return
      */
-    private View childNeed(ViewGroup v, MotionEvent event){
+    private View childNeedHandleTouchEvent(ViewGroup v, MotionEvent event){
         if(v == null) return null;
-
         if(v.onTouchEvent(event))
             return v;
 
@@ -699,11 +683,11 @@ public class SwipeLayout extends FrameLayout {
         for(int i = childCount - 1; i >= 0; i--){
             View child = v.getChildAt(i);
             if(child instanceof ViewGroup){
-                View grandChild = childNeed((ViewGroup)child, event);
+                View grandChild = childNeedHandleTouchEvent((ViewGroup) child, event);
                 if(grandChild != null)
                     return grandChild;
             }else{
-                if(childNeed(v.getChildAt(i), event))
+                if(childNeedHandleTouchEvent(v.getChildAt(i), event))
                     return v.getChildAt(i);
             }
         }
@@ -716,7 +700,7 @@ public class SwipeLayout extends FrameLayout {
      * @param event
      * @return
      */
-    private boolean childNeed(View v, MotionEvent event){
+    private boolean childNeedHandleTouchEvent(View v, MotionEvent event){
         if(v == null)   return false;
 
         int[] loc = new int[2];
@@ -935,7 +919,7 @@ public class SwipeLayout extends FrameLayout {
      */
     private void processSurfaceRelease(float xvel, float yvel){
         if(xvel == 0 && getOpenStatus() == Status.Middle)
-            open();
+            close();
 
         if(mDragEdge == DragEdge.Left || mDragEdge == DragEdge.Right){
             if(xvel > 0){
