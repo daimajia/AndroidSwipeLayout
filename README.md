@@ -49,7 +49,7 @@ dependencies {
 
 #### Eclipse
 
-[AndroidSwipeLayout-v1.0.3.jar](https://github.com/daimajia/AndroidSwipeLayout/releases/download/v1.0.3/AndroidSwipeLayout-v1.0.3.jar)
+[AndroidSwipeLayout-v1.0.7.jar](https://github.com/daimajia/AndroidSwipeLayout/releases/download/v1.0.7/AndroidSwipeLayout-v1.0.7.jar)
 
 ### Step 2
 
