@@ -32,7 +32,7 @@ When I start to make this library, I set some goals:
 
 ```groovy
 dependencies {
-        compile "com.daimajia.swipelayout:library:1.0.8@aar"
+        compile "com.daimajia.swipelayout:library:1.0.9@aar"
 }
 ```
 
@@ -42,7 +42,7 @@ dependencies {
 <dependency>
     <groupId>com.daimajia.swipelayout</groupId>
     <artifactId>library</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <type>apklib</type>
 </dependency>
 ```
