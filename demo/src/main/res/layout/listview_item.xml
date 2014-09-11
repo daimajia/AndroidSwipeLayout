@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@drawable/item"
     android:layout_height="match_parent">
     <com.daimajia.swipe.SwipeLayout
         android:id="@+id/swipe"
@@ -41,7 +40,7 @@
 
         <LinearLayout
             android:padding="10dp"
-            android:background="@drawable/item"
+            android:background="@drawable/item_selector"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
