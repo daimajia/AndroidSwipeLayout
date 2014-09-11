@@ -11,8 +11,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
+import android.widget.HeaderViewListAdapter;
+import android.widget.ListAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -713,8 +717,12 @@ public class SwipeLayout extends FrameLayout {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
+        if(!isEnabledInAdapterView())
+            return true;
+
         int action = event.getActionMasked();
         ViewParent parent = getParent();
+
         gestureDetector.onTouchEvent(event);
         Status status = getOpenStatus();
         ViewGroup touching = null;
@@ -818,6 +826,46 @@ public class SwipeLayout extends FrameLayout {
         return true;
     }
 
+    /**
+     * if working in {@link android.widget.AdapterView}, we should response {@link android.widget.Adapter}
+     * isEnable(int position).
+     * @return true when item is enabled, else disabled.
+     */
+    private boolean isEnabledInAdapterView(){
+        AdapterView adapterView = getAdapterView();
+        boolean enable = true;
+        if(adapterView != null){
+            Adapter adapter = adapterView.getAdapter();
+            if(adapter != null){
+                int p = adapterView.getPositionForView(SwipeLayout.this);
+                if(adapter instanceof BaseAdapter){
+                    enable &= ((BaseAdapter) adapter).isEnabled(p);
+                }else if(adapter instanceof ListAdapter){
+                    enable &= ((ListAdapter) adapter).isEnabled(p);
+                }else if(adapter instanceof HeaderViewListAdapter){
+                    enable &= ((HeaderViewListAdapter) adapter).isEnabled(p);
+                }
+            }
+        }
+        return enable;
+    }
+
+    private boolean insideAdapterView(){
+        return getAdapterView() != null;
+    }
+
+    private AdapterView getAdapterView(){
+        ViewParent t = getParent();
+        while(t != null){
+            if(t instanceof AdapterView){
+                return (AdapterView)t;
+            }
+            t = t.getParent();
+        }
+        return null;
+    }
+
+
 
     private GestureDetector gestureDetector = new GestureDetector(getContext(), new SwipeDetector());
     class SwipeDetector extends GestureDetector.SimpleOnGestureListener{
@@ -838,9 +886,10 @@ public class SwipeLayout extends FrameLayout {
             ViewParent t = getParent();
             while(t != null) {
                 if(t instanceof AdapterView){
-                    int p = ((AdapterView) t).getPositionForView(SwipeLayout.this);
+                    AdapterView view = (AdapterView)t;
+                    int p = view.getPositionForView(SwipeLayout.this);
                     if( p != AdapterView.INVALID_POSITION &&
-                            ((AdapterView) t).performItemClick(((AdapterView) t).getChildAt(p),p , ((AdapterView) t).getAdapter().getItemId(p)))
+                            view.performItemClick(view.getChildAt(p), p, view.getAdapter().getItemId(p)))
                         return true;
                 }else{
                     if(t instanceof View && ((View) t).performClick())
