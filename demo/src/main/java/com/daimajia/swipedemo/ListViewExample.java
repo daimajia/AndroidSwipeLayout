@@ -19,7 +19,6 @@ public class ListViewExample extends Activity {
 
     private ListView mListView;
     private ListViewAdapter mAdapter;
-    private int mPositionToTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

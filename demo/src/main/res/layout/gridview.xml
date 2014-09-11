@@ -5,7 +5,7 @@
     android:verticalSpacing="10dp"
     android:horizontalSpacing="10dp"
     android:numColumns="2"
-    android:listSelector="@drawable/hover_background"
+    android:listSelector="@drawable/item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"/>
 

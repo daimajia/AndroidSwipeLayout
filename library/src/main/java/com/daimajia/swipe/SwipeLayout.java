@@ -654,13 +654,12 @@ public class SwipeLayout extends FrameLayout {
                 }else{
                     break;
                 }
-                break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 mTouchConsumedByChild = false;
         }
 
-        if(mTouchConsumedByChild) return false;
+        if(mTouchConsumedByChild)   return false;
         return mDragHelper.shouldInterceptTouchEvent(ev);
     }
 
@@ -718,12 +717,23 @@ public class SwipeLayout extends FrameLayout {
         int action = event.getActionMasked();
         ViewParent parent = getParent();
         gestureDetector.onTouchEvent(event);
+        Status status = getOpenStatus();
+        ViewGroup touching = null;
+        if(status == Status.Close){
+            touching = getSurfaceView();
+        }else if(status == Status.Open){
+            touching = getBottomView();
+        }
         switch (action){
             case MotionEvent.ACTION_DOWN:
                 mDragHelper.processTouchEvent(event);
                 parent.requestDisallowInterceptTouchEvent(true);
                 sX = event.getRawX();
                 sY = event.getRawY();
+
+                if(touching != null)
+                    touching.setPressed(true);
+
                 return true;
             case MotionEvent.ACTION_MOVE:{
                 if(sX == -1 || sY == -1){
@@ -737,18 +747,22 @@ public class SwipeLayout extends FrameLayout {
                     sY = event.getRawY();
                     return true;
                 }
+
+                if(touching != null)
+                    touching.setPressed(false);
+
                 float distanceX = event.getRawX() - sX;
                 float distanceY = event.getRawY() - sY;
                 float angle = Math.abs(distanceY / distanceX);
                 angle = (float)Math.toDegrees(Math.atan(angle));
-                Status status = getOpenStatus();
+
+                boolean doNothing = false;
                 if(mDragEdge == DragEdge.Right){
                     boolean suitable = (status == Status.Open && distanceX > 0) || (status == Status.Close && distanceX < 0);
                     suitable = suitable || (status == Status.Middle);
 
                     if(angle > 30 || !suitable){
-                        parent.requestDisallowInterceptTouchEvent(false);
-                        return false;
+                        doNothing = true;
                     }
                 }
 
@@ -757,8 +771,7 @@ public class SwipeLayout extends FrameLayout {
                     suitable = suitable || status == Status.Middle;
 
                     if(angle > 30 || ! suitable){
-                        parent.requestDisallowInterceptTouchEvent(false);
-                        return false;
+                        doNothing = true;
                     }
                 }
 
@@ -767,8 +780,7 @@ public class SwipeLayout extends FrameLayout {
                     suitable = suitable || status == Status.Middle;
 
                     if(angle < 60 || ! suitable){
-                        parent.requestDisallowInterceptTouchEvent(false);
-                        return  false;
+                        doNothing = true;
                     }
                 }
 
@@ -777,13 +789,17 @@ public class SwipeLayout extends FrameLayout {
                     suitable = suitable || status == Status.Middle;
 
                     if(angle < 60 || ! suitable){
-                        parent.requestDisallowInterceptTouchEvent(false);
-                        return  false;
+                        doNothing = true;
                     }
                 }
 
-                parent.requestDisallowInterceptTouchEvent(true);
-                mDragHelper.processTouchEvent(event);
+                if(doNothing){
+                    parent.requestDisallowInterceptTouchEvent(false);
+                    return false;
+                }else{
+                    parent.requestDisallowInterceptTouchEvent(true);
+                    mDragHelper.processTouchEvent(event);
+                }
                 break;
             }
             case MotionEvent.ACTION_UP:
@@ -791,6 +807,9 @@ public class SwipeLayout extends FrameLayout {
             {
                 sX = -1;
                 sY = -1;
+                if(touching != null){
+                    touching.setPressed(false);
+                }
             }
             default:
                 parent.requestDisallowInterceptTouchEvent(true);
