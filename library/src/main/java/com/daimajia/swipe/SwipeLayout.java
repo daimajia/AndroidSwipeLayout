@@ -651,9 +651,8 @@ public class SwipeLayout extends FrameLayout {
                     mTouchConsumedByChild = childNeedHandleTouchEvent(getSurfaceView(), ev) != null;
                 }else if(status == Status.Open){
                     mTouchConsumedByChild = childNeedHandleTouchEvent(getBottomView(), ev) != null;
-                }else{
-                    break;
                 }
+                break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 mTouchConsumedByChild = false;
