@@ -15,7 +15,6 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
 
 import java.util.ArrayList;
@@ -35,6 +34,8 @@ public class SwipeLayout extends FrameLayout {
     private List<SwipeDenier> mSwipeDeniers = new ArrayList<SwipeDenier>();
     private Map<View, ArrayList<OnRevealListener>> mRevealListeners = new HashMap<View, ArrayList<OnRevealListener>>();
     private Map<View, Boolean> mShowEntirely = new HashMap<View, Boolean>();
+
+    private boolean mSwipeEnabled = true;
 
     public static enum DragEdge {
         Left,
@@ -638,6 +639,15 @@ public class SwipeLayout extends FrameLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+
+        if(!isEnabled() || !isEnabledInAdapterView()){
+            return true;
+        }
+
+        if(!isSwipeEnabled()){
+            return false;
+        }
+
         for (SwipeDenier denier : mSwipeDeniers) {
             if (denier != null && denier.shouldDenySwipe(ev)) {
                 return false;
@@ -716,9 +726,11 @@ public class SwipeLayout extends FrameLayout {
     private float sX = -1 , sY = -1;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
-        if(!isEnabledInAdapterView())
+        if(!isEnabledInAdapterView() || !isEnabled())
             return true;
+
+        if(!isSwipeEnabled())
+            return super.onTouchEvent(event);
 
         int action = event.getActionMasked();
         ViewParent parent = getParent();
@@ -735,6 +747,7 @@ public class SwipeLayout extends FrameLayout {
             case MotionEvent.ACTION_DOWN:
                 mDragHelper.processTouchEvent(event);
                 parent.requestDisallowInterceptTouchEvent(true);
+
                 sX = event.getRawX();
                 sY = event.getRawY();
 
@@ -839,15 +852,21 @@ public class SwipeLayout extends FrameLayout {
             if(adapter != null){
                 int p = adapterView.getPositionForView(SwipeLayout.this);
                 if(adapter instanceof BaseAdapter){
-                    enable &= ((BaseAdapter) adapter).isEnabled(p);
+                    enable = ((BaseAdapter) adapter).isEnabled(p);
                 }else if(adapter instanceof ListAdapter){
-                    enable &= ((ListAdapter) adapter).isEnabled(p);
-                }else if(adapter instanceof HeaderViewListAdapter){
-                    enable &= ((HeaderViewListAdapter) adapter).isEnabled(p);
+                    enable = ((ListAdapter) adapter).isEnabled(p);
                 }
             }
         }
         return enable;
+    }
+
+    public void setSwipeEnabled(boolean enabled){
+        mSwipeEnabled = enabled;
+    }
+
+    public boolean isSwipeEnabled(){
+        return mSwipeEnabled;
     }
 
     private boolean insideAdapterView(){

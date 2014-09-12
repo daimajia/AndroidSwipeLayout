@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.nineoldandroids.view.ViewHelper;
 
@@ -67,12 +66,6 @@ public class MyActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MyActivity.this, "Yo", Toast.LENGTH_SHORT).show();
-            }
-        });
-        sample1.addSwipeListener(new SimpleSwipeListener() {
-            @Override
-            public void onOpen(SwipeLayout layout) {
-                Toast.makeText(MyActivity.this, "Opened", Toast.LENGTH_SHORT).show();
             }
         });
 
