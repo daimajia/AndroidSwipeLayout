@@ -41,23 +41,16 @@ dependencies {
 
 ```xml
 <dependency>
-    <groupId>com.daimajia.swipelayout</groupId>
-    <artifactId>library</artifactId>
-    <version>1.1.0</version>
-    <type>apklib</type>
-</dependency>
-<dependency>
-    <groupId>com.daimajia.swipelayout</groupId>
-    <artifactId>library</artifactId>
-    <version>1.1.0</version>
-    <type>apklib</type>
-</dependency>
-<dependency>
 	<groupId>com.google.android</groupId>
 	<artifactId>support-v4</artifactId>
 	<version>r6</version>
 </dependency>
-
+<dependency>
+    <groupId>com.daimajia.swipelayout</groupId>
+    <artifactId>library</artifactId>
+    <version>1.1.0</version>
+    <type>apklib</type>
+</dependency>
 ```
 
 #### Eclipse
