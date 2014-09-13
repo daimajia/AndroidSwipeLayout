@@ -32,6 +32,7 @@ When I start to make this library, I set some goals:
 
 ```groovy
 dependencies {
+        compile 'com.android.support:support-v4:20.+'
         compile "com.daimajia.swipelayout:library:1.1.0@aar"
 }
 ```
@@ -45,6 +46,18 @@ dependencies {
     <version>1.1.0</version>
     <type>apklib</type>
 </dependency>
+<dependency>
+    <groupId>com.daimajia.swipelayout</groupId>
+    <artifactId>library</artifactId>
+    <version>1.1.0</version>
+    <type>apklib</type>
+</dependency>
+<dependency>
+	<groupId>com.google.android</groupId>
+	<artifactId>support-v4</artifactId>
+	<version>r6</version>
+</dependency>
+
 ```
 
 #### Eclipse
