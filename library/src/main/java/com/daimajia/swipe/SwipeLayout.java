@@ -15,7 +15,9 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -451,6 +453,7 @@ public class SwipeLayout extends FrameLayout {
         safeBottomView();
 
         if(mSwipeListeners.isEmpty() == false){
+            ViewParent t = getParent();
             for(SwipeListener l : mSwipeListeners){
                 l.onUpdate(SwipeLayout.this, surfaceLeft - getPaddingLeft(), surfaceTop - getPaddingTop());
             }
@@ -460,10 +463,27 @@ public class SwipeLayout extends FrameLayout {
                     l.onClose(SwipeLayout.this);
             }
 
+            if(getOpenStatus() == Status.Middle){
+                while(t != null) {
+                    if(t instanceof ListView || t instanceof GridView){
+                        AdapterView view = (AdapterView)t;
+                        view.setEnabled(false);
+                    }
+                    t = t.getParent();
+                }
+            }
+
             if(getOpenStatus() == Status.Open){
                 getBottomView().setEnabled(true);
                 for(SwipeListener l : mSwipeListeners)
                     l.onOpen(SwipeLayout.this);
+                while(t != null) {
+                    if(t instanceof ListView || t instanceof GridView){
+                        AdapterView view = (AdapterView)t;
+                        view.setEnabled(true);
+                    }
+                    t = t.getParent();
+                }
             }
         }
     }
