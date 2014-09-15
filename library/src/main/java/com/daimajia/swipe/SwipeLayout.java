@@ -453,6 +453,7 @@ public class SwipeLayout extends FrameLayout {
         safeBottomView();
 
         if(mSwipeListeners.isEmpty() == false){
+            ViewParent t = getParent();
             for(SwipeListener l : mSwipeListeners){
                 l.onUpdate(SwipeLayout.this, surfaceLeft - getPaddingLeft(), surfaceTop - getPaddingTop());
             }
@@ -463,7 +464,6 @@ public class SwipeLayout extends FrameLayout {
             }
 
             if(getOpenStatus() == Status.Middle){
-                ViewParent t = getParent();
                 while(t != null) {
                     if(t instanceof ListView || t instanceof GridView){
                         AdapterView view = (AdapterView)t;
@@ -477,7 +477,6 @@ public class SwipeLayout extends FrameLayout {
                 getBottomView().setEnabled(true);
                 for(SwipeListener l : mSwipeListeners)
                     l.onOpen(SwipeLayout.this);
-                ViewParent t = getParent();
                 while(t != null) {
                     if(t instanceof ListView || t instanceof GridView){
                         AdapterView view = (AdapterView)t;
