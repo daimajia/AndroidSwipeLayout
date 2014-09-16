@@ -768,9 +768,6 @@ public class SwipeLayout extends FrameLayout {
                     return true;
                 }
 
-                if(touching != null)
-                    touching.setPressed(false);
-
                 float distanceX = event.getRawX() - sX;
                 float distanceY = event.getRawY() - sY;
                 float angle = Math.abs(distanceY / distanceX);
@@ -817,6 +814,9 @@ public class SwipeLayout extends FrameLayout {
                     parent.requestDisallowInterceptTouchEvent(false);
                     return false;
                 }else{
+                    if(touching != null){
+                        touching.setPressed(false);
+                    }
                     parent.requestDisallowInterceptTouchEvent(true);
                     mDragHelper.processTouchEvent(event);
                 }
