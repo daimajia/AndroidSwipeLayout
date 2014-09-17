@@ -189,6 +189,8 @@ public abstract class SwipeAdapter extends BaseAdapter {
         public void onClose(SwipeLayout layout) {
             if(mode == Mode.Multiple){
                 mOpenPositions.remove(position);
+            }else{
+                mOpenPosition = INVALID_POSITION;
             }
         }
 
