@@ -70,9 +70,11 @@ public class SwipeLayout extends FrameLayout {
 
 
     public interface SwipeListener{
+        public void onStartOpen(SwipeLayout layout);
+        public void onOpen(SwipeLayout layout);
+        public void onStartClose(SwipeLayout layout);
         public void onClose(SwipeLayout layout);
         public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset);
-        public void onOpen(SwipeLayout layout);
         public void onHandRelease(SwipeLayout layout, float xvel, float yvel);
     }
 
@@ -324,13 +326,11 @@ public class SwipeLayout extends FrameLayout {
 
                     getSurfaceView().layout(newLeft, newTop, newLeft + getMeasuredWidth(), newTop + getMeasuredHeight());
                 }
-
-
             }
 
             dispatchRevealEvent(evLeft, evTop, evRight, evBottom);
 
-            dispatchSwipeEvent(evLeft, evTop);
+            dispatchSwipeEvent(evLeft, evTop, dx, dy);
 
             invalidate();
         }
@@ -441,29 +441,54 @@ public class SwipeLayout extends FrameLayout {
         return r;
     }
 
-    /**
-     * dispatch swipe event.
-     * @param surfaceLeft
-     * @param surfaceTop
-     */
-    protected void dispatchSwipeEvent(int surfaceLeft, int surfaceTop){
+    private int mEventCounter = 0;
 
+    protected void dispatchSwipeEvent(int surfaceLeft, int surfaceTop, int dx, int dy){
+        DragEdge edge = getDragEdge();
+        boolean open = true;
+        if(edge == DragEdge.Left){
+            if(dx < 0)  open = false;
+        }else if(edge == DragEdge.Right){
+            if(dx > 0)  open = false;
+        }else if(edge == DragEdge.Top){
+            if(dy < 0)  open = false;
+        }else if(edge == DragEdge.Bottom){
+            if(dy > 0)  open = false;
+        }
+
+        dispatchSwipeEvent(surfaceLeft, surfaceTop, open);
+    }
+
+    protected void dispatchSwipeEvent(int surfaceLeft, int surfaceTop, boolean open){
         safeBottomView();
+        Status status = getOpenStatus();
 
-        if(mSwipeListeners.isEmpty() == false){
+        if(!mSwipeListeners.isEmpty()){
+            mEventCounter++;
             for(SwipeListener l : mSwipeListeners){
+                if(mEventCounter == 1){
+                    if(open){
+                        l.onStartOpen(this);
+                    }else{
+                        l.onStartClose(this);
+                    }
+                }
                 l.onUpdate(SwipeLayout.this, surfaceLeft - getPaddingLeft(), surfaceTop - getPaddingTop());
             }
 
-            if(getOpenStatus() == Status.Close){
-                for(SwipeListener l : mSwipeListeners)
+            if(status == Status.Close){
+                for(SwipeListener l : mSwipeListeners){
                     l.onClose(SwipeLayout.this);
+                }
+                mEventCounter = 0;
             }
 
-            if(getOpenStatus() == Status.Open){
+            if(status == Status.Open){
                 getBottomView().setEnabled(true);
-                for(SwipeListener l : mSwipeListeners)
+                for(SwipeListener l : mSwipeListeners){
                     l.onOpen(SwipeLayout.this);
+                }
+                mEventCounter = 0;
             }
         }
     }
@@ -1082,22 +1107,34 @@ public class SwipeLayout extends FrameLayout {
      * smoothly open surface.
      */
     public void open(){
-        open(true);
+        open(true, true);
     }
 
     public void open(boolean smooth){
+        open(smooth, true);
+    }
+
+    public void open(boolean smooth, boolean notify){
+        ViewGroup surface = getSurfaceView(), bottom = getBottomView();
+        int dx,dy;
         Rect rect = computeSurfaceLayoutArea(true);
         if(smooth) {
             mDragHelper.smoothSlideViewTo(getSurfaceView(), rect.left, rect.top);
         }
         else{
-            getSurfaceView().layout(rect.left, rect.top, rect.right, rect.bottom);
+            dx = rect.left - surface.getLeft();
+            dy = rect.top - surface.getTop();
+            surface.layout(rect.left, rect.top, rect.right, rect.bottom);
             if(getShowMode() == ShowMode.PullOut){
                 Rect bRect = computeBottomLayoutAreaViaSurface(ShowMode.PullOut, rect);
-                getBottomView().layout(bRect.left, bRect.top, bRect.right, bRect.bottom);
+                bottom.layout(bRect.left, bRect.top, bRect.right, bRect.bottom);
             }
-            dispatchRevealEvent(rect.left, rect.top, rect.right, rect.bottom);
-            dispatchSwipeEvent(rect.left, rect.top);
+            if(notify) {
+                dispatchRevealEvent(rect.left, rect.top, rect.right, rect.bottom);
+                dispatchSwipeEvent(rect.left, rect.top, dx, dy);
+            }else{
+                safeBottomView();
+            }
         }
         invalidate();
     }
@@ -1106,26 +1143,37 @@ public class SwipeLayout extends FrameLayout {
      * smoothly close surface.
      */
     public void close(){
-        close(true);
+        close(true, true);
+    }
+
+    public void close(boolean smooth){
+        close(smooth, true);
     }
 
     /**
      * close surface
      * @param smooth smoothly or not.
+     * @param notify if notify all the listeners.
      */
-    public void close(boolean smooth){
+    public void close(boolean smooth, boolean notify){
+        ViewGroup surface = getSurfaceView();
+        int dx, dy;
         if(smooth)
             mDragHelper.smoothSlideViewTo(getSurfaceView(), getPaddingLeft(), getPaddingTop());
         else {
             Rect rect = computeSurfaceLayoutArea(false);
-            getSurfaceView().layout(rect.left, rect.top, rect.right, rect.bottom);
-            dispatchRevealEvent(rect.left, rect.top, rect.right, rect.bottom);
-            dispatchSwipeEvent(rect.left, rect.top);
+            dx = rect.left - surface.getLeft();
+            dy = rect.top - surface.getTop();
+            surface.layout(rect.left, rect.top, rect.right, rect.bottom);
+            if(notify) {
+                dispatchRevealEvent(rect.left, rect.top, rect.right, rect.bottom);
+                dispatchSwipeEvent(rect.left, rect.top, dx, dy);
+            }else{
+                safeBottomView();
+            }
         }
         invalidate();
     }
-
-
 
     public void toggle(){
         toggle(true);

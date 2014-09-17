@@ -149,21 +149,22 @@ public abstract class SwipeAdapter extends BaseAdapter {
         public void onLayout(SwipeLayout v) {
             if(mode == Mode.Multiple){
                 if(mOpenPositions.contains(position))
-                    v.open(false);
+                    v.open(false, false);
                 else{
-                    v.close(false);
+                    v.close(false, false);
                 }
             }else{
                 if(mOpenPosition == position){
-                    v.open(false);
+                    v.open(false, false);
                 }else{
-                    v.close(false);
+                    v.close(false, false);
                 }
             }
         }
+
     }
 
-    class SwipeMemory implements SwipeLayout.SwipeListener {
+    class SwipeMemory extends SimpleSwipeListener{
 
         private int position;
 
@@ -176,25 +177,16 @@ public abstract class SwipeAdapter extends BaseAdapter {
             if(mode == Mode.Multiple)
                 mOpenPositions.remove(position);
             else{
-                if(position == mOpenPosition){
+                if (position == mOpenPosition) {
                     mOpenPosition = INVALID_POSITION;
                     mPrevious = null;
                 }
-
             }
         }
 
-
         @Override
-        public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
-
-        }
-
-        @Override
-        public void onOpen(SwipeLayout layout) {
-            if(mode == Mode.Multiple)
-                mOpenPositions.add(position);
-            else{
+        public void onStartOpen(SwipeLayout layout) {
+            if(mode == Mode.Single) {
                 if(mOpenPosition != position){
                     if(mPrevious != null)
                         mPrevious.close();
@@ -205,15 +197,14 @@ public abstract class SwipeAdapter extends BaseAdapter {
         }
 
         @Override
-        public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
-
+        public void onOpen(SwipeLayout layout) {
+            if(mode == Mode.Multiple)
+                mOpenPositions.add(position);
         }
 
         public void setPosition(int position){
             this.position = position;
         }
     }
-
-
 
 }
