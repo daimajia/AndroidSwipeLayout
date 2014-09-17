@@ -14,11 +14,11 @@ public abstract class SwipeAdapter extends BaseAdapter {
     };
 
     private Mode mode = Mode.Single;
-
     public final int INVALID_POSITION = -1;
+
     private Set<Integer> mOpenPositions = new HashSet<Integer>();
     private int mOpenPosition = INVALID_POSITION;
-    private SwipeLayout mPrevious;
+    private Set<SwipeLayout> mShownLayouts = new HashSet<SwipeLayout>();
 
     /**
      * return the {@link com.daimajia.swipe.SwipeLayout} resource id, int the view item.
@@ -60,6 +60,7 @@ public abstract class SwipeAdapter extends BaseAdapter {
                 swipeLayout.addSwipeListener(swipeMemory);
                 swipeLayout.addOnLayoutListener(onLayoutListener);
                 swipeLayout.setTag(swipeResourceId, new ValueBox(position, swipeMemory, onLayoutListener));
+                mShownLayouts.add(swipeLayout);
             }
         }else{
             swipeLayout = (SwipeLayout)v.findViewById(swipeResourceId);
@@ -121,6 +122,18 @@ public abstract class SwipeAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+
+    public void closeAllItems(){
+        closeAllExcept(null);
+    }
+
+    public void closeAllExcept(SwipeLayout layout){
+        for(SwipeLayout s : mShownLayouts){
+            if(s != layout)
+                s.close();
+        }
+    }
+
     class ValueBox {
         OnLayoutListener onLayoutListener;
         SwipeMemory swipeMemory;
@@ -149,21 +162,22 @@ public abstract class SwipeAdapter extends BaseAdapter {
         public void onLayout(SwipeLayout v) {
             if(mode == Mode.Multiple){
                 if(mOpenPositions.contains(position))
-                    v.open(false);
+                    v.open(false, false);
                 else{
-                    v.close(false);
+                    v.close(false, false);
                 }
             }else{
                 if(mOpenPosition == position){
-                    v.open(false);
+                    v.open(false, false);
                 }else{
-                    v.close(false);
+                    v.close(false, false);
                 }
             }
         }
+
     }
 
-    class SwipeMemory implements SwipeLayout.SwipeListener {
+    class SwipeMemory extends SimpleSwipeListener{
 
         private int position;
 
@@ -173,47 +187,31 @@ public abstract class SwipeAdapter extends BaseAdapter {
 
         @Override
         public void onClose(SwipeLayout layout) {
-            if(mode == Mode.Multiple)
+            if(mode == Mode.Multiple){
                 mOpenPositions.remove(position);
-            else{
-                if(position == mOpenPosition){
-                    mOpenPosition = INVALID_POSITION;
-                    mPrevious = null;
-                }
-
             }
         }
 
-
         @Override
-        public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
-
+        public void onStartOpen(SwipeLayout layout) {
+            if(mode == Mode.Single) {
+                closeAllExcept(layout);
+            }
         }
 
         @Override
         public void onOpen(SwipeLayout layout) {
-            if(mode == Mode.Multiple)
+            if (mode == Mode.Multiple)
                 mOpenPositions.add(position);
-            else{
-                if(mOpenPosition != position){
-                    if(mPrevious != null)
-                        mPrevious.close();
-                }
+            else {
+                closeAllExcept(layout);
                 mOpenPosition = position;
-                mPrevious = layout;
             }
-        }
-
-        @Override
-        public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
-
         }
 
         public void setPosition(int position){
             this.position = position;
         }
     }
-
-
 
 }
