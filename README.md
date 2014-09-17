@@ -14,7 +14,7 @@ Time passed, finally...as you see right now.
 
 ![](http://ww2.sinaimg.cn/mw690/610dc034jw1ejoplapwtqg208n0e74dx.gif)
 
-[Download Demo](https://github.com/daimajia/AndroidSwipeLayout/releases/download/v1.1.3/AndroidSwipeLayout-v1.1.3.apk)
+[Download Demo](https://github.com/daimajia/AndroidSwipeLayout/releases/download/v1.1.4/AndroidSwipeLayout-1.1.4.apk)
 
 Before I made this, I actually found some libraries (eg.[SwipeListView](https://github.com/47deg/android-swipelistview)) that helps developers to integrate swiping with your UI component. But it only works in `ListView`. What a pity.
 
@@ -33,7 +33,7 @@ When I start to make this library, I set some goals:
 ```groovy
 dependencies {
         compile 'com.android.support:support-v4:20.+'
-        compile "com.daimajia.swipelayout:library:1.1.3@aar"
+        compile "com.daimajia.swipelayout:library:1.1.4@aar"
 }
 ```
 
@@ -48,7 +48,7 @@ dependencies {
 <dependency>
     <groupId>com.daimajia.swipelayout</groupId>
     <artifactId>library</artifactId>
-    <version>1.1.3</version>
+    <version>1.1.4</version>
     <type>apklib</type>
 </dependency>
 ```
