@@ -14,11 +14,11 @@ public abstract class SwipeAdapter extends BaseAdapter {
     };
 
     private Mode mode = Mode.Single;
-
     public final int INVALID_POSITION = -1;
+
     private Set<Integer> mOpenPositions = new HashSet<Integer>();
     private int mOpenPosition = INVALID_POSITION;
-    private SwipeLayout mPrevious;
+    private Set<SwipeLayout> mShownLayouts = new HashSet<SwipeLayout>();
 
     /**
      * return the {@link com.daimajia.swipe.SwipeLayout} resource id, int the view item.
@@ -60,6 +60,7 @@ public abstract class SwipeAdapter extends BaseAdapter {
                 swipeLayout.addSwipeListener(swipeMemory);
                 swipeLayout.addOnLayoutListener(onLayoutListener);
                 swipeLayout.setTag(swipeResourceId, new ValueBox(position, swipeMemory, onLayoutListener));
+                mShownLayouts.add(swipeLayout);
             }
         }else{
             swipeLayout = (SwipeLayout)v.findViewById(swipeResourceId);
@@ -121,6 +122,18 @@ public abstract class SwipeAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+
+    public void closeAllItems(){
+        closeAllExcept(null);
+    }
+
+    public void closeAllExcept(SwipeLayout layout){
+        for(SwipeLayout s : mShownLayouts){
+            if(s != layout)
+                s.close();
+        }
+    }
+
     class ValueBox {
         OnLayoutListener onLayoutListener;
         SwipeMemory swipeMemory;
@@ -174,32 +187,26 @@ public abstract class SwipeAdapter extends BaseAdapter {
 
         @Override
         public void onClose(SwipeLayout layout) {
-            if(mode == Mode.Multiple)
+            if(mode == Mode.Multiple){
                 mOpenPositions.remove(position);
-            else{
-                if (position == mOpenPosition) {
-                    mOpenPosition = INVALID_POSITION;
-                    mPrevious = null;
-                }
             }
         }
 
         @Override
         public void onStartOpen(SwipeLayout layout) {
             if(mode == Mode.Single) {
-                if(mOpenPosition != position){
-                    if(mPrevious != null)
-                        mPrevious.close();
-                }
-                mOpenPosition = position;
-                mPrevious = layout;
+                closeAllExcept(layout);
             }
         }
 
         @Override
         public void onOpen(SwipeLayout layout) {
-            if(mode == Mode.Multiple)
+            if (mode == Mode.Multiple)
                 mOpenPositions.add(position);
+            else {
+                closeAllExcept(layout);
+                mOpenPosition = position;
+            }
         }
 
         public void setPosition(int position){
