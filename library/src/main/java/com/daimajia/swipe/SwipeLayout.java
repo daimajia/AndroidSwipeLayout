@@ -89,15 +89,15 @@ public class SwipeLayout extends FrameLayout {
     }
 
     public static interface SwipeDenier {
-		/*
-		 * Called in onInterceptTouchEvent
-		 * Determines if this swipe event should be denied
-		 * Implement this interface if you are using views with swipe gestures
-		 * As a child of SwipeLayout
-		 *
-		 * @return true deny
-		 *         false allow
-		 */
+        /*
+         * Called in onInterceptTouchEvent
+         * Determines if this swipe event should be denied
+         * Implement this interface if you are using views with swipe gestures
+         * As a child of SwipeLayout
+         *
+         * @return true deny
+         *         false allow
+         */
         public boolean shouldDenySwipe(MotionEvent ev);
     }
 
@@ -466,7 +466,6 @@ public class SwipeLayout extends FrameLayout {
         Status status = getOpenStatus();
 
         ViewParent t = getParent();
-
         if(!mSwipeListeners.isEmpty()){
             mEventCounter++;
             for(SwipeListener l : mSwipeListeners){
@@ -483,6 +482,8 @@ public class SwipeLayout extends FrameLayout {
             if(status == Status.Close){
                 for(SwipeListener l : mSwipeListeners){
                     l.onClose(SwipeLayout.this);
+                }
+                mEventCounter = 0;
                 while(t != null) {
                     if(t instanceof ListView || t instanceof GridView){
                         AdapterView view = (AdapterView)t;
@@ -500,13 +501,14 @@ public class SwipeLayout extends FrameLayout {
                     }
                     t = t.getParent();
                 }
-                mEventCounter = 0;
             }
 
             if(status == Status.Open){
                 getBottomView().setEnabled(true);
                 for(SwipeListener l : mSwipeListeners){
                     l.onOpen(SwipeLayout.this);
+                }
+                mEventCounter = 0;
                 while(t != null) {
                     if(t instanceof ListView || t instanceof GridView){
                         AdapterView view = (AdapterView)t;
@@ -514,7 +516,6 @@ public class SwipeLayout extends FrameLayout {
                     }
                     t = t.getParent();
                 }
-                mEventCounter = 0;
             }
         }
     }
