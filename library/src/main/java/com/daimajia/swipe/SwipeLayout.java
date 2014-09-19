@@ -15,7 +15,9 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,15 +89,15 @@ public class SwipeLayout extends FrameLayout {
     }
 
     public static interface SwipeDenier {
-		/*
-		 * Called in onInterceptTouchEvent
-		 * Determines if this swipe event should be denied
-		 * Implement this interface if you are using views with swipe gestures
-		 * As a child of SwipeLayout
-		 *
-		 * @return true deny
-		 *         false allow
-		 */
+        /*
+         * Called in onInterceptTouchEvent
+         * Determines if this swipe event should be denied
+         * Implement this interface if you are using views with swipe gestures
+         * As a child of SwipeLayout
+         *
+         * @return true deny
+         *         false allow
+         */
         public boolean shouldDenySwipe(MotionEvent ev);
     }
 
@@ -463,6 +465,7 @@ public class SwipeLayout extends FrameLayout {
         safeBottomView();
         Status status = getOpenStatus();
 
+        ViewParent t = getParent();
         if(!mSwipeListeners.isEmpty()){
             mEventCounter++;
             for(SwipeListener l : mSwipeListeners){
@@ -481,6 +484,23 @@ public class SwipeLayout extends FrameLayout {
                     l.onClose(SwipeLayout.this);
                 }
                 mEventCounter = 0;
+                while(t != null) {
+                    if(t instanceof ListView || t instanceof GridView){
+                        AdapterView view = (AdapterView)t;
+                        view.setEnabled(true);
+                    }
+                    t = t.getParent();
+                }
+            }
+
+            if(getOpenStatus() == Status.Middle){
+                while(t != null) {
+                    if(t instanceof ListView || t instanceof GridView){
+                        AdapterView view = (AdapterView)t;
+                        view.setEnabled(false);
+                    }
+                    t = t.getParent();
+                }
             }
 
             if(status == Status.Open){
@@ -489,6 +509,13 @@ public class SwipeLayout extends FrameLayout {
                     l.onOpen(SwipeLayout.this);
                 }
                 mEventCounter = 0;
+                while(t != null) {
+                    if(t instanceof ListView || t instanceof GridView){
+                        AdapterView view = (AdapterView)t;
+                        view.setEnabled(true);
+                    }
+                    t = t.getParent();
+                }
             }
         }
     }
