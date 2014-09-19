@@ -16,7 +16,9 @@ Time passed, finally...as you see right now.
 
 [Download Demo](https://github.com/daimajia/AndroidSwipeLayout/releases/download/v1.1.4/AndroidSwipeLayout-1.1.4.apk)
 
-Before I made this, I actually found some libraries (eg.[SwipeListView](https://github.com/47deg/android-swipelistview)) that helps developers to integrate swiping with your UI component. But it only works in `ListView`. What a pity.
+Before I made this, I actually found some libraries (eg.[SwipeListView](https://github.com/47deg/android-swipelistview)) that helps developers to integrate swiping with your UI component. 
+
+But it only works in `ListView`, and it has too many issues that they never care. What a pity!
 
 When I start to make this library, I set some goals:
 
@@ -24,6 +26,10 @@ When I start to make this library, I set some goals:
 - Can receive `onOpen`,`onClose`,`onUpdate` callbacks.
 - Can notifiy the hidden children how much they have shown.
 - Can be nested each other.
+- Can handle complicate situation, just like this:
+
+![](http://ww1.sinaimg.cn/large/610dc034gw1ekhojsy2arg208e06ngt1.gif)
+
 
 ## Usage
 
