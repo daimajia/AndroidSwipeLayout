@@ -9,7 +9,7 @@ public class NestedExample extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.nested);
+        setContentView(R.layout.complicate_layout);
         findViewById(R.id.hhhhh).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

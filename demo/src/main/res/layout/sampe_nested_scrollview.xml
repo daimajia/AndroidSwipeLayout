@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="80dp">
-
+    android:layout_width="match_parent" android:layout_height="match_parent">
     <LinearLayout
-        android:tag="Bottom3"
         android:layout_width="80dp"
         android:layout_height="match_parent">
         <ScrollView
@@ -25,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
-            android:text="Test ScrollView"
+            android:text="ScrollView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <ScrollView
@@ -47,7 +45,7 @@
                     android:text="HelloWorld"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-                </LinearLayout>
+            </LinearLayout>
 
         </ScrollView>
     </LinearLayout>

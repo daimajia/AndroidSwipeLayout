@@ -8,12 +8,12 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.daimajia.swipe.SimpleSwipeListener;
-import com.daimajia.swipe.SwipeAdapter;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipedemo.R;
 
-public class ListViewAdapter extends SwipeAdapter {
+public class ListViewAdapter extends BaseSwipeAdapter {
 
     private Context mContext;
 

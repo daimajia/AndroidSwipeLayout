@@ -6,10 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.daimajia.swipe.SwipeAdapter;
+import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.daimajia.swipedemo.R;
 
-public class GridViewAdapter extends SwipeAdapter {
+public class GridViewAdapter extends BaseSwipeAdapter {
 
     private Context mContext;
 

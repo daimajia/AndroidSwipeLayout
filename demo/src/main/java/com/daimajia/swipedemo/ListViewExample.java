@@ -12,7 +12,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.daimajia.swipe.SwipeAdapter;
+import com.daimajia.swipe.implments.SwipeItemMangerImpl;
 import com.daimajia.swipedemo.adapter.ListViewAdapter;
 
 public class ListViewExample extends Activity {
@@ -25,9 +25,19 @@ public class ListViewExample extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listview);
         mListView = (ListView)findViewById(R.id.listview);
+
+        /**
+         * The following comment is the sample usage of ArraySwipeAdapter.
+         */
+//        String[] adapterData = new String[]{"Activity", "Service", "Content Provider", "Intent", "BroadcastReceiver", "ADT", "Sqlite3", "HttpClient",
+//                "DDMS", "Android Studio", "Fragment", "Loader", "Activity", "Service", "Content Provider", "Intent",
+//                "BroadcastReceiver", "ADT", "Sqlite3", "HttpClient", "Activity", "Service", "Content Provider", "Intent",
+//                "BroadcastReceiver", "ADT", "Sqlite3", "HttpClient"};
+//        mListView.setAdapter(new ArraySwipeAdapterSample<String>(this, R.layout.listview_item, R.id.position, adapterData));
+
         mAdapter = new ListViewAdapter(this);
         mListView.setAdapter(mAdapter);
-        mAdapter.setMode(SwipeAdapter.Mode.Single);
+        mAdapter.setMode(SwipeItemMangerImpl.Mode.Single);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

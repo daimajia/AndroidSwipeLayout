@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <include layout="@layout/sampe_nested_scrollview" android:layout_height="80dp" android:layout_width="match_parent"/>
+    <include layout="@layout/sampe_nested_seekbar" android:layout_height="80dp" android:layout_width="match_parent" android:layout_marginTop="20dp"/>
+    <include layout="@layout/sampe_nested_edittext" android:layout_height="80dp" android:layout_width="match_parent" android:layout_marginTop="20dp"/>
+</LinearLayout>
