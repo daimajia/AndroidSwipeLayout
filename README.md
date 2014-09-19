@@ -14,9 +14,11 @@ Time passed, finally...as you see right now.
 
 ![](http://ww2.sinaimg.cn/mw690/610dc034jw1ejoplapwtqg208n0e74dx.gif)
 
-[Download Demo](https://github.com/daimajia/AndroidSwipeLayout/releases/download/v1.1.3/AndroidSwipeLayout-v1.1.3.apk)
+[Download Demo](https://github.com/daimajia/AndroidSwipeLayout/releases/download/v1.1.4/AndroidSwipeLayout-1.1.4.apk)
 
-Before I made this, I actually found some libraries (eg.[SwipeListView](https://github.com/47deg/android-swipelistview)) that helps developers to integrate swiping with your UI component. But it only works in `ListView`. What a pity.
+Before I made this, I actually found some libraries (eg.[SwipeListView](https://github.com/47deg/android-swipelistview)) that helps developers to integrate swiping with your UI component. 
+
+But it only works in `ListView`, and it has too many issues that they never care. What a pity!
 
 When I start to make this library, I set some goals:
 
@@ -24,6 +26,8 @@ When I start to make this library, I set some goals:
 - Can receive `onOpen`,`onClose`,`onUpdate` callbacks.
 - Can notifiy the hidden children how much they have shown.
 - Can be nested each other.
+- Can handle complicate situation, just like [this](https://camo.githubusercontent.com/d145d9a9508b3d204b70882c05bc3d9bd433883c/687474703a2f2f7777312e73696e61696d672e636e2f6c617267652f3631306463303334677731656b686f6a7379326172673230386530366e6774312e676966).
+
 
 ## Usage
 
@@ -33,7 +37,7 @@ When I start to make this library, I set some goals:
 ```groovy
 dependencies {
         compile 'com.android.support:support-v4:20.+'
-        compile "com.daimajia.swipelayout:library:1.1.3@aar"
+        compile "com.daimajia.swipelayout:library:1.1.4@aar"
 }
 ```
 
@@ -48,7 +52,7 @@ dependencies {
 <dependency>
     <groupId>com.daimajia.swipelayout</groupId>
     <artifactId>library</artifactId>
-    <version>1.1.3</version>
+    <version>1.1.4</version>
     <type>apklib</type>
 </dependency>
 ```
