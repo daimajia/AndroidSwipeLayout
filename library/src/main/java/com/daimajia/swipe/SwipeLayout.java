@@ -35,6 +35,8 @@ public class SwipeLayout extends FrameLayout {
     private Map<View, ArrayList<OnRevealListener>> mRevealListeners = new HashMap<View, ArrayList<OnRevealListener>>();
     private Map<View, Boolean> mShowEntirely = new HashMap<View, Boolean>();
 
+    private DoubleClickListener mDoubleClickListener;
+
     private boolean mSwipeEnabled = true;
 
     public static enum DragEdge {
@@ -126,7 +128,7 @@ public class SwipeLayout extends FrameLayout {
             throw new IllegalArgumentException("Child does not belong to SwipeListener.");
         }
 
-        if(mShowEntirely.containsKey(child) == false){
+        if(!mShowEntirely.containsKey(child)){
             mShowEntirely.put(child, false);
         }
         if(mRevealListeners.get(child) == null)
@@ -768,6 +770,7 @@ public class SwipeLayout extends FrameLayout {
         }else if(status == Status.Open){
             touching = getBottomView();
         }
+
         switch (action){
             case MotionEvent.ACTION_DOWN:
                 mDragHelper.processTouchEvent(event);
@@ -909,7 +912,22 @@ public class SwipeLayout extends FrameLayout {
         return null;
     }
 
-
+    private void performAdapterViewItemClick(MotionEvent e){
+        ViewParent t = getParent();
+        while(t != null) {
+            if(t instanceof AdapterView){
+                AdapterView view = (AdapterView)t;
+                int p = view.getPositionForView(SwipeLayout.this);
+                if( p != AdapterView.INVALID_POSITION &&
+                        view.performItemClick(view.getChildAt(p), p, view.getAdapter().getItemId(p)))
+                    return;
+            }else{
+                if(t instanceof View && ((View) t).performClick())
+                    return;
+            }
+            t = t.getParent();
+        }
+    }
 
     private GestureDetector gestureDetector = new GestureDetector(getContext(), new SwipeDetector());
     class SwipeDetector extends GestureDetector.SimpleOnGestureListener{
@@ -927,21 +945,18 @@ public class SwipeLayout extends FrameLayout {
          */
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
-            ViewParent t = getParent();
-            while(t != null) {
-                if(t instanceof AdapterView){
-                    AdapterView view = (AdapterView)t;
-                    int p = view.getPositionForView(SwipeLayout.this);
-                    if( p != AdapterView.INVALID_POSITION &&
-                            view.performItemClick(view.getChildAt(p), p, view.getAdapter().getItemId(p)))
-                        return true;
-                }else{
-                    if(t instanceof View && ((View) t).performClick())
-                        return true;
-                }
-                t = t.getParent();
+            if(mDoubleClickListener == null){
+                performAdapterViewItemClick(e);
             }
-            return false;
+            return true;
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            if(mDoubleClickListener != null){
+                performAdapterViewItemClick(e);
+            }
+            return true;
         }
 
         @Override
@@ -949,6 +964,22 @@ public class SwipeLayout extends FrameLayout {
             performLongClick();
         }
 
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            if(mDoubleClickListener != null){
+                View target;
+                ViewGroup bottom = getBottomView();
+                ViewGroup surface = getSurfaceView();
+                if(e.getX() > bottom.getLeft() && e.getX() < bottom.getRight()
+                        && e.getY() > bottom.getTop() && e.getY() < bottom.getBottom()){
+                    target = bottom;
+                }else{
+                    target = surface;
+                }
+                mDoubleClickListener.onDoubleClick(SwipeLayout.this, target == surface);
+            }
+            return true;
+        }
     }
 
     public void setDragEdge(DragEdge dragEdge){
@@ -1248,6 +1279,14 @@ public class SwipeLayout extends FrameLayout {
             bb = bt + mDragDistance;
         }
         return new Rect(bl, bt, br, bb);
+    }
+
+    public void setOnDoubleClickListener(DoubleClickListener doubleClickListener){
+        mDoubleClickListener = doubleClickListener;
+    }
+
+    public interface DoubleClickListener {
+        public void onDoubleClick(SwipeLayout layout, boolean surface);
     }
 
     private int dp2px(float dp){

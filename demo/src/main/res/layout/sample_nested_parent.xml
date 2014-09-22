@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@+id/parent_framelayout" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent">
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/test_swipe_swipe"
+        android:layout_width="match_parent" android:layout_height="80dp">
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/trash"
+                android:src="@drawable/trash"
+                android:layout_width="match_parent"
+                android:background="#FF3B30"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:padding="10dp"
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="SeekBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </com.daimajia.swipe.SwipeLayout>
+</FrameLayout>

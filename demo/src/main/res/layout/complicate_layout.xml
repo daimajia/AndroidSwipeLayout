@@ -6,4 +6,6 @@
     <include layout="@layout/sampe_nested_scrollview" android:layout_height="80dp" android:layout_width="match_parent"/>
     <include layout="@layout/sampe_nested_seekbar" android:layout_height="80dp" android:layout_width="match_parent" android:layout_marginTop="20dp"/>
     <include layout="@layout/sampe_nested_edittext" android:layout_height="80dp" android:layout_width="match_parent" android:layout_marginTop="20dp"/>
+    <include layout="@layout/sample_nested_parent" android:layout_height="80dp" android:layout_width="match_parent" android:layout_marginTop="20dp"/>
+
 </LinearLayout>

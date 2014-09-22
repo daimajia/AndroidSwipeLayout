@@ -1,6 +1,7 @@
 package com.daimajia.swipedemo;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.daimajia.swipe.implments.SwipeItemMangerImpl;
 import com.daimajia.swipedemo.adapter.ListViewAdapter;
@@ -19,7 +21,7 @@ public class ListViewExample extends Activity {
 
     private ListView mListView;
     private ListViewAdapter mAdapter;
-
+    private Context mContext = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +43,7 @@ public class ListViewExample extends Activity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("ListView", "onItemClick:" + position);
+                Toast.makeText(mContext, "Click", Toast.LENGTH_SHORT).show();
             }
         });
         mListView.setOnTouchListener(new View.OnTouchListener() {
@@ -54,7 +56,7 @@ public class ListViewExample extends Activity {
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("ListView","onItemLongClick:" + position);
+                Toast.makeText(mContext, "OnItemLongClickListener", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });

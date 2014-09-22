@@ -5,12 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.daimajia.swipedemo.R;
 
 public class ListViewAdapter extends BaseSwipeAdapter {
@@ -34,6 +35,12 @@ public class ListViewAdapter extends BaseSwipeAdapter {
             @Override
             public void onOpen(SwipeLayout layout) {
                 YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.trash));
+            }
+        });
+        swipeLayout.setOnDoubleClickListener(new SwipeLayout.DoubleClickListener() {
+            @Override
+            public void onDoubleClick(SwipeLayout layout, boolean surface) {
+                Toast.makeText(mContext, "DoubleClick", Toast.LENGTH_SHORT).show();
             }
         });
         return v;
