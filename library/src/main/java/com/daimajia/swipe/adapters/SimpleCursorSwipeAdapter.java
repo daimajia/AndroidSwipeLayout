@@ -1,11 +1,10 @@
 package com.daimajia.swipe.adapters;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SimpleCursorAdapter;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.implments.SwipeItemMangerImpl;
@@ -18,7 +17,6 @@ public abstract class SimpleCursorSwipeAdapter extends SimpleCursorAdapter imple
 
     private SwipeItemMangerImpl mItemManger = new SwipeItemMangerImpl(this);
 
-    @TargetApi(11)
     protected SimpleCursorSwipeAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
         super(context, layout, c, from, to, flags);
     }
