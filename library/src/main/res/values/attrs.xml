@@ -7,6 +7,8 @@
             <enum name="top" value="2"/>
             <enum name="bottom" value="3"/>
         </attr>
+ 	<attr name="horizontalSwipeOffset" format="dimension"/>
+        <attr name="verticalSwipeOffset" format="dimension"/>
         <attr name="show_mode" format="enum">
             <enum name="lay_down" value="0"/>
             <enum name="pull_out" value="1"/>

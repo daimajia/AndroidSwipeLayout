@@ -30,6 +30,9 @@ public class SwipeLayout extends FrameLayout {
     private DragEdge mDragEdge;
     private ShowMode mShowMode;
 
+    private float mHorizontalSwipeOffset;
+    private float mVerticalSwipeOffset;
+
     private List<SwipeListener> mSwipeListeners = new ArrayList<SwipeListener>();
     private List<SwipeDenier> mSwipeDeniers = new ArrayList<SwipeDenier>();
     private Map<View, ArrayList<OnRevealListener>> mRevealListeners = new HashMap<View, ArrayList<OnRevealListener>>();
@@ -65,6 +68,8 @@ public class SwipeLayout extends FrameLayout {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SwipeLayout);
         int ordinal = a.getInt(R.styleable.SwipeLayout_drag_edge, DragEdge.Right.ordinal());
+        mHorizontalSwipeOffset =a.getDimension(R.styleable.SwipeLayout_horizontalSwipeOffset,0);
+        mVerticalSwipeOffset =a.getDimension(R.styleable.SwipeLayout_verticalSwipeOffset,0);
         mDragEdge = DragEdge.values()[ordinal];
         ordinal = a.getInt(R.styleable.SwipeLayout_show_mode, ShowMode.PullOut.ordinal());
         mShowMode = ShowMode.values()[ordinal];
@@ -657,9 +662,9 @@ public class SwipeLayout extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         if(mDragEdge == DragEdge.Left || mDragEdge == DragEdge.Right)
-            mDragDistance = getBottomView().getMeasuredWidth();
+            mDragDistance = getBottomView().getMeasuredWidth()-dp2px(mHorizontalSwipeOffset);
         else
-            mDragDistance = getBottomView().getMeasuredHeight();
+            mDragDistance = getBottomView().getMeasuredHeight()-dp2px(mVerticalSwipeOffset);
     }
 
     private boolean mTouchConsumedByChild = false;
