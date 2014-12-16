@@ -924,7 +924,7 @@ public class SwipeLayout extends FrameLayout {
                 AdapterView view = (AdapterView)t;
                 int p = view.getPositionForView(SwipeLayout.this);
                 if( p != AdapterView.INVALID_POSITION &&
-                        view.performItemClick(view.getChildAt(p), p, view.getAdapter().getItemId(p)))
+                        view.performItemClick(view.getChildAt(p-view.getFirstVisiblePosition()), p, view.getAdapter().getItemId(p)))
                     return;
             }else{
                 if(t instanceof View && ((View) t).performClick())
