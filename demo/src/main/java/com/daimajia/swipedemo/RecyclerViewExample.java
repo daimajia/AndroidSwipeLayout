@@ -1,11 +1,12 @@
 package com.daimajia.swipedemo;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
@@ -15,12 +16,15 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.daimajia.swipe.util.Attributes;
-import com.daimajia.swipedemo.adapter.RecyclerViewSimpleAdapter;
+import com.daimajia.swipedemo.adapter.RecyclerViewAdvancedAdapter;
 
 import org.lucasr.twowayview.ItemClickSupport;
 import org.lucasr.twowayview.TwoWayLayoutManager;
 import org.lucasr.twowayview.widget.DividerItemDecoration;
 import org.lucasr.twowayview.widget.ListLayoutManager;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class RecyclerViewExample extends Activity {
 
@@ -30,21 +34,25 @@ public class RecyclerViewExample extends Activity {
     // Our LayoutManager uses: https://github.com/lucasr/twoway-view to help with decoration and can be used for a more advanced config as well.
     // Read http://lucasr.org/2014/07/31/the-new-twowayview/ for a better understanding
     private RecyclerView.LayoutManager mLayoutManager;
-    private Context mContext = this;
 
+    private Context mContext = this;
+    private ArrayList<String> mDataSet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recyclerview);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            ActionBar actionBar = getActionBar();
+            if (actionBar != null) {
+                actionBar.setTitle("RecyclerView");
+            }
+        }
 
         /**
-         * The following comment is the sample usage of ArraySwipeAdapter.
+         * Sample data.
          */
-        String[] adapterData = new String[]{"Activity", "Service", "Content Provider", "Intent", "BroadcastReceiver", "ADT", "Sqlite3", "HttpClient",
-                "DDMS", "Android Studio", "Fragment", "Loader", "Activity", "Service", "Content Provider", "Intent",
-                "BroadcastReceiver", "ADT", "Sqlite3", "HttpClient", "Activity", "Service", "Content Provider", "Intent",
-                "BroadcastReceiver", "ADT", "Sqlite3", "HttpClient"};
+        String[] adapterData = new String[]{"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"};
 
         // Uses a ListLayout manager from TwoWayView Lib:
         mLayoutManager = new ListLayoutManager(this, TwoWayLayoutManager.Orientation.VERTICAL);
@@ -52,9 +60,10 @@ public class RecyclerViewExample extends Activity {
         final Drawable divider = getResources().getDrawable(R.drawable.divider);
         recyclerView.addItemDecoration(new DividerItemDecoration(divider));
 
-        mAdapter = new RecyclerViewSimpleAdapter(this, adapterData);
+        mDataSet = new ArrayList<String>(Arrays.asList(adapterData));
+        mAdapter = new RecyclerViewAdvancedAdapter(this, mDataSet);
+        ((RecyclerViewAdvancedAdapter) mAdapter).setMode(Attributes.Mode.Single);
         recyclerView.setAdapter(mAdapter);
-        ((RecyclerViewSimpleAdapter) mAdapter).setMode(Attributes.Mode.Single);
 
         /* Listeners */
         ItemClickSupport itemClick = ItemClickSupport.addTo(recyclerView);

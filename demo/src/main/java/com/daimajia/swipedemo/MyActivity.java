@@ -119,7 +119,7 @@ public class MyActivity extends Activity {
         } else if (id == R.id.action_recycler) {
             startActivity(new Intent(this, RecyclerViewExample.class));
         }
-            return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
     /*

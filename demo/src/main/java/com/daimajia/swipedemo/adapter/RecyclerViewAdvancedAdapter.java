@@ -18,31 +18,31 @@ import com.daimajia.swipe.interfaces.SwipeItemMangerInterface;
 import com.daimajia.swipe.util.Attributes;
 import com.daimajia.swipedemo.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class RecyclerViewSimpleAdapter extends RecyclerView.Adapter<RecyclerViewSimpleAdapter.ViewHolder> implements SwipeItemMangerInterface, SwipeAdapterInterface {
+public class RecyclerViewAdvancedAdapter extends RecyclerView.Adapter<RecyclerViewAdvancedAdapter.ViewHolder> implements SwipeItemMangerInterface, SwipeAdapterInterface {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         SwipeLayout swipeLayout;
-        TextView textView;
+        TextView textViewPos;
+        TextView textViewData;
 
         public ViewHolder(View itemView) {
             super(itemView);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
-            textView = (TextView) itemView.findViewById(R.id.position);
+            textViewPos = (TextView) itemView.findViewById(R.id.position);
+            textViewData = (TextView) itemView.findViewById(R.id.text_data);
         }
     }
 
     private Context mContext;
-    private String[] mDataset;
+    private ArrayList<String> mDataset;
 
     protected SwipeItemRecyclerMangerImpl mItemManger = new SwipeItemRecyclerMangerImpl(this);
 
 
-    public RecyclerViewSimpleAdapter(Context context, String[] objects) {
+    public RecyclerViewAdvancedAdapter(Context context, ArrayList<String> objects) {
         this.mContext = context;
         this.mDataset = objects;
     }
@@ -54,7 +54,8 @@ public class RecyclerViewSimpleAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
+        viewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
         viewHolder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
             @Override
             public void onOpen(SwipeLayout layout) {
@@ -67,7 +68,9 @@ public class RecyclerViewSimpleAdapter extends RecyclerView.Adapter<RecyclerView
                 Toast.makeText(mContext, "DoubleClick", Toast.LENGTH_SHORT).show();
             }
         });
-        viewHolder.textView.setText((position + 1) + ".");
+        viewHolder.textViewPos.setText((position + 1) + ".");
+        viewHolder.textViewData.setText(mDataset.get(position));
+        mItemManger.bind(viewHolder.itemView, position);
     }
 
     @Override
@@ -77,7 +80,7 @@ public class RecyclerViewSimpleAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
     }
 
     @Override
