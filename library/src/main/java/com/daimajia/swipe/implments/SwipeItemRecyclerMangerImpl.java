@@ -1,7 +1,7 @@
 package com.daimajia.swipe.implments;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.BaseAdapter;
 
 import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * SwipeItemMangerImpl is a helper class to help all the adapters to maintain open status.
  */
-public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
+public class SwipeItemRecyclerMangerImpl implements SwipeItemMangerInterface {
 
     private Attributes.Mode mode = Attributes.Mode.Single;
     public final int INVALID_POSITION = -1;
@@ -28,9 +28,9 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
     protected Set<Integer> mOpenPositions = new HashSet<Integer>();
     protected Set<SwipeLayout> mShownLayouts = new HashSet<SwipeLayout>();
 
-    protected BaseAdapter mAdapter;
+    protected RecyclerView.Adapter mAdapter;
 
-    public SwipeItemMangerImpl(BaseAdapter adapter) {
+    public SwipeItemRecyclerMangerImpl(RecyclerView.Adapter adapter) {
         if(adapter == null)
             throw new IllegalArgumentException("Adapter can not be null");
 

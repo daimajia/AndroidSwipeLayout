@@ -2,6 +2,7 @@ package com.daimajia.swipe.interfaces;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.implments.SwipeItemMangerImpl;
+import com.daimajia.swipe.util.Attributes;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public interface SwipeItemMangerInterface {
 
     public boolean isOpen(int position);
 
-    public SwipeItemMangerImpl.Mode getMode();
+    public Attributes.Mode getMode();
 
-    public void setMode(SwipeItemMangerImpl.Mode mode);
+    public void setMode(Attributes.Mode mode);
 }

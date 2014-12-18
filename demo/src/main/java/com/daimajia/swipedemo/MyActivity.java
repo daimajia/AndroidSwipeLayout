@@ -113,11 +113,13 @@ public class MyActivity extends Activity {
         } else if (id == R.id.action_gridview) {
             startActivity(new Intent(this, GridViewExample.class));
             return true;
-        } else if(id == R.id.action_nexted){
+        } else if (id == R.id.action_nested) {
             startActivity(new Intent(this, NestedExample.class));
             return true;
+        } else if (id == R.id.action_recycler) {
+            startActivity(new Intent(this, RecyclerViewExample.class));
         }
-        return super.onOptionsItemSelected(item);
+            return super.onOptionsItemSelected(item);
     }
 
     /*
