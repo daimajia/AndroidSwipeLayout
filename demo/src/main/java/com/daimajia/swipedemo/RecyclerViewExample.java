@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.daimajia.swipe.util.Attributes;
+import com.daimajia.swipedemo.adapter.RecyclerViewAdapter;
 import com.daimajia.swipedemo.adapter.RecyclerViewAdvancedAdapter;
 
 import org.lucasr.twowayview.ItemClickSupport;
@@ -61,8 +62,8 @@ public class RecyclerViewExample extends Activity {
         recyclerView.addItemDecoration(new DividerItemDecoration(divider));
 
         mDataSet = new ArrayList<String>(Arrays.asList(adapterData));
-        mAdapter = new RecyclerViewAdvancedAdapter(this, mDataSet);
-        ((RecyclerViewAdvancedAdapter) mAdapter).setMode(Attributes.Mode.Single);
+        mAdapter = new RecyclerViewAdapter(this, mDataSet);
+        ((RecyclerViewAdapter) mAdapter).setMode(Attributes.Mode.Single);
         recyclerView.setAdapter(mAdapter);
 
         /* Listeners */
