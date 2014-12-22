@@ -28,7 +28,8 @@ public class MyActivity extends Activity {
 
         sample1 = (SwipeLayout) findViewById(R.id.sample1);
         sample1.setShowMode(SwipeLayout.ShowMode.LayDown);
-        sample1.setDragEdge(SwipeLayout.DragEdge.Left);
+        sample1.setDragEdges(SwipeLayout.DragEdge.Left, SwipeLayout.DragEdge.Right);
+        Toast.makeText(this, sample1.getDragEdge() + " is the drag edge", Toast.LENGTH_LONG).show();
         sample1.addRevealListener(R.id.delete, new SwipeLayout.OnRevealListener() {
             @Override
             public void onReveal(View child, SwipeLayout.DragEdge edge, float fraction, int distance) {
@@ -36,10 +37,32 @@ public class MyActivity extends Activity {
             }
         });
 
+        sample1.findViewById(R.id.star2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MyActivity.this, "Star", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        sample1.findViewById(R.id.trash2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MyActivity.this, "Trash Bin", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        sample1.findViewById(R.id.magnifier2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MyActivity.this, "Magnifier", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         //sample2
 
         sample2 = (SwipeLayout) findViewById(R.id.sample2);
         sample2.setShowMode(SwipeLayout.ShowMode.LayDown);
+        sample2.setDragEdge(SwipeLayout.DragEdge.Right);
 //        sample2.setShowMode(SwipeLayout.ShowMode.PullOut);
         sample2.findViewById(R.id.star).setOnClickListener(new View.OnClickListener() {
             @Override

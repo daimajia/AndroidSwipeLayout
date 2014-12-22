@@ -30,6 +30,36 @@
     </LinearLayout>
 
     <LinearLayout
+        android:tag="Bottom4"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/magnifier2"
+            android:src="@drawable/magnifier"
+            android:layout_width="70dp"
+            android:background="#f7e79c"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:id="@+id/star2"
+            android:src="@drawable/star"
+            android:layout_width="70dp"
+            android:background="#4cd964"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:id="@+id/trash2"
+            android:src="@drawable/trash"
+            android:layout_width="70dp"
+            android:background="#FF3B30"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
         android:padding="10dp"
         android:background="#ffffff"
         android:layout_width="match_parent"
@@ -40,4 +70,5 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
+
 </com.daimajia.swipe.SwipeLayout>
