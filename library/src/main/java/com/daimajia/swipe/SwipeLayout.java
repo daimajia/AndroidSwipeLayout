@@ -904,6 +904,7 @@ public class SwipeLayout extends FrameLayout
             float angle = Math.abs(distanceY / distanceX);
             angle = (float) Math.toDegrees(Math.atan(angle));
             if (getOpenStatus() == Status.Close) {
+                int lastCurrentDirectionIndex = currentDirectionIndex;
                 if (angle < 45) {
                     if (mLeftIndex != -1 && distanceX > 0) {
                         currentDirectionIndex = mLeftIndex;
@@ -917,7 +918,9 @@ public class SwipeLayout extends FrameLayout
                         currentDirectionIndex = mBottomIndex;
                     }
                 }
-                updateBottomViews();
+                if (lastCurrentDirectionIndex != currentDirectionIndex) {
+                    updateBottomViews();
+                }
             }
 
             boolean doNothing = false;
