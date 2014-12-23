@@ -29,7 +29,6 @@ public class MyActivity extends Activity {
         sample1 = (SwipeLayout) findViewById(R.id.sample1);
         sample1.setShowMode(SwipeLayout.ShowMode.LayDown);
         sample1.setDragEdges(SwipeLayout.DragEdge.Left, SwipeLayout.DragEdge.Right);
-        Toast.makeText(this, sample1.getDragEdge() + " is the drag edge", Toast.LENGTH_LONG).show();
         sample1.addRevealListener(R.id.delete, new SwipeLayout.OnRevealListener() {
             @Override
             public void onReveal(View child, SwipeLayout.DragEdge edge, float fraction, int distance) {
