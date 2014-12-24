@@ -2,7 +2,9 @@
 
 <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@drawable/item_selector"
-    android:layout_width="match_parent" android:layout_height="80dp">
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+
     <LinearLayout
         android:tag="Bottom1"
         android:background="#66ddff00"
@@ -10,6 +12,7 @@
         android:layout_width="160dp"
         android:weightSum="1"
         android:layout_height="match_parent">
+
         <TextView
             android:id="@+id/archive"
             android:textColor="#fff"
@@ -19,6 +22,7 @@
             android:background="#FF1300"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
+
         <TextView
             android:id="@+id/delete"
             android:text="Delete"
@@ -33,6 +37,7 @@
         android:tag="Bottom4"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/magnifier2"
             android:src="@drawable/magnifier"
@@ -41,6 +46,7 @@
             android:paddingLeft="25dp"
             android:paddingRight="25dp"
             android:layout_height="match_parent" />
+
         <ImageView
             android:id="@+id/star2"
             android:src="@drawable/star"
@@ -49,6 +55,7 @@
             android:paddingLeft="25dp"
             android:paddingRight="25dp"
             android:layout_height="match_parent" />
+
         <ImageView
             android:id="@+id/trash2"
             android:src="@drawable/trash"
@@ -64,6 +71,7 @@
         android:background="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <TextView
             android:tag="Hover"
             android:text="要有最樸素的生活和最遙遠的夢想，即使明天天寒地凍，山高水遠，路遠馬亡。"

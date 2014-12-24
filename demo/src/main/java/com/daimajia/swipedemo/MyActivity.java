@@ -135,7 +135,7 @@ public class MyActivity extends Activity {
         } else if (id == R.id.action_gridview) {
             startActivity(new Intent(this, GridViewExample.class));
             return true;
-        } else if(id == R.id.action_nexted){
+        } else if (id == R.id.action_nexted) {
             startActivity(new Intent(this, NestedExample.class));
             return true;
         }
