@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerSwipeAdapter {
 
-    public static class SimpleViewHolder extends ViewHolder {
+    public static class SimpleViewHolder extends ViewHolder{
         SwipeLayout swipeLayout;
         TextView textViewPos;
         TextView textViewData;
@@ -50,7 +50,7 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter {
     }
 
     @Override
-    public void bindRecyclerViewHolder(ViewHolder viewHolder, int position) {
+    public void bindRecyclerViewHolder(ViewHolder viewHolder, final int position) {
         SimpleViewHolder simpleViewHolder = (SimpleViewHolder) viewHolder;
         String item = mDataset.get(position);
         simpleViewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);

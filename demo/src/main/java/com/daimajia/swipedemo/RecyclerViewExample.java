@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.daimajia.swipe.util.Attributes;
 import com.daimajia.swipedemo.adapter.RecyclerViewAdapter;
 import com.daimajia.swipedemo.adapter.RecyclerViewAdvancedAdapter;
+import com.daimajia.swipedemo.adapter.util.RecyclerItemClickListener;
 
 import org.lucasr.twowayview.ItemClickSupport;
 import org.lucasr.twowayview.TwoWayLayoutManager;
@@ -63,23 +64,19 @@ public class RecyclerViewExample extends Activity {
 
         mDataSet = new ArrayList<String>(Arrays.asList(adapterData));
         mAdapter = new RecyclerViewAdapter(this, mDataSet);
+
         ((RecyclerViewAdapter) mAdapter).setMode(Attributes.Mode.Single);
         recyclerView.setAdapter(mAdapter);
 
         /* Listeners */
-        ItemClickSupport itemClick = ItemClickSupport.addTo(recyclerView);
-        itemClick.setOnItemClickListener(onItemClickListener);
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Log.e("ListView", "OnTouch");
-                return false;
+            public void onItemClick(View view, int position) {
+                Toast.makeText(mContext, "Clicked:" + position, Toast.LENGTH_SHORT).show();
             }
-        });
+        }));
         recyclerView.setOnScrollListener(onScrollListener);
 
-        // TODO: Item Long Click is firing for every touch.
-//        itemClick.setOnItemLongClickListener(onItemLongClickListener);
 
         // TODO: Item Selection Support for RecyclerView
 //        recyclerView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -95,27 +92,6 @@ public class RecyclerViewExample extends Activity {
 //        });
 
     }
-
-    /**
-     * Substitute for our onItemClick listener for RecyclerView
-     */
-    ItemClickSupport.OnItemClickListener onItemClickListener = new ItemClickSupport.OnItemClickListener() {
-        @Override
-        public void onItemClick(RecyclerView parent, View child, int position, long id) {
-            Toast.makeText(mContext, "Clicked:" + position, Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    /**
-     * Substitute for our onItemLongClick listener for RecyclerView
-     */
-    ItemClickSupport.OnItemLongClickListener onItemLongClickListener = new ItemClickSupport.OnItemLongClickListener() {
-        @Override
-        public boolean onItemLongClick(RecyclerView recyclerView, View view, int position, long id) {
-            Toast.makeText(mContext, "OnItemLongClickListener:" + position, Toast.LENGTH_SHORT).show();
-            return false;
-        }
-    };
 
     /**
      * Substitute for our onScrollListener for RecyclerView
