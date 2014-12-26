@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.Adapter;
@@ -29,6 +30,8 @@ public class SwipeLayout extends FrameLayout {
     private static final int DRAG_RIGHT = 2;
     private static final int DRAG_TOP = 4;
     private static final int DRAG_BOTTOM = 8;
+
+    private int mTouchSlop;
 
     private int mLeftIndex;
     private int mRightIndex;
@@ -81,6 +84,7 @@ public class SwipeLayout extends FrameLayout {
     public SwipeLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mDragHelper = ViewDragHelper.create(this, mDragHelperCallback);
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SwipeLayout);
         int dragEdgeChoices = a.getInt(R.styleable.SwipeLayout_drag_edge, DRAG_RIGHT);
@@ -839,15 +843,15 @@ public class SwipeLayout extends FrameLayout {
                 if (getOpenStatus() == Status.Close) {
                     int lastCurrentDirectionIndex = currentDirectionIndex;
                     if (angle < 45) {
-                        if (mLeftIndex != -1 && distanceX > 0) {
+                        if (mLeftIndex != -1 && distanceX > mTouchSlop) {
                             currentDirectionIndex = mLeftIndex;
-                        } else if (mRightIndex != -1) {
+                        } else if (mRightIndex != -1 && distanceX < -mTouchSlop) {
                             currentDirectionIndex = mRightIndex;
                         }
                     } else {
-                        if (mTopIndex != -1 && distanceY < 0) {
+                        if (mTopIndex != -1 && distanceY < -mTouchSlop) {
                             currentDirectionIndex = mTopIndex;
-                        } else if (mBottomIndex != -1) {
+                        } else if (mBottomIndex != -1 && distanceY > mTouchSlop) {
                             currentDirectionIndex = mBottomIndex;
                         }
                     }
@@ -858,8 +862,8 @@ public class SwipeLayout extends FrameLayout {
 
                 boolean doNothing = false;
                 if (mDragEdges.get(currentDirectionIndex) == DragEdge.Right) {
-                    boolean suitable = (status == Status.Open && distanceX > 0)
-                            || (status == Status.Close && distanceX < 0);
+                    boolean suitable = (status == Status.Open && distanceX > mTouchSlop)
+                            || (status == Status.Close && distanceX < -mTouchSlop);
                     suitable = suitable || (status == Status.Middle);
 
                     if (angle > 30 || !suitable) {
@@ -868,8 +872,8 @@ public class SwipeLayout extends FrameLayout {
                 }
 
                 if (mDragEdges.get(currentDirectionIndex) == DragEdge.Left) {
-                    boolean suitable = (status == Status.Open && distanceX < 0)
-                            || (status == Status.Close && distanceX > 0);
+                    boolean suitable = (status == Status.Open && distanceX < -mTouchSlop)
+                            || (status == Status.Close && distanceX > mTouchSlop);
                     suitable = suitable || status == Status.Middle;
 
                     if (angle > 30 || !suitable) {
@@ -878,8 +882,8 @@ public class SwipeLayout extends FrameLayout {
                 }
 
                 if (mDragEdges.get(currentDirectionIndex) == DragEdge.Top) {
-                    boolean suitable = (status == Status.Open && distanceY < 0)
-                            || (status == Status.Close && distanceY > 0);
+                    boolean suitable = (status == Status.Open && distanceY < -mTouchSlop)
+                            || (status == Status.Close && distanceY > mTouchSlop);
                     suitable = suitable || status == Status.Middle;
 
                     if (angle < 60 || !suitable) {
@@ -888,8 +892,8 @@ public class SwipeLayout extends FrameLayout {
                 }
 
                 if (mDragEdges.get(currentDirectionIndex) == DragEdge.Bottom) {
-                    boolean suitable = (status == Status.Open && distanceY > 0)
-                            || (status == Status.Close && distanceY < 0);
+                    boolean suitable = (status == Status.Open && distanceY > mTouchSlop)
+                            || (status == Status.Close && distanceY < -mTouchSlop);
                     suitable = suitable || status == Status.Middle;
 
                     if (angle < 60 || !suitable) {
