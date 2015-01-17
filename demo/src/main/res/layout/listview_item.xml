@@ -6,9 +6,7 @@
         xmlns:swipe="http://schemas.android.com/apk/res-auto"
         android:id="@+id/swipe"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        swipe:horizontalSwipeOffset="25dp"
-        >
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:background="#FF5534"
