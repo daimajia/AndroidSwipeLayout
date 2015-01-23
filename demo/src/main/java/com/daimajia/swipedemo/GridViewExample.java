@@ -18,7 +18,7 @@ public class GridViewExample extends Activity{
         setContentView(R.layout.gridview);
         final GridView gridView = (GridView)findViewById(R.id.gridview);
         final GridViewAdapter adapter = new GridViewAdapter(this);
-        adapter.setMode(SwipeItemMangerImpl.Mode.Multiple);
+        adapter.setMode(SwipeItemMangerImpl.Mode.Single);
         gridView.setAdapter(adapter);
         gridView.setSelected(false);
         gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -32,6 +32,7 @@ public class GridViewExample extends Activity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.e("onItemClick","onItemClick:" + position);
+                Log.e("onItemClick","onItemClick: isOpen = " + adapter.isOpen(position));
             }
         });
 

@@ -180,6 +180,7 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
 
     }
 
+    protected int mOpenTimes = 0;
     class SwipeMemory extends SimpleSwipeListener {
 
         private int position;
@@ -193,7 +194,10 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
             if(mode == Mode.Multiple){
                 mOpenPositions.remove(position);
             }else{
-                mOpenPosition = INVALID_POSITION;
+                mOpenTimes--;
+                if(mOpenTimes == 0) {
+                    mOpenPosition = INVALID_POSITION;
+                }
             }
         }
 
@@ -209,6 +213,8 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
             if (mode == Mode.Multiple)
                 mOpenPositions.add(position);
             else {
+                closeAllExcept(layout);
+                mOpenTimes++;
                 closeAllExcept(layout);
                 mOpenPosition = position;
             }
