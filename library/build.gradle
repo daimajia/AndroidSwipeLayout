@@ -5,7 +5,7 @@ android {
     buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
-        applicationId "com.daimajia.swipe"
+//        applicationId "com.daimajia.swipe"
         minSdkVersion 8
         targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
     }
