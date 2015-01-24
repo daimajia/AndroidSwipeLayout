@@ -5,7 +5,6 @@ android {
     buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
-        applicationId "com.daimajia.swipedemo"
         minSdkVersion Integer.parseInt(project.ANDROID_BUILD_MIN_SDK_VERSION)
         targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
         versionName project.VERSION_NAME
@@ -13,7 +12,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
