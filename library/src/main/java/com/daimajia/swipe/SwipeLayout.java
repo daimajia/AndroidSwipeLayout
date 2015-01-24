@@ -786,21 +786,8 @@ public class SwipeLayout extends FrameLayout {
 
                 if(touching != null)
                     touching.setPressed(true);
-
                 return true;
             case MotionEvent.ACTION_MOVE:{
-                if(sX == -1 || sY == -1){
-                    // Trick:
-                    // When in nested mode, we need to send a constructed ACTION_DOWN MotionEvent to mDragHelper, to help
-                    // it initialize itself.
-                    event.setAction(MotionEvent.ACTION_DOWN);
-                    mDragHelper.processTouchEvent(event);
-                    parent.requestDisallowInterceptTouchEvent(true);
-                    sX = event.getRawX();
-                    sY = event.getRawY();
-                    return true;
-                }
-
                 float distanceX = event.getRawX() - sX;
                 float distanceY = event.getRawY() - sY;
                 float angle = Math.abs(distanceY / distanceX);
