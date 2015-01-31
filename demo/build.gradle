@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 repositories {
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    jcenter()
 }
 
 android {
@@ -29,6 +29,6 @@ dependencies {
     compile 'com.daimajia.easing:library:1.0.0@aar'
     compile 'com.daimajia.androidanimations:library:1.1.2@aar'
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'org.lucasr.twowayview:core:1.0.0-SNAPSHOT@aar'
-    compile 'org.lucasr.twowayview:layouts:1.0.0-SNAPSHOT@aar'
+    // This dude gave a shoutout to you (daimajia) on his github page:
+    compile 'jp.wasabeef:recyclerview-animators:1.0.3@aar'
 }

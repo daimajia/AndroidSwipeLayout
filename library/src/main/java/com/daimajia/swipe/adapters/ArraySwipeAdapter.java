@@ -69,6 +69,11 @@ public abstract class ArraySwipeAdapter<T> extends ArrayAdapter implements Swipe
     }
 
     @Override
+    public void closeAllItems() {
+        mItemManger.closeAllItems();
+    }
+
+    @Override
     public List<Integer> getOpenItems() {
         return mItemManger.getOpenItems();
     }

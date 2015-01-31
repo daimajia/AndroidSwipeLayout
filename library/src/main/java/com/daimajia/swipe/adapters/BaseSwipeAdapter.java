@@ -71,6 +71,11 @@ public abstract class BaseSwipeAdapter extends BaseAdapter implements SwipeItemM
     }
 
     @Override
+    public void closeAllItems() {
+        mItemManger.closeAllItems();
+    }
+
+    @Override
     public List<Integer> getOpenItems() {
         return mItemManger.getOpenItems();
     }

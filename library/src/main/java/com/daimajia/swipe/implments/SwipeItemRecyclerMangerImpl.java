@@ -108,6 +108,18 @@ public class SwipeItemRecyclerMangerImpl implements SwipeItemMangerInterface {
     }
 
     @Override
+    public void closeAllItems() {
+        if (mode == Attributes.Mode.Multiple) {
+            mOpenPositions.clear();
+        } else {
+            mOpenPosition = INVALID_POSITION;
+        }
+        for (SwipeLayout s : mShownLayouts) {
+            s.close();
+        }
+    }
+
+    @Override
     public void removeShownLayouts(SwipeLayout layout) {
         mShownLayouts.remove(layout);
     }

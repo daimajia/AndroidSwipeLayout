@@ -13,6 +13,8 @@ public interface SwipeItemMangerInterface {
     public void closeItem(int position);
 
     public void closeAllExcept(SwipeLayout layout);
+    
+    public void closeAllItems();
 
     public List<Integer> getOpenItems();
 

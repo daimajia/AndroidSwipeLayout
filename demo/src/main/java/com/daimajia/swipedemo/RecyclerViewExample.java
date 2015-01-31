@@ -4,41 +4,39 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Toast;
 
 import com.daimajia.swipe.util.Attributes;
 import com.daimajia.swipedemo.adapter.RecyclerViewAdapter;
-import com.daimajia.swipedemo.adapter.RecyclerViewAdvancedAdapter;
-import com.daimajia.swipedemo.adapter.util.RecyclerItemClickListener;
-
-import org.lucasr.twowayview.ItemClickSupport;
-import org.lucasr.twowayview.TwoWayLayoutManager;
-import org.lucasr.twowayview.widget.DividerItemDecoration;
-import org.lucasr.twowayview.widget.ListLayoutManager;
+import com.daimajia.swipedemo.adapter.util.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import jp.wasabeef.recyclerview.animators.FadeInLeftAnimator;
+
 public class RecyclerViewExample extends Activity {
+
+    /**
+     * RecyclerView: The new recycler view replaces the list view. Its more modular and therefore we
+     * must implement some of the functionality ourselves and attach it to our recyclerview.
+     * <p/>
+     * 1) Position items on the screen: This is done with LayoutManagers
+     * 2) Animate & Decorate views: This is done with ItemAnimators & ItemDecorators
+     * 3) Handle any touch events apart from scrolling: This is now done in our adapter's ViewHolder
+     */
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
-    // RecyclerView.LayoutManager: https://developer.android.com/reference/android/support/v7/widget/RecyclerView.LayoutManager.html
-    // Our LayoutManager uses: https://github.com/lucasr/twoway-view to help with decoration and can be used for a more advanced config as well.
-    // Read http://lucasr.org/2014/07/31/the-new-twowayview/ for a better understanding
-    private RecyclerView.LayoutManager mLayoutManager;
 
-    private Context mContext = this;
     private ArrayList<String> mDataSet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,46 +49,22 @@ public class RecyclerViewExample extends Activity {
             }
         }
 
-        /**
-         * Sample data.
-         */
+        // Layout Managers:
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Item Decorator:
+        recyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.divider)));
+        recyclerView.setItemAnimator(new FadeInLeftAnimator());
+
+        // Adapter:
         String[] adapterData = new String[]{"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"};
-
-        // Uses a ListLayout manager from TwoWayView Lib:
-        mLayoutManager = new ListLayoutManager(this, TwoWayLayoutManager.Orientation.VERTICAL);
-        recyclerView.setLayoutManager(mLayoutManager);
-        final Drawable divider = getResources().getDrawable(R.drawable.divider);
-        recyclerView.addItemDecoration(new DividerItemDecoration(divider));
-
         mDataSet = new ArrayList<String>(Arrays.asList(adapterData));
         mAdapter = new RecyclerViewAdapter(this, mDataSet);
-
         ((RecyclerViewAdapter) mAdapter).setMode(Attributes.Mode.Single);
         recyclerView.setAdapter(mAdapter);
 
         /* Listeners */
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(mContext, "Clicked:" + position, Toast.LENGTH_SHORT).show();
-            }
-        }));
         recyclerView.setOnScrollListener(onScrollListener);
-
-
-        // TODO: Item Selection Support for RecyclerView
-//        recyclerView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                Log.e("ListView", "onItemSelected:" + position);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//                Log.e("ListView", "onNothingSelected:");
-//            }
-//        });
-
     }
 
     /**
@@ -106,6 +80,7 @@ public class RecyclerViewExample extends Activity {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
+            // Could hide open views here if you wanted. //
         }
     };
 

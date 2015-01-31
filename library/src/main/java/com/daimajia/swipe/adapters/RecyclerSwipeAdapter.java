@@ -1,8 +1,6 @@
 package com.daimajia.swipe.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.daimajia.swipe.SwipeLayout;
@@ -11,53 +9,17 @@ import com.daimajia.swipe.interfaces.SwipeAdapterInterface;
 import com.daimajia.swipe.interfaces.SwipeItemMangerInterface;
 import com.daimajia.swipe.util.Attributes;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public abstract class RecyclerSwipeAdapter extends RecyclerView.Adapter<RecyclerSwipeAdapter.ViewHolder> implements SwipeItemMangerInterface,SwipeAdapterInterface {
+public abstract class RecyclerSwipeAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements SwipeItemMangerInterface, SwipeAdapterInterface {
 
-    private SwipeItemRecyclerMangerImpl mItemManger = new SwipeItemRecyclerMangerImpl(this);
-
-    /**
-     * This must be over-ridden
-     * Containes the view of the swiped item in the recycler.view
-     */
-    public static abstract class ViewHolder extends RecyclerView.ViewHolder {
-        public ViewHolder(View itemView) {
-            super(itemView);
-        }
-    };
-
-    private Context mContext;
-    private ArrayList mDataset;
-
-    public RecyclerSwipeAdapter(Context context, ArrayList objects) {
-        this.mContext = context;
-        this.mDataset = objects;
-    }
-
-    /**
-     * @param parent
-     * @param viewType
-     * @return View
-     */
-    public abstract ViewHolder createRecyclerViewHolder(ViewGroup parent, int viewType);
+    public SwipeItemRecyclerMangerImpl mItemManger = new SwipeItemRecyclerMangerImpl(this);
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return createRecyclerViewHolder(parent, viewType);
-    }
-
-    /**
-     * @param viewHolder
-     * @param position
-     */
-    public abstract void bindRecyclerViewHolder(ViewHolder viewHolder, int position);
+    public abstract VH onCreateViewHolder(ViewGroup parent, int viewType);
 
     @Override
-    public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
-        bindRecyclerViewHolder(viewHolder, position);
-    }
+    public abstract void onBindViewHolder(VH viewHolder, final int position);
 
     @Override
     public void openItem(int position) {
@@ -72,6 +34,11 @@ public abstract class RecyclerSwipeAdapter extends RecyclerView.Adapter<Recycler
     @Override
     public void closeAllExcept(SwipeLayout layout) {
         mItemManger.closeAllExcept(layout);
+    }
+
+    @Override
+    public void closeAllItems() {
+        mItemManger.closeAllItems();
     }
 
     @Override
