@@ -16,7 +16,7 @@ Time passed, finally...as you see right now.
 
 ![](http://ww2.sinaimg.cn/mw690/610dc034jw1ejoplapwtqg208n0e74dx.gif)
 
-[Download Demo](https://github.com/daimajia/AndroidSwipeLayout/releases/download/v1.1.6/AndroidSwipeLayout-v1.1.6.apk)
+[Download Demo](https://github.com/daimajia/AndroidSwipeLayout/releases/download/v1.1.8/AndroidSwipeLayout-v1.1.8.apk)
 
 Before I made this, I actually found some libraries (eg.[SwipeListView](https://github.com/47deg/android-swipelistview)) that helps developers to integrate swiping with your UI component. 
 
@@ -38,6 +38,7 @@ When I start to make this library, I set some goals:
 
 ```groovy
 dependencies {
+	compile 'com.android.support:recyclerview-v7:21.0.0'
         compile 'com.android.support:support-v4:20.+'
         compile "com.daimajia.swipelayout:library:1.1.8@aar"
 }
@@ -52,6 +53,11 @@ dependencies {
 	<version>r6</version>
 </dependency>
 <dependency>
+	<groupId>com.google.android</groupId>
+	<artifactId>recyclerview-v7</artifactId>
+	<version>21.0.0</version>
+</dependency>
+<dependency>
     <groupId>com.daimajia.swipelayout</groupId>
     <artifactId>library</artifactId>
     <version>1.1.8</version>
@@ -61,7 +67,7 @@ dependencies {
 
 #### Eclipse
 
-[AndroidSwipeLayout-v1.1.6.jar](https://github.com/daimajia/AndroidSwipeLayout/releases/download/v1.1.6/AndroidSwipeLayout-v1.1.6.jar)
+[AndroidSwipeLayout-v1.1.8.jar](https://github.com/daimajia/AndroidSwipeLayout/releases/download/v1.1.8/AndroidSwipeLayout-v1.1.8.jar)
 
 ### Step 2
 
