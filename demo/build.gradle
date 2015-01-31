@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+repositories {
+    jcenter()
+}
+
 android {
     compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
     buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
@@ -20,8 +24,10 @@ android {
 
 dependencies {
     compile project(":library")
-    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.android.support:recyclerview-v7:21.0.0'
     compile 'com.daimajia.easing:library:1.0.0@aar'
     compile 'com.daimajia.androidanimations:library:1.1.2@aar'
     compile 'com.nineoldandroids:library:2.4.0'
+    // This dude gave a shoutout to you (daimajia) on his github page:
+    compile 'jp.wasabeef:recyclerview-animators:1.0.3@aar'
 }

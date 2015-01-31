@@ -1,43 +1,25 @@
 package com.daimajia.swipe.adapters;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
-import android.view.View;
+import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.daimajia.swipe.SwipeLayout;
-import com.daimajia.swipe.implments.SwipeItemAdapterMangerImpl;
+import com.daimajia.swipe.implments.SwipeItemRecyclerMangerImpl;
 import com.daimajia.swipe.interfaces.SwipeAdapterInterface;
-import com.daimajia.swipe.implments.SwipeItemMangerImpl;
 import com.daimajia.swipe.interfaces.SwipeItemMangerInterface;
 import com.daimajia.swipe.util.Attributes;
 
 import java.util.List;
 
-public abstract class CursorSwipeAdapter extends CursorAdapter implements SwipeItemMangerInterface, SwipeAdapterInterface {
+public abstract class RecyclerSwipeAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements SwipeItemMangerInterface, SwipeAdapterInterface {
 
-    private SwipeItemAdapterMangerImpl mItemManger = new SwipeItemAdapterMangerImpl(this);
-
-    protected CursorSwipeAdapter(Context context, Cursor c, boolean autoRequery) {
-        super(context, c, autoRequery);
-    }
-
-    protected CursorSwipeAdapter(Context context, Cursor c, int flags) {
-        super(context, c, flags);
-    }
+    public SwipeItemRecyclerMangerImpl mItemManger = new SwipeItemRecyclerMangerImpl(this);
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        boolean convertViewIsNull = convertView == null;
-        View v = super.getView(position, convertView, parent);
-        if(convertViewIsNull){
-            mItemManger.initialize(v, position);
-        }else{
-            mItemManger.updateConvertView(v, position);
-        }
-        return v;
-    }
+    public abstract VH onCreateViewHolder(ViewGroup parent, int viewType);
+
+    @Override
+    public abstract void onBindViewHolder(VH viewHolder, final int position);
 
     @Override
     public void openItem(int position) {
@@ -52,6 +34,11 @@ public abstract class CursorSwipeAdapter extends CursorAdapter implements SwipeI
     @Override
     public void closeAllExcept(SwipeLayout layout) {
         mItemManger.closeAllExcept(layout);
+    }
+
+    @Override
+    public void closeAllItems() {
+        mItemManger.closeAllItems();
     }
 
     @Override
