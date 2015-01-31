@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.daimajia.swipedemo" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.daimajia.swipedemo">
+
+    <uses-sdk tools:overrideLibrary="org.lucasr.twowayview, org.lucasr.twowayview.widget, jp.wasabeef.recyclerview" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name="com.daimajia.swipedemo.MyActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.daimajia.swipedemo.ListViewExample"/>
-        <activity android:name="com.daimajia.swipedemo.GridViewExample"/>
-        <activity android:name=".NestedExample"/>
+        <activity android:name="com.daimajia.swipedemo.ListViewExample" />
+        <activity android:name="com.daimajia.swipedemo.GridViewExample" />
+        <activity android:name="com.daimajia.swipedemo.RecyclerViewExample" />
+        <activity android:name=".NestedExample" />
     </application>
 
 </manifest>

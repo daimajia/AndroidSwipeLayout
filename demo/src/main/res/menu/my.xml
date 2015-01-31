@@ -1,14 +1,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MyActivity" >
-    <item android:id="@+id/action_listview"
-        android:title="ListView"
+    tools:context=".MyActivity">
+    <item
+        android:id="@+id/action_listview"
         android:orderInCategory="100"
-        />
-    <item android:id="@+id/action_gridview"
-        android:title="GridView"
+        android:title="ListView" />
+    <item
+        android:id="@+id/action_gridview"
         android:orderInCategory="100"
-        />
-    <item android:id="@+id/action_nexted"
-        android:title="Complicate"/>
+        android:title="GridView" />
+    <item
+        android:id="@+id/action_recycler"
+        android:orderInCategory="100"
+        android:title="RecyclerView" />
+    <item
+        android:id="@+id/action_nested"
+        android:title="Complicate" />
 </menu>

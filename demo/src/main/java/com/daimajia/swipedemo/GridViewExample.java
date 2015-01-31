@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.daimajia.swipe.implments.SwipeItemMangerImpl;
+import com.daimajia.swipe.util.Attributes;
 import com.daimajia.swipedemo.adapter.GridViewAdapter;
 
 public class GridViewExample extends Activity{
@@ -18,7 +19,7 @@ public class GridViewExample extends Activity{
         setContentView(R.layout.gridview);
         final GridView gridView = (GridView)findViewById(R.id.gridview);
         final GridViewAdapter adapter = new GridViewAdapter(this);
-        adapter.setMode(SwipeItemMangerImpl.Mode.Multiple);
+        adapter.setMode(Attributes.Mode.Multiple);
         gridView.setAdapter(adapter);
         gridView.setSelected(false);
         gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

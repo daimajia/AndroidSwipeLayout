@@ -1,8 +1,10 @@
 package com.daimajia.swipedemo;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.implments.SwipeItemMangerImpl;
+import com.daimajia.swipe.util.Attributes;
 import com.daimajia.swipedemo.adapter.ListViewAdapter;
 
 public class ListViewExample extends Activity {
@@ -23,11 +26,18 @@ public class ListViewExample extends Activity {
     private ListView mListView;
     private ListViewAdapter mAdapter;
     private Context mContext = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listview);
-        mListView = (ListView)findViewById(R.id.listview);
+        mListView = (ListView) findViewById(R.id.listview);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            ActionBar actionBar = getActionBar();
+            if (actionBar != null) {
+                actionBar.setTitle("ListView");
+            }
+        }
 
         /**
          * The following comment is the sample usage of ArraySwipeAdapter.
@@ -40,7 +50,7 @@ public class ListViewExample extends Activity {
 
         mAdapter = new ListViewAdapter(this);
         mListView.setAdapter(mAdapter);
-        mAdapter.setMode(SwipeItemMangerImpl.Mode.Single);
+        mAdapter.setMode(Attributes.Mode.Single);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -50,7 +60,7 @@ public class ListViewExample extends Activity {
         mListView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Log.e("ListView","OnTouch");
+                Log.e("ListView", "OnTouch");
                 return false;
             }
         });
@@ -64,7 +74,7 @@ public class ListViewExample extends Activity {
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                Log.e("ListView","onScrollStateChanged");
+                Log.e("ListView", "onScrollStateChanged");
             }
 
             @Override
@@ -105,8 +115,12 @@ public class ListViewExample extends Activity {
             startActivity(new Intent(this, ListViewExample.class));
             finish();
             return true;
-        }else if(id == R.id.action_gridview){
+        } else if (id == R.id.action_gridview) {
             startActivity(new Intent(this, GridViewExample.class));
+            finish();
+            return true;
+        } else if (id == R.id.action_recycler) {
+            startActivity(new Intent(this, RecyclerViewExample.class));
             finish();
             return true;
         }

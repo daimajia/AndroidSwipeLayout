@@ -11,6 +11,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:20.+'
+    compile 'com.android.support:recyclerview-v7:21.0.0'
+    compile 'com.android.support:support-v4:21.0.3'
 }
 apply from: './gradle-mvn-push.gradle'
