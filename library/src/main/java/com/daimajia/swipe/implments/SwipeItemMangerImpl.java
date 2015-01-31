@@ -1,5 +1,6 @@
 package com.daimajia.swipe.implments;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.BaseAdapter;
 
@@ -18,7 +19,7 @@ import java.util.Set;
 /**
  * SwipeItemMangerImpl is a helper class to help all the adapters to maintain open status.
  */
-public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
+public abstract class SwipeItemMangerImpl implements SwipeItemMangerInterface {
 
     private Attributes.Mode mode = Attributes.Mode.Single;
     public final int INVALID_POSITION = -1;
@@ -28,7 +29,8 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
     protected Set<Integer> mOpenPositions = new HashSet<Integer>();
     protected Set<SwipeLayout> mShownLayouts = new HashSet<SwipeLayout>();
 
-    protected BaseAdapter mAdapter;
+    protected BaseAdapter mBaseAdapter;
+    protected RecyclerView.Adapter mRecyclerAdapter;
 
     public SwipeItemMangerImpl(BaseAdapter adapter) {
         if (adapter == null)
@@ -37,7 +39,17 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
         if (!(adapter instanceof SwipeItemMangerInterface))
             throw new IllegalArgumentException("adapter should implement the SwipeAdapterInterface");
 
-        this.mAdapter = adapter;
+        this.mBaseAdapter = adapter;
+    }
+
+    public SwipeItemMangerImpl(RecyclerView.Adapter adapter) {
+        if (adapter == null)
+            throw new IllegalArgumentException("Adapter can not be null");
+
+        if (!(adapter instanceof SwipeItemMangerInterface))
+            throw new IllegalArgumentException("adapter should implement the SwipeAdapterInterface");
+
+        this.mRecyclerAdapter = adapter;
     }
 
     public Attributes.Mode getMode() {
@@ -51,37 +63,22 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
         mOpenPosition = INVALID_POSITION;
     }
 
-    public void initialize(View target, int position) {
-        int resId = getSwipeLayoutId(position);
+    /* initialize and updateConvertView used for AdapterManagerImpl */
+    public abstract void initialize(View target, int position);
 
-        OnLayoutListener onLayoutListener = new OnLayoutListener(position);
-        SwipeLayout swipeLayout = (SwipeLayout) target.findViewById(resId);
-        if (swipeLayout == null)
-            throw new IllegalStateException("can not find SwipeLayout in target view");
+    public abstract void updateConvertView(View target, int position);
 
-        SwipeMemory swipeMemory = new SwipeMemory(position);
-        swipeLayout.addSwipeListener(swipeMemory);
-        swipeLayout.addOnLayoutListener(onLayoutListener);
-        swipeLayout.setTag(resId, new ValueBox(position, swipeMemory, onLayoutListener));
+    /* bindView used for RecyclerViewManagerImpl */
+    public abstract void bindView(View target, int position);
 
-        mShownLayouts.add(swipeLayout);
-    }
-
-    public void updateConvertView(View target, int position) {
-        int resId = getSwipeLayoutId(position);
-
-        SwipeLayout swipeLayout = (SwipeLayout) target.findViewById(resId);
-        if (swipeLayout == null)
-            throw new IllegalStateException("can not find SwipeLayout in target view");
-
-        ValueBox valueBox = (ValueBox) swipeLayout.getTag(resId);
-        valueBox.swipeMemory.setPosition(position);
-        valueBox.onLayoutListener.setPosition(position);
-        valueBox.position = position;
-    }
-
-    private int getSwipeLayoutId(int position) {
-        return ((SwipeAdapterInterface) (mAdapter)).getSwipeLayoutResourceId(position);
+    public int getSwipeLayoutId(int position) {
+        if (mBaseAdapter != null) {
+            return ((SwipeAdapterInterface) (mBaseAdapter)).getSwipeLayoutResourceId(position);
+        } else if (mRecyclerAdapter != null) {
+            return ((SwipeAdapterInterface) (mRecyclerAdapter)).getSwipeLayoutResourceId(position);
+        } else {
+            return -1;
+        }
     }
 
     @Override
@@ -92,7 +89,11 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
         } else {
             mOpenPosition = position;
         }
-        mAdapter.notifyDataSetChanged();
+        if (mBaseAdapter != null) {
+            mBaseAdapter.notifyDataSetChanged();
+        } else if (mRecyclerAdapter != null) {
+            mRecyclerAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -103,7 +104,11 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
             if (mOpenPosition == position)
                 mOpenPosition = INVALID_POSITION;
         }
-        mAdapter.notifyDataSetChanged();
+        if (mBaseAdapter != null) {
+            mBaseAdapter.notifyDataSetChanged();
+        } else if (mRecyclerAdapter != null) {
+            mRecyclerAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -116,6 +121,11 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
 
     @Override
     public void closeAllItems() {
+        if (mode == Attributes.Mode.Multiple) {
+            mOpenPositions.clear();
+        } else {
+            mOpenPosition = INVALID_POSITION;
+        }
         for (SwipeLayout s : mShownLayouts) {
             s.close();
         }
@@ -199,7 +209,6 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
             } else {
                 mOpenPosition = INVALID_POSITION;
             }
-            mShownLayouts.remove(layout);
         }
 
         @Override
@@ -217,7 +226,6 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
                 closeAllExcept(layout);
                 mOpenPosition = position;
             }
-            mShownLayouts.add(layout);
         }
 
         public void setPosition(int position) {

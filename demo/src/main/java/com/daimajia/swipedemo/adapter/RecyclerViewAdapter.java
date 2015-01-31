@@ -90,7 +90,7 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
         });
         viewHolder.textViewPos.setText((position + 1) + ".");
         viewHolder.textViewData.setText(item);
-        mItemManger.bind(viewHolder.itemView, position);
+        mItemManger.bindView(viewHolder.itemView, position);
     }
 
     @Override
