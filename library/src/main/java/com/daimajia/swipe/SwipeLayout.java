@@ -6,7 +6,6 @@ import android.graphics.Rect;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -49,6 +48,9 @@ public class SwipeLayout extends FrameLayout {
     private float mRightEdgeSwipeOffset;
     private float mTopEdgeSwipeOffset;
     private float mBottomEdgeSwipeOffset;
+
+    private Map<DragEdge, Integer> mBottomViewIdMap = new HashMap<DragEdge, Integer>();
+    private boolean mBottomViewIdsSet = false;
 
     private List<SwipeListener> mSwipeListeners = new ArrayList<SwipeListener>();
     private List<SwipeDenier> mSwipeDeniers = new ArrayList<SwipeDenier>();
@@ -1099,12 +1101,70 @@ public class SwipeLayout extends FrameLayout {
 
     public List<ViewGroup> getBottomViews() {
         List<ViewGroup> lvg = new ArrayList<ViewGroup>();
-        for (int i = 0; i < (getChildCount() - 1); i++) {
-            lvg.add((ViewGroup) getChildAt(i));
+        // If the user has provided a map for views to
+        if (mBottomViewIdsSet) {
+            if (mDragEdges.contains(DragEdge.Left)) {
+                lvg.add(mLeftIndex, ((ViewGroup) findViewById(mBottomViewIdMap.get(DragEdge.Left))));
+            }
+            if (mDragEdges.contains(DragEdge.Right)) {
+                lvg.add(mRightIndex, ((ViewGroup) findViewById(mBottomViewIdMap.get(DragEdge.Right))));
+            }
+            if (mDragEdges.contains(DragEdge.Top)) {
+                lvg.add(mTopIndex, ((ViewGroup) findViewById(mBottomViewIdMap.get(DragEdge.Top))));
+            }
+            if (mDragEdges.contains(DragEdge.Bottom)) {
+                lvg.add(mBottomIndex, ((ViewGroup) findViewById(mBottomViewIdMap.get(DragEdge.Bottom))));
+            }
+        }
+        // Default behaviour is to simply use the first n-1 children in the order they're listed in the layout
+        // and return them in
+        else {
+            for (int i = 0; i < (getChildCount() - 1); i++) {
+                lvg.add((ViewGroup) getChildAt(i));
+            }
         }
         return lvg;
     }
 
+    // Pass the id of the view if set, otherwise pass -1
+    public void setBottomViewIds (int left, int right, int top, int bottom) {
+        if (mDragEdges.contains(DragEdge.Left)) {
+            if (left == -1) {
+                mBottomViewIdsSet = false;
+            }
+            else {
+                mBottomViewIdMap.put(DragEdge.Left, left);
+                mBottomViewIdsSet = true;
+            }
+        }
+        if (mDragEdges.contains(DragEdge.Right)) {
+            if (right == -1) {
+                mBottomViewIdsSet = false;
+            }
+            else {
+                mBottomViewIdMap.put(DragEdge.Right, right);
+                mBottomViewIdsSet = true;
+            }
+        }
+        if (mDragEdges.contains(DragEdge.Top)) {
+            if (top == -1) {
+                mBottomViewIdsSet = false;
+            }
+            else {
+                mBottomViewIdMap.put(DragEdge.Top, top);
+                mBottomViewIdsSet = true;
+            }
+        }
+        if (mDragEdges.contains(DragEdge.Bottom)) {
+            if (bottom == -1) {
+                mBottomViewIdsSet = false;
+            }
+            else {
+                mBottomViewIdMap.put(DragEdge.Bottom, bottom);
+                mBottomViewIdsSet = true;
+            }
+        }
+    }
     public enum Status {
         Middle,
         Open,
@@ -1423,7 +1483,7 @@ public class SwipeLayout extends FrameLayout {
         else if (mDragEdges.get(currentDirectionIndex) == DragEdge.Right)
             return mRightEdgeSwipeOffset;
         else if (mDragEdges.get(currentDirectionIndex) == DragEdge.Top) return mTopEdgeSwipeOffset;
-        else return mLeftEdgeSwipeOffset;
+        else return mBottomEdgeSwipeOffset;
     }
 
     private void updateBottomViews() {
