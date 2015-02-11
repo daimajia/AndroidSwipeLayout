@@ -843,15 +843,15 @@ public class SwipeLayout extends FrameLayout {
                 if (getOpenStatus() == Status.Close) {
                     int lastCurrentDirectionIndex = currentDirectionIndex;
                     if (angle < 45) {
-                        if (mLeftIndex != -1 && distanceX > mTouchSlop) {
+                        if (mLeftIndex != -1 && distanceX > 0) {
                             currentDirectionIndex = mLeftIndex;
-                        } else if (mRightIndex != -1 && distanceX < -mTouchSlop) {
+                        } else if (mRightIndex != -1) {
                             currentDirectionIndex = mRightIndex;
                         }
                     } else {
-                        if (mTopIndex != -1 && distanceY < -mTouchSlop) {
+                        if (mTopIndex != -1 && distanceY < 0) {
                             currentDirectionIndex = mTopIndex;
-                        } else if (mBottomIndex != -1 && distanceY > mTouchSlop) {
+                        } else if (mBottomIndex != -1) {
                             currentDirectionIndex = mBottomIndex;
                         }
                     }
