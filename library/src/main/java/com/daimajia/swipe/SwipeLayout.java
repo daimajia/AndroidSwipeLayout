@@ -60,6 +60,10 @@ public class SwipeLayout extends FrameLayout {
     private DoubleClickListener mDoubleClickListener;
 
     private boolean mSwipeEnabled = true;
+    private boolean mLeftSwipeEnabled = true;
+    private boolean mRightSwipeEnabled = true;
+    private boolean mTopSwipeEnabled = true;
+    private boolean mBottomSwipeEnabled = true;
 
     public static enum DragEdge {
         Left,
@@ -946,6 +950,38 @@ public class SwipeLayout extends FrameLayout {
 
     public boolean isSwipeEnabled() {
         return mSwipeEnabled;
+    }
+
+    public boolean isLeftSwipeEnabled() {
+        return mLeftSwipeEnabled;
+    }
+
+    public void setLeftSwipeEnabled(boolean leftSwipeEnabled) {
+        this.mLeftSwipeEnabled = leftSwipeEnabled;
+    }
+
+    public boolean isRightSwipeEnabled() {
+        return mRightSwipeEnabled;
+    }
+
+    public void setRightSwipeEnabled(boolean rightSwipeEnabled) {
+        this.mRightSwipeEnabled = rightSwipeEnabled;
+    }
+
+    public boolean isTopSwipeEnabled() {
+        return mTopSwipeEnabled;
+    }
+
+    public void setTopSwipeEnabled(boolean topSwipeEnabled) {
+        this.mTopSwipeEnabled = topSwipeEnabled;
+    }
+
+    public boolean isBottomSwipeEnabled() {
+        return mBottomSwipeEnabled;
+    }
+
+    public void setBottomSwipeEnabled(boolean bottomSwipeEnabled) {
+        this.mBottomSwipeEnabled = bottomSwipeEnabled;
     }
 
     private boolean insideAdapterView() {
