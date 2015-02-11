@@ -9,11 +9,18 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+<<<<<<< HEAD
+        android:layout_height="wrap_content"
+        swipe:leftEdgeSwipeOffset="25dp"
+        swipe:rightEdgeSwipeOffset="25dp"
+        >
+=======
         android:layout_height="80dp"
         android:background="#FF5534"
         android:gravity="center"
         android:tag="Bottom3"
         android:weightSum="10">
+>>>>>>> upstream/master
 
         <ImageView
             android:id="@+id/trash"
