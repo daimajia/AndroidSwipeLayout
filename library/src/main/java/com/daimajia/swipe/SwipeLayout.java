@@ -25,6 +25,8 @@ import java.util.Map;
 
 public class SwipeLayout extends FrameLayout {
 
+    public static final int EMPTY_LAYOUT = -1;
+
     private static final int DRAG_LEFT = 1;
     private static final int DRAG_RIGHT = 2;
     private static final int DRAG_TOP = 4;
@@ -1161,7 +1163,7 @@ public class SwipeLayout extends FrameLayout {
     // Pass the id of the view if set, otherwise pass -1
     public void setBottomViewIds(int left, int right, int top, int bottom) {
         if (mDragEdges.contains(DragEdge.Left)) {
-            if (left == -1) {
+            if (left == EMPTY_LAYOUT) {
                 mBottomViewIdsSet = false;
             } else {
                 mBottomViewIdMap.put(DragEdge.Left, left);
@@ -1169,7 +1171,7 @@ public class SwipeLayout extends FrameLayout {
             }
         }
         if (mDragEdges.contains(DragEdge.Right)) {
-            if (right == -1) {
+            if (right == EMPTY_LAYOUT) {
                 mBottomViewIdsSet = false;
             } else {
                 mBottomViewIdMap.put(DragEdge.Right, right);
@@ -1177,7 +1179,7 @@ public class SwipeLayout extends FrameLayout {
             }
         }
         if (mDragEdges.contains(DragEdge.Top)) {
-            if (top == -1) {
+            if (top == EMPTY_LAYOUT) {
                 mBottomViewIdsSet = false;
             } else {
                 mBottomViewIdMap.put(DragEdge.Top, top);
@@ -1185,7 +1187,7 @@ public class SwipeLayout extends FrameLayout {
             }
         }
         if (mDragEdges.contains(DragEdge.Bottom)) {
-            if (bottom == -1) {
+            if (bottom == EMPTY_LAYOUT) {
                 mBottomViewIdsSet = false;
             } else {
                 mBottomViewIdMap.put(DragEdge.Bottom, bottom);

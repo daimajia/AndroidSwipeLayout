@@ -30,7 +30,7 @@ public class MyActivity extends Activity {
         sample1.setShowMode(SwipeLayout.ShowMode.LayDown);
         sample1.setDragEdges(SwipeLayout.DragEdge.Left, SwipeLayout.DragEdge.Right, SwipeLayout.DragEdge.Top);
         // When using multiple drag edges it's a good idea to pass the ids of the views that you're using for the left, right, top bottom views (-1 if you're not using a particular view)
-        sample1.setBottomViewIds(R.id.bottom_wrapper, R.id.bottom_wrapper_2, R.id.starbott, -1);
+        sample1.setBottomViewIds(R.id.bottom_wrapper, R.id.bottom_wrapper_2, R.id.starbott, SwipeLayout.EMPTY_LAYOUT);
         sample1.addRevealListener(R.id.delete, new SwipeLayout.OnRevealListener() {
             @Override
             public void onReveal(View child, SwipeLayout.DragEdge edge, float fraction, int distance) {
