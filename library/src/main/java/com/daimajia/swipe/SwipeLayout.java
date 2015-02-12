@@ -115,6 +115,7 @@ public class SwipeLayout extends FrameLayout {
         populateIndexes();
         int ordinal = a.getInt(R.styleable.SwipeLayout_show_mode, ShowMode.PullOut.ordinal());
         mShowMode = ShowMode.values()[ordinal];
+        a.recycle();
     }
 
     public interface SwipeListener {
@@ -1350,6 +1351,48 @@ public class SwipeLayout extends FrameLayout {
         invalidate();
     }
 
+    public void open(DragEdge edge) {
+        switch (edge) {
+            case Left:
+                mCurrentDirectionIndex = mLeftIndex;
+            case Right:
+                mCurrentDirectionIndex = mRightIndex;
+            case Top:
+                mCurrentDirectionIndex = mTopIndex;
+            case Bottom:
+                mCurrentDirectionIndex = mBottomIndex;
+        }
+        open (true, true);
+    }
+
+    public void open(boolean smooth, DragEdge edge) {
+        switch (edge) {
+            case Left:
+                mCurrentDirectionIndex = mLeftIndex;
+            case Right:
+                mCurrentDirectionIndex = mRightIndex;
+            case Top:
+                mCurrentDirectionIndex = mTopIndex;
+            case Bottom:
+                mCurrentDirectionIndex = mBottomIndex;
+        }
+        open (smooth, true);
+    }
+    
+    public void open(boolean smooth, boolean notify, DragEdge edge) {
+        switch (edge) {
+            case Left:
+                mCurrentDirectionIndex = mLeftIndex;
+            case Right:
+                mCurrentDirectionIndex = mRightIndex;
+            case Top:
+                mCurrentDirectionIndex = mTopIndex;
+            case Bottom:
+                mCurrentDirectionIndex = mBottomIndex;
+        }
+        open (smooth, notify);
+    }
+    
     /**
      * smoothly close surface.
      */
