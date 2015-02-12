@@ -836,7 +836,7 @@ public class SwipeLayout extends FrameLayout {
 
                 if (touching != null) touching.setPressed(true);
                 return true;
-            case MotionEvent.ACTION_MOVE:{
+            case MotionEvent.ACTION_MOVE: {
                 float distanceX = event.getRawX() - sX;
                 float distanceY = event.getRawY() - sY;
                 float angle = Math.abs(distanceY / distanceX);
@@ -846,13 +846,13 @@ public class SwipeLayout extends FrameLayout {
                     if (angle < 45) {
                         if (mLeftIndex != -1 && distanceX > 0 && isLeftSwipeEnabled()) {
                             mCurrentDirectionIndex = mLeftIndex;
-                        } else if (mRightIndex != -1 && isRightSwipeEnabled()) {
+                        } else if (mRightIndex != -1 && distanceX < 0 && isRightSwipeEnabled()) {
                             mCurrentDirectionIndex = mRightIndex;
                         }
                     } else {
-                        if (mTopIndex != -1 && distanceY < 0 && isTopSwipeEnabled()) {
+                        if (mTopIndex != -1 && distanceY > 0 && isTopSwipeEnabled()) {
                             mCurrentDirectionIndex = mTopIndex;
-                        } else if (mBottomIndex != -1 && isBottomSwipeEnabled()) {
+                        } else if (mBottomIndex != -1 && distanceY < 0 && isBottomSwipeEnabled()) {
                             mCurrentDirectionIndex = mBottomIndex;
                         }
                     }
@@ -1159,12 +1159,11 @@ public class SwipeLayout extends FrameLayout {
     }
 
     // Pass the id of the view if set, otherwise pass -1
-    public void setBottomViewIds (int left, int right, int top, int bottom) {
+    public void setBottomViewIds(int left, int right, int top, int bottom) {
         if (mDragEdges.contains(DragEdge.Left)) {
             if (left == -1) {
                 mBottomViewIdsSet = false;
-            }
-            else {
+            } else {
                 mBottomViewIdMap.put(DragEdge.Left, left);
                 mBottomViewIdsSet = true;
             }
@@ -1172,8 +1171,7 @@ public class SwipeLayout extends FrameLayout {
         if (mDragEdges.contains(DragEdge.Right)) {
             if (right == -1) {
                 mBottomViewIdsSet = false;
-            }
-            else {
+            } else {
                 mBottomViewIdMap.put(DragEdge.Right, right);
                 mBottomViewIdsSet = true;
             }
@@ -1181,8 +1179,7 @@ public class SwipeLayout extends FrameLayout {
         if (mDragEdges.contains(DragEdge.Top)) {
             if (top == -1) {
                 mBottomViewIdsSet = false;
-            }
-            else {
+            } else {
                 mBottomViewIdMap.put(DragEdge.Top, top);
                 mBottomViewIdsSet = true;
             }
@@ -1190,13 +1187,13 @@ public class SwipeLayout extends FrameLayout {
         if (mDragEdges.contains(DragEdge.Bottom)) {
             if (bottom == -1) {
                 mBottomViewIdsSet = false;
-            }
-            else {
+            } else {
                 mBottomViewIdMap.put(DragEdge.Bottom, bottom);
                 mBottomViewIdsSet = true;
             }
         }
     }
+
     public enum Status {
         Middle,
         Open,
@@ -1305,7 +1302,8 @@ public class SwipeLayout extends FrameLayout {
 
         int l = getPaddingLeft(), t = getPaddingTop();
 
-        if (xvel < 0 && mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Right) l -= mDragDistance;
+        if (xvel < 0 && mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Right)
+            l -= mDragDistance;
         if (xvel > 0 && mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Left) l += mDragDistance;
 
         if (yvel > 0 && mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Top) t += mDragDistance;
@@ -1362,7 +1360,7 @@ public class SwipeLayout extends FrameLayout {
             case Bottom:
                 mCurrentDirectionIndex = mBottomIndex;
         }
-        open (true, true);
+        open(true, true);
     }
 
     public void open(boolean smooth, DragEdge edge) {
@@ -1376,9 +1374,9 @@ public class SwipeLayout extends FrameLayout {
             case Bottom:
                 mCurrentDirectionIndex = mBottomIndex;
         }
-        open (smooth, true);
+        open(smooth, true);
     }
-    
+
     public void open(boolean smooth, boolean notify, DragEdge edge) {
         switch (edge) {
             case Left:
@@ -1390,9 +1388,9 @@ public class SwipeLayout extends FrameLayout {
             case Bottom:
                 mCurrentDirectionIndex = mBottomIndex;
         }
-        open (smooth, notify);
+        open(smooth, notify);
     }
-    
+
     /**
      * smoothly close surface.
      */

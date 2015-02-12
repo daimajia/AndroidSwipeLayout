@@ -68,6 +68,26 @@
     </LinearLayout>
 
     <LinearLayout
+        android:tag="Bottom3"
+        android:id="@+id/starbott"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/bottom_wrapper_child1"
+            android:background="#BDBEC2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/star"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/star"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
         android:padding="10dp"
         android:background="#ffffff"
         android:layout_width="match_parent"
