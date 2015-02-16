@@ -27,7 +27,7 @@ public class MyActivity extends Activity {
         //sample1
 
         sample1 = (SwipeLayout) findViewById(R.id.sample1);
-        sample1.setShowMode(SwipeLayout.ShowMode.LayDown);
+        sample1.setShowMode(SwipeLayout.ShowMode.PullOut);
         sample1.setDragEdges(SwipeLayout.DragEdge.Left, SwipeLayout.DragEdge.Right, SwipeLayout.DragEdge.Top);
         // When using multiple drag edges it's a good idea to pass the ids of the views that you're using for the left, right, top bottom views (-1 if you're not using a particular view)
         sample1.setBottomViewIds(R.id.bottom_wrapper, R.id.bottom_wrapper_2, R.id.starbott, SwipeLayout.EMPTY_LAYOUT);
