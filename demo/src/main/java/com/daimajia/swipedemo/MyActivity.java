@@ -27,8 +27,10 @@ public class MyActivity extends Activity {
         //sample1
 
         sample1 = (SwipeLayout) findViewById(R.id.sample1);
-        sample1.setShowMode(SwipeLayout.ShowMode.LayDown);
-        sample1.setDragEdge(SwipeLayout.DragEdge.Left);
+        sample1.setShowMode(SwipeLayout.ShowMode.PullOut);
+        sample1.setDragEdges(SwipeLayout.DragEdge.Left, SwipeLayout.DragEdge.Right, SwipeLayout.DragEdge.Top);
+        // When using multiple drag edges it's a good idea to pass the ids of the views that you're using for the left, right, top bottom views (-1 if you're not using a particular view)
+        sample1.setBottomViewIds(R.id.bottom_wrapper, R.id.bottom_wrapper_2, R.id.starbott, SwipeLayout.EMPTY_LAYOUT);
         sample1.addRevealListener(R.id.delete, new SwipeLayout.OnRevealListener() {
             @Override
             public void onReveal(View child, SwipeLayout.DragEdge edge, float fraction, int distance) {
@@ -36,10 +38,32 @@ public class MyActivity extends Activity {
             }
         });
 
+        sample1.findViewById(R.id.star2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MyActivity.this, "Star", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        sample1.findViewById(R.id.trash2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MyActivity.this, "Trash Bin", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        sample1.findViewById(R.id.magnifier2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MyActivity.this, "Magnifier", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         //sample2
 
         sample2 = (SwipeLayout) findViewById(R.id.sample2);
         sample2.setShowMode(SwipeLayout.ShowMode.LayDown);
+        sample2.setDragEdge(SwipeLayout.DragEdge.Right);
 //        sample2.setShowMode(SwipeLayout.ShowMode.PullOut);
         sample2.findViewById(R.id.star).setOnClickListener(new View.OnClickListener() {
             @Override

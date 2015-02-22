@@ -5,7 +5,8 @@
     android:id="@+id/swipe"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    swipe:horizontalSwipeOffset="0dp">
+    swipe:leftEdgeSwipeOffset="0dp"
+    swipe:rightEdgeSwipeOffset="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
