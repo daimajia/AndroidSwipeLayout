@@ -26,7 +26,7 @@
             android:id="@+id/trash"
             android:src="@drawable/trash"
             android:layout_width="70dp"
-            android:background="#FF3B30"
+            android:background="@drawable/red"
             android:paddingLeft="25dp"
             android:paddingRight="25dp"
             android:layout_height="match_parent" />
@@ -35,7 +35,7 @@
     <LinearLayout
         android:padding="10dp"
         android:orientation="vertical"
-        android:background="#ffffff"
+        android:background="@drawable/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView

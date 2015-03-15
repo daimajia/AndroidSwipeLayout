@@ -43,6 +43,12 @@ public class ListViewAdapter extends BaseSwipeAdapter {
                 Toast.makeText(mContext, "DoubleClick", Toast.LENGTH_SHORT).show();
             }
         });
+        v.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mContext, "click delete", Toast.LENGTH_SHORT).show();
+            }
+        });
         return v;
     }
 

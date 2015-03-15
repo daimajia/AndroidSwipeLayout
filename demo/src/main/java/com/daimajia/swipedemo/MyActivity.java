@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,9 @@ public class MyActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        SwipeLayout godfatherSwipe = (SwipeLayout) findViewById(R.id.godfather);
+        godfatherSwipe.setDragEdges(SwipeLayout.DragEdge.Left, SwipeLayout.DragEdge.Right, SwipeLayout.DragEdge.Top, SwipeLayout.DragEdge.Bottom);
+        godfatherSwipe.setBottomViewIds(R.id.bird_left, R.id.bird_right, R.id.bird_top, R.id.bird_bottom);
 
 //        SwipeLayout swipeLayout = (SwipeLayout)findViewById(R.id.godfather);
 //        swipeLayout.setDragEdge(SwipeLayout.DragEdge.Bottom); // Set in XML
@@ -38,6 +42,21 @@ public class MyActivity extends Activity {
             }
         });
 
+        sample1.getSurfaceView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MyActivity.this, "Click on surface", Toast.LENGTH_SHORT).show();
+                Log.d(MyActivity.class.getName(), "click on surface");
+            }
+        });
+        sample1.getSurfaceView().setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(MyActivity.this, "longClick on surface", Toast.LENGTH_SHORT).show();
+                Log.d(MyActivity.class.getName(), "longClick on surface");
+                return true;
+            }
+        });
         sample1.findViewById(R.id.star2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,6 +122,12 @@ public class MyActivity extends Activity {
                 Toast.makeText(MyActivity.this, "Yo", Toast.LENGTH_SHORT).show();
             }
         });
+        sample2.getSurfaceView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MyActivity.this, "Click on surface", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //sample3
 
@@ -120,10 +145,16 @@ public class MyActivity extends Activity {
                 child.setBackgroundColor(c);
             }
         });
-        sample3.findViewById(R.id.star).setOnClickListener(new View.OnClickListener() {
+        sample3.findViewById(R.id.bottom_wrapper_child1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MyActivity.this, "Yo!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        sample3.getSurfaceView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MyActivity.this, "Click on surface", Toast.LENGTH_SHORT).show();
             }
         });
 

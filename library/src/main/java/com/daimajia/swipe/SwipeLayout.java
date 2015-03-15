@@ -7,17 +7,17 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
+import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.Adapter;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
-import android.widget.ListAdapter;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -713,91 +713,128 @@ public class SwipeLayout extends FrameLayout {
                 - dp2px(getCurrentOffset());
     }
 
-    private boolean mTouchConsumedByChild = false;
+    private boolean mIsBeingDragged;
+    private void checkCanDrag(MotionEvent ev){
+        if(mIsBeingDragged) return;
+        if(getOpenStatus()==Status.Middle){
+            mIsBeingDragged = true;
+            return;
+        }
+        Status status = getOpenStatus();
+        float distanceX = ev.getRawX() - sX;
+        float distanceY = ev.getRawY() - sY;
+        float angle = Math.abs(distanceY / distanceX);
+        angle = (float) Math.toDegrees(Math.atan(angle));
+        if (getOpenStatus() == Status.Close) {
+            int lastCurrentDirectionIndex = mCurrentDirectionIndex;
+            if (angle < 45) {
+                if (mLeftIndex != -1 && distanceX > 0 && isLeftSwipeEnabled()) {
+                    mCurrentDirectionIndex = mLeftIndex;
+                } else if (mRightIndex != -1 && distanceX < 0 && isRightSwipeEnabled()) {
+                    mCurrentDirectionIndex = mRightIndex;
+                }
+            } else {
+                if (mTopIndex != -1 && distanceY > 0 && isTopSwipeEnabled()) {
+                    mCurrentDirectionIndex = mTopIndex;
+                } else if (mBottomIndex != -1 && distanceY < 0 && isBottomSwipeEnabled()) {
+                    mCurrentDirectionIndex = mBottomIndex;
+                }
+            }
+            if (lastCurrentDirectionIndex != mCurrentDirectionIndex) {
+                updateBottomViews();
+            }
+        }
+        if (!shouldAllowSwipe()) return;
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        boolean doNothing = false;
+        if (mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Right) {
+            boolean suitable = (status == Status.Open && distanceX > mTouchSlop)
+                    || (status == Status.Close && distanceX < -mTouchSlop);
+            suitable = suitable || (status == Status.Middle);
 
-        if (!isEnabled() || !isEnabledInAdapterView()) {
-            return true;
+            if (angle > 30 || !suitable) {
+                doNothing = true;
+            }
         }
 
+        if (mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Left) {
+            boolean suitable = (status == Status.Open && distanceX < -mTouchSlop)
+                    || (status == Status.Close && distanceX > mTouchSlop);
+            suitable = suitable || status == Status.Middle;
+
+            if (angle > 30 || !suitable) {
+                doNothing = true;
+            }
+        }
+
+        if (mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Top) {
+            boolean suitable = (status == Status.Open && distanceY < -mTouchSlop)
+                    || (status == Status.Close && distanceY > mTouchSlop);
+            suitable = suitable || status == Status.Middle;
+
+            if (angle < 60 || !suitable) {
+                doNothing = true;
+            }
+        }
+
+        if (mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Bottom) {
+            boolean suitable = (status == Status.Open && distanceY > mTouchSlop)
+                    || (status == Status.Close && distanceY < -mTouchSlop);
+            suitable = suitable || status == Status.Middle;
+
+            if (angle < 60 || !suitable) {
+                doNothing = true;
+            }
+        }
+        mIsBeingDragged = !doNothing;
+    }
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
         if (!isSwipeEnabled()) {
             return false;
         }
-
         for (SwipeDenier denier : mSwipeDeniers) {
             if (denier != null && denier.shouldDenySwipe(ev)) {
                 return false;
             }
         }
-        //
-        // if a child wants to handle the touch event,
-        // then let it do it.
-        //
-        int action = ev.getActionMasked();
-        switch (action) {
+
+        switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                Status status = getOpenStatus();
-                if (status == Status.Close) {
-                    mTouchConsumedByChild = childNeedHandleTouchEvent(getSurfaceView(), ev) != null;
-                } else if (status == Status.Open) {
-                    mTouchConsumedByChild = childNeedHandleTouchEvent(getBottomViews().get(mCurrentDirectionIndex), ev) != null;
+                mDragHelper.processTouchEvent(ev);
+                mIsBeingDragged = false;
+                sX = ev.getRawX();
+                sY = ev.getRawY();
+                //if the swipe is in middle state(scrolling), should intercept the touch
+                if(getOpenStatus() == Status.Middle){
+                    mIsBeingDragged = true;
                 }
                 break;
-            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_MOVE:
+                boolean beforeCheck = mIsBeingDragged;
+                checkCanDrag(ev);
+                if (mIsBeingDragged) {
+                    ViewParent parent = getParent();
+                    if(parent!=null){
+                        parent.requestDisallowInterceptTouchEvent(true);
+                    }
+                }
+                if(!beforeCheck && mIsBeingDragged){
+                    //let children has one chance to catch the touch, and request the swipe not intercept
+                    //useful when swipeLayout wrap a swipeLayout or other gestural layout
+                    return false;
+                }
+                break;
+
             case MotionEvent.ACTION_CANCEL:
-                mTouchConsumedByChild = false;
+            case MotionEvent.ACTION_UP:
+                mIsBeingDragged = false;
+                mDragHelper.processTouchEvent(ev);
+                break;
+            default://handle other action, such as ACTION_POINTER_DOWN/UP
+                mDragHelper.processTouchEvent(ev);
         }
-
-        if (mTouchConsumedByChild) return false;
-        return mDragHelper.shouldInterceptTouchEvent(ev);
-    }
-
-    /**
-     * if the ViewGroup children want to handle this event.
-     *
-     * @param v
-     * @param event
-     * @return
-     */
-    private View childNeedHandleTouchEvent(ViewGroup v, MotionEvent event) {
-        if (v == null) return null;
-        if (v.onTouchEvent(event)) return v;
-
-        int childCount = v.getChildCount();
-        for (int i = childCount - 1; i >= 0; i--) {
-            View child = v.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                View grandChild = childNeedHandleTouchEvent((ViewGroup) child, event);
-                if (grandChild != null) return grandChild;
-            } else {
-                if (childNeedHandleTouchEvent(v.getChildAt(i), event)) return v.getChildAt(i);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * if the view (v) wants to handle this event.
-     *
-     * @param v
-     * @param event
-     * @return
-     */
-    private boolean childNeedHandleTouchEvent(View v, MotionEvent event) {
-        if (v == null) return false;
-
-        int[] loc = new int[2];
-        v.getLocationOnScreen(loc);
-        int left = loc[0], top = loc[1];
-
-        if (event.getRawX() > left && event.getRawX() < left + v.getWidth() && event.getRawY() > top
-                && event.getRawY() < top + v.getHeight()) {
-            return v.onTouchEvent(event);
-        }
-
-        return false;
+        return mIsBeingDragged;
     }
 
     private float sX = -1, sY = -1;
@@ -812,148 +849,38 @@ public class SwipeLayout extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!isEnabledInAdapterView() || !isEnabled()) return true;
-
         if (!isSwipeEnabled()) return super.onTouchEvent(event);
 
         int action = event.getActionMasked();
-        ViewParent parent = getParent();
-
         gestureDetector.onTouchEvent(event);
-        Status status = getOpenStatus();
-        ViewGroup touching = null;
-        if (status == Status.Close) {
-            touching = getSurfaceView();
-        } else if (status == Status.Open) {
-            touching = getBottomViews().get(mCurrentDirectionIndex);
-        }
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 mDragHelper.processTouchEvent(event);
-                parent.requestDisallowInterceptTouchEvent(true);
-
                 sX = event.getRawX();
                 sY = event.getRawY();
 
-                if (touching != null) touching.setPressed(true);
-                return true;
+
             case MotionEvent.ACTION_MOVE: {
-                float distanceX = event.getRawX() - sX;
-                float distanceY = event.getRawY() - sY;
-                float angle = Math.abs(distanceY / distanceX);
-                angle = (float) Math.toDegrees(Math.atan(angle));
-                if (getOpenStatus() == Status.Close) {
-                    int lastCurrentDirectionIndex = mCurrentDirectionIndex;
-                    if (angle < 45) {
-                        if (mLeftIndex != -1 && distanceX > 0 && isLeftSwipeEnabled()) {
-                            mCurrentDirectionIndex = mLeftIndex;
-                        } else if (mRightIndex != -1 && distanceX < 0 && isRightSwipeEnabled()) {
-                            mCurrentDirectionIndex = mRightIndex;
-                        }
-                    } else {
-                        if (mTopIndex != -1 && distanceY > 0 && isTopSwipeEnabled()) {
-                            mCurrentDirectionIndex = mTopIndex;
-                        } else if (mBottomIndex != -1 && distanceY < 0 && isBottomSwipeEnabled()) {
-                            mCurrentDirectionIndex = mBottomIndex;
-                        }
-                    }
-                    if (lastCurrentDirectionIndex != mCurrentDirectionIndex) {
-                        updateBottomViews();
-                    }
-                }
-                if (!shouldAllowSwipe()) return super.onTouchEvent(event);
-
-                boolean doNothing = false;
-                if (mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Right) {
-                    boolean suitable = (status == Status.Open && distanceX > mTouchSlop)
-                            || (status == Status.Close && distanceX < -mTouchSlop);
-                    suitable = suitable || (status == Status.Middle);
-
-                    if (angle > 30 || !suitable) {
-                        doNothing = true;
-                    }
-                }
-
-                if (mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Left) {
-                    boolean suitable = (status == Status.Open && distanceX < -mTouchSlop)
-                            || (status == Status.Close && distanceX > mTouchSlop);
-                    suitable = suitable || status == Status.Middle;
-
-                    if (angle > 30 || !suitable) {
-                        doNothing = true;
-                    }
-                }
-
-                if (mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Top) {
-                    boolean suitable = (status == Status.Open && distanceY < -mTouchSlop)
-                            || (status == Status.Close && distanceY > mTouchSlop);
-                    suitable = suitable || status == Status.Middle;
-
-                    if (angle < 60 || !suitable) {
-                        doNothing = true;
-                    }
-                }
-
-                if (mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Bottom) {
-                    boolean suitable = (status == Status.Open && distanceY > mTouchSlop)
-                            || (status == Status.Close && distanceY < -mTouchSlop);
-                    suitable = suitable || status == Status.Middle;
-
-                    if (angle < 60 || !suitable) {
-                        doNothing = true;
-                    }
-                }
-
-                if (doNothing) {
-                    parent.requestDisallowInterceptTouchEvent(false);
-                    return false;
-                } else {
-                    if (touching != null) {
-                        touching.setPressed(false);
-                    }
-                    parent.requestDisallowInterceptTouchEvent(true);
+                //the drag state and the direction are already judged at onInterceptTouchEvent
+                checkCanDrag(event);
+                if(mIsBeingDragged){
+                    getParent().requestDisallowInterceptTouchEvent(true);
                     mDragHelper.processTouchEvent(event);
                 }
                 break;
             }
             case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL: {
-                sX = -1;
-                sY = -1;
-                if (touching != null) {
-                    touching.setPressed(false);
-                }
-            }
-            default:
-                parent.requestDisallowInterceptTouchEvent(true);
+            case MotionEvent.ACTION_CANCEL:
+                mIsBeingDragged = false;
+                mDragHelper.processTouchEvent(event);
+                break;
+
+            default://handle other action, such as ACTION_POINTER_DOWN/UP
                 mDragHelper.processTouchEvent(event);
         }
 
-        return true;
-    }
-
-    /**
-     * if working in {@link android.widget.AdapterView}, we should response
-     * {@link android.widget.Adapter} isEnable(int position).
-     *
-     * @return true when item is enabled, else disabled.
-     */
-    private boolean isEnabledInAdapterView() {
-        AdapterView adapterView = getAdapterView();
-        boolean enable = true;
-        if (adapterView != null) {
-            Adapter adapter = adapterView.getAdapter();
-            if (adapter != null) {
-                int p = adapterView.getPositionForView(SwipeLayout.this);
-                if (adapter instanceof BaseAdapter) {
-                    enable = ((BaseAdapter) adapter).isEnabled(p);
-                } else if (adapter instanceof ListAdapter) {
-                    enable = ((ListAdapter) adapter).isEnabled(p);
-                }
-            }
-        }
-        return enable;
+        return super.onTouchEvent(event) || mIsBeingDragged || action == MotionEvent.ACTION_DOWN;
     }
 
     public void setSwipeEnabled(boolean enabled) {
@@ -995,7 +922,6 @@ public class SwipeLayout extends FrameLayout {
     public void setBottomSwipeEnabled(boolean bottomSwipeEnabled) {
         this.mBottomSwipeEnabled = bottomSwipeEnabled;
     }
-
     private boolean insideAdapterView() {
         return getAdapterView() != null;
     }
@@ -1011,7 +937,8 @@ public class SwipeLayout extends FrameLayout {
         return null;
     }
 
-    private void performAdapterViewItemClick(MotionEvent e) {
+    private void performAdapterViewItemClick() {
+        if(getOpenStatus()!= Status.Close) return;
         ViewParent t = getParent();
         while (t != null) {
             if (t instanceof AdapterView) {
@@ -1020,52 +947,82 @@ public class SwipeLayout extends FrameLayout {
                 if (p != AdapterView.INVALID_POSITION
                         && view.performItemClick(view.getChildAt(p - view.getFirstVisiblePosition()), p, view
                         .getAdapter().getItemId(p))) return;
-            } else {
-                if (t instanceof View && ((View) t).performClick()) return;
             }
             t = t.getParent();
         }
     }
+    private boolean performAdapterViewItemLongClick() {
+        if(getOpenStatus()!= Status.Close) return false;
+        ViewParent t = getParent();
+        while (t != null) {
+            if (t instanceof AdapterView) {
+
+                AdapterView view = (AdapterView) t;
+                int p = view.getPositionForView(SwipeLayout.this);
+                if (p == AdapterView.INVALID_POSITION) return false;
+                long vId = view.getItemIdAtPosition(p);
+                boolean handled = false;
+                try {
+                    Method m = AbsListView.class.getDeclaredMethod("performLongPress", View.class, int.class, long.class);
+                    m.setAccessible(true);
+                    handled = (boolean) m.invoke(view, SwipeLayout.this, p, vId);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                    if (view.getOnItemLongClickListener() != null) {
+                        handled = view.getOnItemLongClickListener().onItemLongClick(view, SwipeLayout.this, p, vId);
+                    }
+                    if (handled) {
+                        view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                    }
+                }
+                return handled;
+            }
+            t = t.getParent();
+        }
+        return false;
+    }
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if(insideAdapterView()){
+            if(clickListener==null){
+                setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        performAdapterViewItemClick();
+                    }
+                });
+            }
+            if(longClickListener==null){
+                setOnLongClickListener(new OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        performAdapterViewItemLongClick();
+                        return true;
+                    }
+                });
+            }
+        }
+    }
+    OnClickListener clickListener;
+    @Override
+    public void setOnClickListener(OnClickListener l) {
+        super.setOnClickListener(l);
+        clickListener = l;
+    }
+    OnLongClickListener longClickListener;
+    @Override
+    public void setOnLongClickListener(OnLongClickListener l) {
+        super.setOnLongClickListener(l);
+        longClickListener = l;
+    }
+
 
     private GestureDetector gestureDetector = new GestureDetector(getContext(), new SwipeDetector());
 
     class SwipeDetector extends GestureDetector.SimpleOnGestureListener {
-        @Override
-        public boolean onDown(MotionEvent e) {
-            return true;
-        }
-
-        /**
-         * Simulate the touch event lifecycle. If you use SwipeLayout in
-         * {@link android.widget.AdapterView} ({@link android.widget.ListView},
-         * {@link android.widget.GridView} etc.) It will manually call
-         * {@link android.widget.AdapterView}.performItemClick,
-         * performItemLongClick.
-         *
-         * @param e
-         * @return
-         */
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            if (mDoubleClickListener == null) {
-                performAdapterViewItemClick(e);
-            }
-            return true;
-        }
-
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
-            if (mDoubleClickListener != null) {
-                performAdapterViewItemClick(e);
-            }
-            return true;
-        }
-
-        @Override
-        public void onLongPress(MotionEvent e) {
-            performLongClick();
-        }
-
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             if (mDoubleClickListener != null) {
