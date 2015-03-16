@@ -928,11 +928,8 @@ public class SwipeLayout extends FrameLayout {
 
     private AdapterView getAdapterView() {
         ViewParent t = getParent();
-        while (t != null) {
-            if (t instanceof AdapterView) {
-                return (AdapterView) t;
-            }
-            t = t.getParent();
+        if (t instanceof AdapterView) {
+            return (AdapterView) t;
         }
         return null;
     }
@@ -940,46 +937,40 @@ public class SwipeLayout extends FrameLayout {
     private void performAdapterViewItemClick() {
         if(getOpenStatus()!= Status.Close) return;
         ViewParent t = getParent();
-        while (t != null) {
-            if (t instanceof AdapterView) {
-                AdapterView view = (AdapterView) t;
-                int p = view.getPositionForView(SwipeLayout.this);
-                if (p != AdapterView.INVALID_POSITION
-                        && view.performItemClick(view.getChildAt(p - view.getFirstVisiblePosition()), p, view
-                        .getAdapter().getItemId(p))) return;
+        if (t instanceof AdapterView) {
+            AdapterView view = (AdapterView) t;
+            int p = view.getPositionForView(SwipeLayout.this);
+            if (p != AdapterView.INVALID_POSITION){
+                view.performItemClick(view.getChildAt(p - view.getFirstVisiblePosition()), p, view
+                        .getAdapter().getItemId(p));
             }
-            t = t.getParent();
         }
     }
     private boolean performAdapterViewItemLongClick() {
         if(getOpenStatus()!= Status.Close) return false;
         ViewParent t = getParent();
-        while (t != null) {
-            if (t instanceof AdapterView) {
+        if (t instanceof AdapterView) {
+            AdapterView view = (AdapterView) t;
+            int p = view.getPositionForView(SwipeLayout.this);
+            if (p == AdapterView.INVALID_POSITION) return false;
+            long vId = view.getItemIdAtPosition(p);
+            boolean handled = false;
+            try {
+                Method m = AbsListView.class.getDeclaredMethod("performLongPress", View.class, int.class, long.class);
+                m.setAccessible(true);
+                handled = (boolean) m.invoke(view, SwipeLayout.this, p, vId);
 
-                AdapterView view = (AdapterView) t;
-                int p = view.getPositionForView(SwipeLayout.this);
-                if (p == AdapterView.INVALID_POSITION) return false;
-                long vId = view.getItemIdAtPosition(p);
-                boolean handled = false;
-                try {
-                    Method m = AbsListView.class.getDeclaredMethod("performLongPress", View.class, int.class, long.class);
-                    m.setAccessible(true);
-                    handled = (boolean) m.invoke(view, SwipeLayout.this, p, vId);
+            } catch (Exception e) {
+                e.printStackTrace();
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-
-                    if (view.getOnItemLongClickListener() != null) {
-                        handled = view.getOnItemLongClickListener().onItemLongClick(view, SwipeLayout.this, p, vId);
-                    }
-                    if (handled) {
-                        view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-                    }
+                if (view.getOnItemLongClickListener() != null) {
+                    handled = view.getOnItemLongClickListener().onItemLongClick(view, SwipeLayout.this, p, vId);
                 }
-                return handled;
+                if (handled) {
+                    view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                }
             }
-            t = t.getParent();
+            return handled;
         }
         return false;
     }
