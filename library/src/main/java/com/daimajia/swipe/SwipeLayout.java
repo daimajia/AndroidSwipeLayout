@@ -3,10 +3,13 @@ package com.daimajia.swipe;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
+import android.os.Build;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +22,7 @@ import android.widget.FrameLayout;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,6 +122,7 @@ public class SwipeLayout extends FrameLayout {
         int ordinal = a.getInt(R.styleable.SwipeLayout_show_mode, ShowMode.PullOut.ordinal());
         mShowMode = ShowMode.values()[ordinal];
         a.recycle();
+
     }
 
     public interface SwipeListener {
@@ -660,12 +665,95 @@ public class SwipeLayout extends FrameLayout {
     public void removeOnLayoutListener(OnLayout l) {
         if (mOnLayoutListeners != null) mOnLayoutListeners.remove(l);
     }
+    public void addBottomView(View child, DragEdge dragEdge){
+        addBottomView(child, null, dragEdge);
+    }
+    public void addBottomView(View child, ViewGroup.LayoutParams params, DragEdge dragEdge){
+        if(params==null){
+            params = generateDefaultLayoutParams();
+        }
+        if(!checkLayoutParams(params)){
+            params = generateLayoutParams(params);
+        }
+        int gravity = -1;
+        switch (dragEdge){
+            case Left:gravity = Gravity.LEFT;break;
+            case Right:gravity = Gravity.RIGHT;break;
+            case Top:gravity = Gravity.TOP;break;
+            case Bottom:gravity = Gravity.BOTTOM;break;
+        }
+        if(params instanceof FrameLayout.LayoutParams){
+            ((LayoutParams) params).gravity = gravity;
+        }
+        super.addView(child, 0, params);
+    }
+    @Override
+    public void addView(View child, int index, ViewGroup.LayoutParams params) {
+        //the child should be viewGroup, convert child here
+        if(!(child instanceof  ViewGroup)){
+            WrapGroup childContain = new WrapGroup(getContext());
+            childContain.addView(child);
+            child = childContain;
+        }
+
+        int gravity = Gravity.NO_GRAVITY;
+        try {
+            gravity = (Integer) params.getClass().getField("gravity").get(params);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if(gravity>0){
+            //declared the layout_gravity, set the child's drag edge
+            if(child.getId()==View.NO_ID){
+                if(Build.VERSION.SDK_INT<17){
+                    child.setId(child.hashCode());
+                }else{
+                    child.setId(View.generateViewId());
+                }
+            }
+            gravity = GravityCompat.getAbsoluteGravity(gravity, ViewCompat.getLayoutDirection(this));
+
+            if(gravity == Gravity.LEFT){
+                mBottomViewIdsSet = true;
+                if(!mDragEdges.contains(DragEdge.Left)){
+                    mDragEdges.add(DragEdge.Left);
+                }
+                mBottomViewIdMap.put(DragEdge.Left, child.getId());
+            }
+            if(gravity == Gravity.RIGHT){
+                mBottomViewIdsSet = true;
+                if(!mDragEdges.contains(DragEdge.Right)){
+                    mDragEdges.add(DragEdge.Right);
+                }
+                mBottomViewIdMap.put(DragEdge.Right, child.getId());
+            }
+            if(gravity == Gravity.TOP){
+                mBottomViewIdsSet = true;
+                if(!mDragEdges.contains(DragEdge.Top)){
+                    mDragEdges.add(DragEdge.Top);
+                }
+                mBottomViewIdMap.put(DragEdge.Top, child.getId());
+            }
+            if(gravity == Gravity.BOTTOM){
+                mBottomViewIdsSet = true;
+                if(!mDragEdges.contains(DragEdge.Bottom)){
+                    mDragEdges.add(DragEdge.Bottom);
+                }
+                mBottomViewIdMap.put(DragEdge.Bottom, child.getId());
+            }
+            populateIndexes();
+        }
+        super.addView(child, index, params);
+    }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int childCount = getChildCount();
         if (childCount != 1 + mDragEdges.size()) {
-            throw new IllegalStateException("You need to have one surface view plus one view for each of your drag edges");
+            throw new IllegalStateException("You need to have one surface view plus one view for each of your drag edges." +
+                    " ChildCount:" + childCount +
+                    ", mDragEdges.size():"+ mDragEdges.size());
         }
         for (int i = 0; i < childCount; i++) {
             if (!(getChildAt(i) instanceof ViewGroup)) {
@@ -1081,21 +1169,26 @@ public class SwipeLayout extends FrameLayout {
         return (ViewGroup) getChildAt(getChildCount() - 1);
     }
 
+    /**
+     * @return all bottomViews.
+     */
     public List<ViewGroup> getBottomViews() {
         List<ViewGroup> lvg = new ArrayList<ViewGroup>();
         // If the user has provided a map for views to
         if (mBottomViewIdsSet) {
+            lvg.addAll(Arrays.asList(new ViewGroup[mDragEdges.size()]));
+
             if (mDragEdges.contains(DragEdge.Left)) {
-                lvg.add(mLeftIndex, ((ViewGroup) findViewById(mBottomViewIdMap.get(DragEdge.Left))));
-            }
-            if (mDragEdges.contains(DragEdge.Right)) {
-                lvg.add(mRightIndex, ((ViewGroup) findViewById(mBottomViewIdMap.get(DragEdge.Right))));
+                lvg.set(mLeftIndex, ((ViewGroup) findViewById(mBottomViewIdMap.get(DragEdge.Left))));
             }
             if (mDragEdges.contains(DragEdge.Top)) {
-                lvg.add(mTopIndex, ((ViewGroup) findViewById(mBottomViewIdMap.get(DragEdge.Top))));
+                lvg.set(mTopIndex, ((ViewGroup) findViewById(mBottomViewIdMap.get(DragEdge.Top))));
+            }
+            if (mDragEdges.contains(DragEdge.Right)) {
+                lvg.set(mRightIndex, ((ViewGroup) findViewById(mBottomViewIdMap.get(DragEdge.Right))));
             }
             if (mDragEdges.contains(DragEdge.Bottom)) {
-                lvg.add(mBottomIndex, ((ViewGroup) findViewById(mBottomViewIdMap.get(DragEdge.Bottom))));
+                lvg.set(mBottomIndex, ((ViewGroup) findViewById(mBottomViewIdMap.get(DragEdge.Bottom))));
             }
         }
         // Default behaviour is to simply use the first n-1 children in the order they're listed in the layout
@@ -1522,6 +1615,13 @@ public class SwipeLayout extends FrameLayout {
 
         if (mOnLayoutListeners != null) for (int i = 0; i < mOnLayoutListeners.size(); i++) {
             mOnLayoutListeners.get(i).onLayout(this);
+        }
+    }
+
+    //if child is not viewGroup, this group will wrap it
+    public class WrapGroup extends FrameLayout{
+        public WrapGroup(Context context) {
+            super(context);
         }
     }
 }
