@@ -323,7 +323,11 @@ public class SwipeLayout extends FrameLayout {
 
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
-            return child == getSurfaceView() || getBottomViews().contains(child);
+            boolean result = child == getSurfaceView() || getBottomViews().contains(child);
+            if(result){
+                isCloseBeforeDrag = getOpenStatus() == Status.Close;
+            }
+            return result;
         }
 
         @Override
@@ -336,13 +340,14 @@ public class SwipeLayout extends FrameLayout {
             return mDragDistance;
         }
 
+        boolean isCloseBeforeDrag = true;
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             super.onViewReleased(releasedChild, xvel, yvel);
             for (SwipeListener l : mSwipeListeners)
                 l.onHandRelease(SwipeLayout.this, xvel, yvel);
             if (releasedChild == getSurfaceView()) {
-                processSurfaceRelease(xvel, yvel);
+                processSurfaceRelease(xvel, yvel, isCloseBeforeDrag);
             } else if (getBottomViews().contains(releasedChild)) {
                 if (getShowMode() == ShowMode.PullOut) {
                     processBottomPullOutRelease(xvel, yvel);
@@ -1284,37 +1289,58 @@ public class SwipeLayout extends FrameLayout {
         return Status.Middle;
     }
 
+
     /**
      * Process the surface release event.
      *
-     * @param xvel
-     * @param yvel
+     * @param xvel xVelocity
+     * @param yvel yVelocity
+     * @param isCloseBeforeDragged the open state before drag
      */
-    private void processSurfaceRelease(float xvel, float yvel) {
-        if (xvel == 0 && getOpenStatus() == Status.Middle) close();
-
-        if (mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Left
-                || mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Right) {
-            if (xvel > 0) {
-                if (mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Left)
-                    open();
+    private void processSurfaceRelease(float xvel, float yvel, boolean isCloseBeforeDragged) {
+        float minVelocity = mDragHelper.getMinVelocity();
+        View surfaceView = getSurfaceView();
+        DragEdge currentDragEdge = null;
+        try {
+            currentDragEdge = mDragEdges.get(mCurrentDirectionIndex);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if(currentDragEdge == null || surfaceView == null){
+            return;
+        }
+        float willOpenPercent = (isCloseBeforeDragged ? .3f : .7f);
+        if(currentDragEdge == DragEdge.Left){
+            if(xvel > minVelocity) open();
+            else if(xvel < -minVelocity) close();
+            else{
+                float openPercent = 1f * getSurfaceView().getLeft() / mDragDistance;
+                if(openPercent > willOpenPercent ) open();
                 else close();
             }
-            if (xvel < 0) {
-                if (mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Left)
-                    close();
-                else open();
-            }
-        } else {
-            if (yvel > 0) {
-                if (mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Top)
-                    open();
+        }else if(currentDragEdge == DragEdge.Right){
+            if(xvel > minVelocity) close();
+            else if(xvel < -minVelocity) open();
+            else{
+                float openPercent = 1f * (-getSurfaceView().getLeft()) / mDragDistance;
+                if(openPercent > willOpenPercent ) open();
                 else close();
             }
-            if (yvel < 0) {
-                if (mDragEdges.get(mCurrentDirectionIndex) == DragEdge.Top)
-                    close();
-                else open();
+        }else if(currentDragEdge == DragEdge.Top){
+            if(yvel > minVelocity) open();
+            else if(yvel < -minVelocity) close();
+            else{
+                float openPercent = 1f * getSurfaceView().getTop() / mDragDistance;
+                if(openPercent > willOpenPercent ) open();
+                else close();
+            }
+        }else if(currentDragEdge == DragEdge.Bottom){
+            if(yvel > minVelocity) close();
+            else if(yvel < -minVelocity) open();
+            else{
+                float openPercent = 1f * (-getSurfaceView().getTop()) / mDragDistance;
+                if(openPercent > willOpenPercent ) open();
+                else close();
             }
         }
     }
