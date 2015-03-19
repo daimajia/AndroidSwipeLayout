@@ -70,6 +70,7 @@ public class SwipeLayout extends FrameLayout {
     private boolean mRightSwipeEnabled = true;
     private boolean mTopSwipeEnabled = true;
     private boolean mBottomSwipeEnabled = true;
+    private boolean mClickToClose = true;
 
     public static enum DragEdge {
         Left,
@@ -104,6 +105,7 @@ public class SwipeLayout extends FrameLayout {
         mRightEdgeSwipeOffset = a.getDimension(R.styleable.SwipeLayout_rightEdgeSwipeOffset, 0);
         mTopEdgeSwipeOffset = a.getDimension(R.styleable.SwipeLayout_topEdgeSwipeOffset, 0);
         mBottomEdgeSwipeOffset = a.getDimension(R.styleable.SwipeLayout_bottomEdgeSwipeOffset, 0);
+        setClickToClose(a.getBoolean(R.styleable.SwipeLayout_clickToClose, mClickToClose));
 
         mDragEdges = new ArrayList<DragEdge>();
         if ((dragEdgeChoices & DRAG_LEFT) == DRAG_LEFT) {
@@ -881,6 +883,13 @@ public class SwipeLayout extends FrameLayout {
         if (!isSwipeEnabled()) {
             return false;
         }
+        if(mClickToClose && getOpenStatus() == Status.Open && getSurfaceView()!=null){
+            Rect rect = new Rect();
+            getSurfaceView().getHitRect(rect);
+            if(rect.contains((int)ev.getX(), (int)ev.getY())){
+                return true;
+            }
+        }
         for (SwipeDenier denier : mSwipeDeniers) {
             if (denier != null && denier.shouldDenySwipe(ev)) {
                 return false;
@@ -969,6 +978,13 @@ public class SwipeLayout extends FrameLayout {
         }
 
         return super.onTouchEvent(event) || mIsBeingDragged || action == MotionEvent.ACTION_DOWN;
+    }
+    public boolean isClickToClose() {
+        return mClickToClose;
+    }
+
+    public void setClickToClose(boolean mClickToClose) {
+        this.mClickToClose = mClickToClose;
     }
 
     public void setSwipeEnabled(boolean enabled) {
@@ -1102,6 +1118,13 @@ public class SwipeLayout extends FrameLayout {
     private GestureDetector gestureDetector = new GestureDetector(getContext(), new SwipeDetector());
 
     class SwipeDetector extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            if(mClickToClose){
+                close();
+            }
+            return super.onSingleTapUp(e);
+        }
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             if (mDoubleClickListener != null) {
