@@ -560,10 +560,10 @@ public class SwipeLayout extends FrameLayout {
      */
     private void safeBottomView() {
         Status status = getOpenStatus();
-        List<ViewGroup> bottoms = getBottomViews();
+        List<View> bottoms = getBottomViews();
 
         if (status == Status.Close) {
-            for (ViewGroup bottom : bottoms) {
+            for (View bottom : bottoms) {
                 if (bottom.getVisibility() != INVISIBLE) bottom.setVisibility(INVISIBLE);
             }
         } else {
@@ -696,13 +696,6 @@ public class SwipeLayout extends FrameLayout {
     }
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        //the child should be viewGroup, convert child here
-        if(!(child instanceof  ViewGroup)){
-            WrapGroup childContain = new WrapGroup(getContext());
-            childContain.addView(child);
-            child = childContain;
-        }
-
         int gravity = Gravity.NO_GRAVITY;
         try {
             gravity = (Integer) params.getClass().getField("gravity").get(params);
@@ -761,11 +754,6 @@ public class SwipeLayout extends FrameLayout {
             throw new IllegalStateException("You need to have one surface view plus one view for each of your drag edges." +
                     " ChildCount:" + childCount +
                     ", mDragEdges.size():"+ mDragEdges.size());
-        }
-        for (int i = 0; i < childCount; i++) {
-            if (!(getChildAt(i) instanceof ViewGroup)) {
-                throw new IllegalArgumentException("All the children in SwipeLayout must be an instance of ViewGroup");
-            }
         }
 
         if (mShowMode == ShowMode.PullOut)
@@ -1134,8 +1122,8 @@ public class SwipeLayout extends FrameLayout {
         public boolean onDoubleTap(MotionEvent e) {
             if (mDoubleClickListener != null) {
                 View target;
-                ViewGroup bottom = getBottomViews().get(mCurrentDirectionIndex);
-                ViewGroup surface = getSurfaceView();
+                View bottom = getBottomViews().get(mCurrentDirectionIndex);
+                View surface = getSurfaceView();
                 if (e.getX() > bottom.getLeft() && e.getX() < bottom.getRight() && e.getY() > bottom.getTop()
                         && e.getY() < bottom.getBottom()) {
                     target = bottom;
@@ -1193,37 +1181,37 @@ public class SwipeLayout extends FrameLayout {
         return mShowMode;
     }
 
-    public ViewGroup getSurfaceView() {
-        return (ViewGroup) getChildAt(getChildCount() - 1);
+    public View getSurfaceView() {
+        return (View) getChildAt(getChildCount() - 1);
     }
 
     /**
      * @return all bottomViews.
      */
-    public List<ViewGroup> getBottomViews() {
-        List<ViewGroup> lvg = new ArrayList<ViewGroup>();
+    public List<View> getBottomViews() {
+        List<View> lvg = new ArrayList<View>();
         // If the user has provided a map for views to
         if (mBottomViewIdsSet) {
-            lvg.addAll(Arrays.asList(new ViewGroup[mDragEdges.size()]));
+            lvg.addAll(Arrays.asList(new View[mDragEdges.size()]));
 
             if (mDragEdges.contains(DragEdge.Left)) {
-                lvg.set(mLeftIndex, ((ViewGroup) findViewById(mBottomViewIdMap.get(DragEdge.Left))));
+                lvg.set(mLeftIndex, ((View) findViewById(mBottomViewIdMap.get(DragEdge.Left))));
             }
             if (mDragEdges.contains(DragEdge.Top)) {
-                lvg.set(mTopIndex, ((ViewGroup) findViewById(mBottomViewIdMap.get(DragEdge.Top))));
+                lvg.set(mTopIndex, ((View) findViewById(mBottomViewIdMap.get(DragEdge.Top))));
             }
             if (mDragEdges.contains(DragEdge.Right)) {
-                lvg.set(mRightIndex, ((ViewGroup) findViewById(mBottomViewIdMap.get(DragEdge.Right))));
+                lvg.set(mRightIndex, ((View) findViewById(mBottomViewIdMap.get(DragEdge.Right))));
             }
             if (mDragEdges.contains(DragEdge.Bottom)) {
-                lvg.set(mBottomIndex, ((ViewGroup) findViewById(mBottomViewIdMap.get(DragEdge.Bottom))));
+                lvg.set(mBottomIndex, ((View) findViewById(mBottomViewIdMap.get(DragEdge.Bottom))));
             }
         }
         // Default behaviour is to simply use the first n-1 children in the order they're listed in the layout
         // and return them in
         else {
             for (int i = 0; i < (getChildCount() - 1); i++) {
-                lvg.add((ViewGroup) getChildAt(i));
+                lvg.add((View) getChildAt(i));
             }
         }
         return lvg;
@@ -1418,7 +1406,7 @@ public class SwipeLayout extends FrameLayout {
     }
 
     public void open(boolean smooth, boolean notify) {
-        ViewGroup surface = getSurfaceView(), bottom = getBottomViews().get(mCurrentDirectionIndex);
+        View surface = getSurfaceView(), bottom = getBottomViews().get(mCurrentDirectionIndex);
         int dx, dy;
         Rect rect = computeSurfaceLayoutArea(true);
         if (smooth) {
@@ -1501,7 +1489,7 @@ public class SwipeLayout extends FrameLayout {
      * @param notify if notify all the listeners.
      */
     public void close(boolean smooth, boolean notify) {
-        ViewGroup surface = getSurfaceView();
+        View surface = getSurfaceView();
         int dx, dy;
         if (smooth)
             mDragHelper.smoothSlideViewTo(getSurfaceView(), getPaddingLeft(), getPaddingTop());
@@ -1664,13 +1652,6 @@ public class SwipeLayout extends FrameLayout {
 
         if (mOnLayoutListeners != null) for (int i = 0; i < mOnLayoutListeners.size(); i++) {
             mOnLayoutListeners.get(i).onLayout(this);
-        }
-    }
-
-    //if child is not viewGroup, this group will wrap it
-    public class WrapGroup extends FrameLayout{
-        public WrapGroup(Context context) {
-            super(context);
         }
     }
 }
