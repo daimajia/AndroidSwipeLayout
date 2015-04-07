@@ -193,6 +193,7 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
             if(mode == Mode.Multiple){
                 mOpenPositions.remove(position);
             }else{
+                if(position == mOpenPosition)
                 mOpenPosition = INVALID_POSITION;
             }
         }
