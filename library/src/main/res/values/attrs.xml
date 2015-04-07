@@ -15,5 +15,6 @@
             <enum name="lay_down" value="0" />
             <enum name="pull_out" value="1" />
         </attr>
+        <attr name="clickToClose" format="boolean" />
     </declare-styleable>
 </resources>

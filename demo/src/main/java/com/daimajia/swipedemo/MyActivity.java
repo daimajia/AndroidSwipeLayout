@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,9 +29,9 @@ public class MyActivity extends Activity {
 
         sample1 = (SwipeLayout) findViewById(R.id.sample1);
         sample1.setShowMode(SwipeLayout.ShowMode.PullOut);
-        sample1.setDragEdges(SwipeLayout.DragEdge.Left, SwipeLayout.DragEdge.Right, SwipeLayout.DragEdge.Top);
+//        sample1.setDragEdges(SwipeLayout.DragEdge.Left, SwipeLayout.DragEdge.Right, SwipeLayout.DragEdge.Top);
         // When using multiple drag edges it's a good idea to pass the ids of the views that you're using for the left, right, top bottom views (-1 if you're not using a particular view)
-        sample1.setBottomViewIds(R.id.bottom_wrapper, R.id.bottom_wrapper_2, R.id.starbott, SwipeLayout.EMPTY_LAYOUT);
+        sample1.setBottomViewIds(R.id.bottom_wrapper, R.id.bottom_wrapper_2, R.id.starbott, R.id.starbott);
         sample1.addRevealListener(R.id.delete, new SwipeLayout.OnRevealListener() {
             @Override
             public void onReveal(View child, SwipeLayout.DragEdge edge, float fraction, int distance) {
@@ -38,6 +39,21 @@ public class MyActivity extends Activity {
             }
         });
 
+        sample1.getSurfaceView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MyActivity.this, "Click on surface", Toast.LENGTH_SHORT).show();
+                Log.d(MyActivity.class.getName(), "click on surface");
+            }
+        });
+        sample1.getSurfaceView().setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(MyActivity.this, "longClick on surface", Toast.LENGTH_SHORT).show();
+                Log.d(MyActivity.class.getName(), "longClick on surface");
+                return true;
+            }
+        });
         sample1.findViewById(R.id.star2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,6 +119,12 @@ public class MyActivity extends Activity {
                 Toast.makeText(MyActivity.this, "Yo", Toast.LENGTH_SHORT).show();
             }
         });
+        sample2.getSurfaceView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MyActivity.this, "Click on surface", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //sample3
 
@@ -120,10 +142,16 @@ public class MyActivity extends Activity {
                 child.setBackgroundColor(c);
             }
         });
-        sample3.findViewById(R.id.star).setOnClickListener(new View.OnClickListener() {
+        sample3.findViewById(R.id.bottom_wrapper_child1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MyActivity.this, "Yo!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        sample3.getSurfaceView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MyActivity.this, "Click on surface", Toast.LENGTH_SHORT).show();
             }
         });
 

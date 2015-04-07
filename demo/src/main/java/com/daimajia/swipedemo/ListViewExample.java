@@ -68,7 +68,7 @@ public class ListViewExample extends Activity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(mContext, "OnItemLongClickListener", Toast.LENGTH_SHORT).show();
-                return false;
+                return true;
             }
         });
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {

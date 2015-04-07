@@ -22,15 +22,11 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <TextView
         android:padding="10dp"
         android:background="#ffffff"
+        android:tag="Hover"
+        android:text="None is of freedom or of life deserving unless he daily conquers it anew. "
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
-            android:tag="Hover"
-            android:text="None is of freedom or of life deserving unless he daily conquers it anew. "
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+        android:layout_height="match_parent" />
 </com.daimajia.swipe.SwipeLayout>
