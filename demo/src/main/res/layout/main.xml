@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <com.daimajia.swipe.SwipeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/godfather"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    app:drag_edge="bottom">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:layout_gravity="left|right|top"
+        android:src="@drawable/bird"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
     <LinearLayout
+        android:id="@+id/bird_bottom"
+        android:layout_gravity="bottom"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
