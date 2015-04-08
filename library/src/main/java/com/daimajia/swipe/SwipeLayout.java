@@ -1199,12 +1199,7 @@ public class SwipeLayout extends FrameLayout {
     protected void processHandRelease(float xvel, float yvel, boolean isCloseBeforeDragged) {
         float minVelocity = mDragHelper.getMinVelocity();
         View surfaceView = getSurfaceView();
-        DragEdge currentDragEdge = null;
-        try {
-            currentDragEdge = mCurrentDragEdge;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        DragEdge currentDragEdge = mCurrentDragEdge;
         if(currentDragEdge == null || surfaceView == null){
             return;
         }
