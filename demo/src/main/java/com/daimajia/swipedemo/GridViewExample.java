@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.daimajia.swipe.implments.SwipeItemMangerImpl;
 import com.daimajia.swipe.util.Attributes;
 import com.daimajia.swipedemo.adapter.GridViewAdapter;
 
