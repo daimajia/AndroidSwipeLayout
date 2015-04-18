@@ -29,9 +29,11 @@ public class MyActivity extends Activity {
 
         sample1 = (SwipeLayout) findViewById(R.id.sample1);
         sample1.setShowMode(SwipeLayout.ShowMode.PullOut);
-//        sample1.setDragEdges(SwipeLayout.DragEdge.Left, SwipeLayout.DragEdge.Right, SwipeLayout.DragEdge.Top);
-        // When using multiple drag edges it's a good idea to pass the ids of the views that you're using for the left, right, top bottom views (-1 if you're not using a particular view)
-        sample1.setBottomViewIds(R.id.bottom_wrapper, R.id.bottom_wrapper_2, R.id.starbott, R.id.starbott);
+        View starBottView = sample1.findViewById(R.id.starbott);
+        sample1.addDrag(SwipeLayout.DragEdge.Left, sample1.findViewById(R.id.bottom_wrapper));
+        sample1.addDrag(SwipeLayout.DragEdge.Right, sample1.findViewById(R.id.bottom_wrapper_2));
+        sample1.addDrag(SwipeLayout.DragEdge.Top, starBottView);
+        sample1.addDrag(SwipeLayout.DragEdge.Bottom, starBottView);
         sample1.addRevealListener(R.id.delete, new SwipeLayout.OnRevealListener() {
             @Override
             public void onReveal(View child, SwipeLayout.DragEdge edge, float fraction, int distance) {
@@ -90,7 +92,7 @@ public class MyActivity extends Activity {
 
         sample2 = (SwipeLayout) findViewById(R.id.sample2);
         sample2.setShowMode(SwipeLayout.ShowMode.LayDown);
-        sample2.setDragEdge(SwipeLayout.DragEdge.Right);
+        sample2.addDrag(SwipeLayout.DragEdge.Right, sample2.findViewWithTag("Bottom2"));
 //        sample2.setShowMode(SwipeLayout.ShowMode.PullOut);
         sample2.findViewById(R.id.star).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,7 +131,7 @@ public class MyActivity extends Activity {
         //sample3
 
         sample3 = (SwipeLayout) findViewById(R.id.sample3);
-        sample3.setDragEdge(SwipeLayout.DragEdge.Top);
+        sample3.addDrag(SwipeLayout.DragEdge.Top, sample3.findViewWithTag("Bottom3"));
         sample3.addRevealListener(R.id.bottom_wrapper_child1, new SwipeLayout.OnRevealListener() {
             @Override
             public void onReveal(View child, SwipeLayout.DragEdge edge, float fraction, int distance) {
