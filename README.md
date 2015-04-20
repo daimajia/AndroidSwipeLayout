@@ -40,7 +40,7 @@ When I start to make this library, I set some goals:
 dependencies {
     compile 'com.android.support:recyclerview-v7:21.0.0'
     compile 'com.android.support:support-v4:20.+'
-    compile "com.daimajia.swipelayout:library:1.1.9@aar"
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"
 }
 ```
 
@@ -60,7 +60,7 @@ dependencies {
 <dependency>
     <groupId>com.daimajia.swipelayout</groupId>
     <artifactId>library</artifactId>
-    <version>1.1.9</version>
+    <version>1.2.0</version>
     <type>apklib</type>
 </dependency>
 ```
