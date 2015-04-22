@@ -655,10 +655,26 @@ public class SwipeLayout extends FrameLayout {
     public void removeOnLayoutListener(OnLayout l) {
         if (mOnLayoutListeners != null) mOnLayoutListeners.remove(l);
     }
+    public void clearDragEdge(){
+        mDragEdges.clear();
+    }
+    public void setDrag(DragEdge dragEdge, int childId){
+        clearDragEdge();
+        addDrag(dragEdge, childId);
+    }
+    public void setDrag(DragEdge dragEdge, View child){
+        clearDragEdge();
+        addDrag(dragEdge, child);
+    }
+    public void addDrag(DragEdge dragEdge, int childId){
+        addDrag(dragEdge, findViewById(childId), null);
+    }
     public void addDrag(DragEdge dragEdge, View child){
         addDrag(dragEdge, child, null);
     }
     public void addDrag(DragEdge dragEdge, View child, ViewGroup.LayoutParams params){
+        if(child==null) return;
+
         if(params==null){
             params = generateDefaultLayoutParams();
         }
@@ -679,6 +695,7 @@ public class SwipeLayout extends FrameLayout {
     }
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
+        if(child==null) return;
         int gravity = Gravity.NO_GRAVITY;
         try {
             gravity = (Integer) params.getClass().getField("gravity").get(params);
@@ -710,7 +727,7 @@ public class SwipeLayout extends FrameLayout {
                 }
             }
         }
-        if(child==null || child.getParent() == this){
+        if(child.getParent() == this){
             return;
         }
         super.addView(child, index, params);
@@ -1429,9 +1446,10 @@ public class SwipeLayout extends FrameLayout {
     }
 
 
-    /**Deprecated, use {@link #addDrag(DragEdge, View)} */
+    /**Deprecated, use {@link #setDrag(DragEdge, View)} */
     @Deprecated
     public void setDragEdge(DragEdge dragEdge) {
+        clearDragEdge();
         if(getChildCount() >= 2){
             mDragEdges.put(dragEdge, getChildAt(getChildCount()-2));
         }
@@ -1455,9 +1473,10 @@ public class SwipeLayout extends FrameLayout {
         return new ArrayList<DragEdge>(mDragEdges.keySet());
     }
 
-    /**Deprecated, use {@link #addDrag(DragEdge, View)} */
+    /**Deprecated, use {@link #setDrag(DragEdge, View)} */
     @Deprecated
     public void setDragEdges(List<DragEdge> dragEdges) {
+        clearDragEdge();
         for (int i = 0, size = Math.min(dragEdges.size(), getChildCount() - 1); i < size; i++) {
             DragEdge dragEdge = dragEdges.get(i);
             mDragEdges.put(dragEdge, getChildAt(i));
@@ -1472,6 +1491,7 @@ public class SwipeLayout extends FrameLayout {
     /**Deprecated, use {@link #addDrag(DragEdge, View)} */
     @Deprecated
     public void setDragEdges(DragEdge... mDragEdges) {
+        clearDragEdge();
         setDragEdges(Arrays.asList(mDragEdges));
     }
     /**
