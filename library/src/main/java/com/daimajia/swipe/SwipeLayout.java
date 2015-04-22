@@ -329,10 +329,10 @@ public class SwipeLayout extends FrameLayout {
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             super.onViewReleased(releasedChild, xvel, yvel);
+            processHandRelease(xvel, yvel, isCloseBeforeDrag);
             for (SwipeListener l : mSwipeListeners){
                 l.onHandRelease(SwipeLayout.this, xvel, yvel);
             }
-            processHandRelease(xvel, yvel, isCloseBeforeDrag);
 
             invalidate();
         }
