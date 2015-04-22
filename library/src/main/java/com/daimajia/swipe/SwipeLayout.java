@@ -1493,10 +1493,8 @@ public class SwipeLayout extends FrameLayout {
     }
 
     private void setCurrentDragEdge(DragEdge dragEdge){
-        if(mCurrentDragEdge != dragEdge){
-            mCurrentDragEdge = dragEdge;
-            updateBottomViews();
-        }
+        mCurrentDragEdge = dragEdge;
+        updateBottomViews();
     }
 
     private void updateBottomViews() {
