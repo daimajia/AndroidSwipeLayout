@@ -1,5 +1,6 @@
 # About AndroidSwipeLayout
 
+
 ## How to contribute?
 
 ### Type 1.
@@ -7,6 +8,8 @@
 1.  Fork this project.
 2.  Fix bug or add new features.
 3.  Send a pull request.
+
+PS. for maintainers, though every maintainer has authority to push directly to master branch, while, never do this. Create a branch and then open a PR will be the best practice.
 
 ### Type 2.
 
