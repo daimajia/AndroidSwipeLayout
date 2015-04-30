@@ -1,30 +1,17 @@
 package com.daimajia.swipe.implments;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.interfaces.SwipeAdapterInterface;
-import com.daimajia.swipe.interfaces.SwipeItemMangerInterface;
-import com.daimajia.swipe.util.Attributes;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * SwipeItemRecyclerMangerImpl is a helper class to help the RecyclerView to maintain open status.
  */
-public class SwipeItemRecyclerMangerImpl extends SwipeItemMangerImpl{
+public class SwipeItemRecyclerMangerImpl extends SwipeItemMangerImpl {
 
-    protected RecyclerView.Adapter mAdapter;
-
-    public SwipeItemRecyclerMangerImpl(RecyclerView.Adapter adapter) {
-        super(adapter);
-        this.mAdapter = adapter;
+    public SwipeItemRecyclerMangerImpl(SwipeAdapterInterface swipeAdapterInterface) {
+        super(swipeAdapterInterface);
     }
 
     @Override

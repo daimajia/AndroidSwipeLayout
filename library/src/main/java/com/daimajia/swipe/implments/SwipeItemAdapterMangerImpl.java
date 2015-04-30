@@ -1,30 +1,17 @@
 package com.daimajia.swipe.implments;
 
 import android.view.View;
-import android.widget.BaseAdapter;
 
-import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.interfaces.SwipeAdapterInterface;
-import com.daimajia.swipe.interfaces.SwipeItemMangerInterface;
-import com.daimajia.swipe.util.Attributes;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * SwipeItemMangerImpl is a helper class to help all the adapters to maintain open status.
  */
-public class SwipeItemAdapterMangerImpl extends SwipeItemMangerImpl{
+public class SwipeItemAdapterMangerImpl extends SwipeItemMangerImpl {
 
-    protected BaseAdapter mAdapter;
-
-    public SwipeItemAdapterMangerImpl(BaseAdapter adapter) {
-        super(adapter);
-        this.mAdapter = adapter;
+    public SwipeItemAdapterMangerImpl(SwipeAdapterInterface swipeAdapterInterface) {
+        super(swipeAdapterInterface);
     }
 
     @Override

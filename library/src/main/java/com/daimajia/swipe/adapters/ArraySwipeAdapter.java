@@ -7,7 +7,6 @@ import android.widget.ArrayAdapter;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.implments.SwipeItemAdapterMangerImpl;
-import com.daimajia.swipe.implments.SwipeItemMangerImpl;
 import com.daimajia.swipe.interfaces.SwipeAdapterInterface;
 import com.daimajia.swipe.interfaces.SwipeItemMangerInterface;
 import com.daimajia.swipe.util.Attributes;
@@ -40,6 +39,11 @@ public abstract class ArraySwipeAdapter<T> extends ArrayAdapter implements Swipe
 
     public ArraySwipeAdapter(Context context, int resource, int textViewResourceId, List<T> objects) {
         super(context, resource, textViewResourceId, objects);
+    }
+
+    @Override
+    public void notifyDatasetChanged() {
+        super.notifyDataSetChanged();
     }
 
     @Override

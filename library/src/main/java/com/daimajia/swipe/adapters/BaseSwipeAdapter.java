@@ -7,7 +7,6 @@ import android.widget.BaseAdapter;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.implments.SwipeItemAdapterMangerImpl;
 import com.daimajia.swipe.interfaces.SwipeAdapterInterface;
-import com.daimajia.swipe.implments.SwipeItemMangerImpl;
 import com.daimajia.swipe.interfaces.SwipeItemMangerInterface;
 import com.daimajia.swipe.util.Attributes;
 
@@ -41,6 +40,11 @@ public abstract class BaseSwipeAdapter extends BaseAdapter implements SwipeItemM
      * @param convertView
      */
     public abstract void fillValues(int position, View convertView);
+
+    @Override
+    public void notifyDatasetChanged() {
+        super.notifyDataSetChanged();
+    }
 
 
     @Override
