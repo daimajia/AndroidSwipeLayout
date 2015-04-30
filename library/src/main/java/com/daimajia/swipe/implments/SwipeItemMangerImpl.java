@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * SwipeItemMangerImpl is a helper class to help all the adapters to maintain open status.
  */
-public abstract class SwipeItemMangerImpl implements SwipeItemMangerInterface {
+public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
 
     private Attributes.Mode mode = Attributes.Mode.Single;
     public final int INVALID_POSITION = -1;
@@ -47,16 +47,25 @@ public abstract class SwipeItemMangerImpl implements SwipeItemMangerInterface {
         mOpenPosition = INVALID_POSITION;
     }
 
-    /* initialize and updateConvertView used for AdapterManagerImpl */
-    public abstract void initialize(View target, int position);
+    public void bind(View view, int position) {
+        int resId = swipeAdapterInterface.getSwipeLayoutResourceId(position);
+        SwipeLayout swipeLayout = (SwipeLayout) view.findViewById(resId);
+        if (swipeLayout == null)
+            throw new IllegalStateException("can not find SwipeLayout in target view");
 
-    public abstract void updateConvertView(View target, int position);
-
-    /* bindView used for RecyclerViewManagerImpl */
-    public abstract void bindView(View target, int position);
-
-    public int getSwipeLayoutId(int position) {
-        return swipeAdapterInterface.getSwipeLayoutResourceId(position);
+        if (swipeLayout.getTag(resId) == null) {
+            OnLayoutListener onLayoutListener = new OnLayoutListener(position);
+            SwipeMemory swipeMemory = new SwipeMemory(position);
+            swipeLayout.addSwipeListener(swipeMemory);
+            swipeLayout.addOnLayoutListener(onLayoutListener);
+            swipeLayout.setTag(resId, new ValueBox(position, swipeMemory, onLayoutListener));
+            mShownLayouts.add(swipeLayout);
+        } else {
+            ValueBox valueBox = (ValueBox) swipeLayout.getTag(resId);
+            valueBox.swipeMemory.setPosition(position);
+            valueBox.onLayoutListener.setPosition(position);
+            valueBox.position = position;
+        }
     }
 
     @Override

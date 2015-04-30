@@ -15,7 +15,6 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
-import com.daimajia.swipe.implments.SwipeItemRecyclerMangerImpl;
 import com.daimajia.swipedemo.R;
 
 import java.util.ArrayList;
@@ -90,7 +89,7 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
         });
         viewHolder.textViewPos.setText((position + 1) + ".");
         viewHolder.textViewData.setText(item);
-        mItemManger.bindView(viewHolder.itemView, position);
+        mItemManger.bind(viewHolder.itemView, position);
     }
 
     @Override
