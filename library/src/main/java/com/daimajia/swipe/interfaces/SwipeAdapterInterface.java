@@ -1,5 +1,9 @@
 package com.daimajia.swipe.interfaces;
 
 public interface SwipeAdapterInterface {
-    public int getSwipeLayoutResourceId(int position);
+
+    int getSwipeLayoutResourceId(int position);
+
+    void notifyDatasetChanged();
+
 }
