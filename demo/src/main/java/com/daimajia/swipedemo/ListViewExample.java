@@ -53,7 +53,8 @@ public class ListViewExample extends Activity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ((SwipeLayout)(mListView.getChildAt(position - mListView.getFirstVisiblePosition()))).open(true);
+                Toast.makeText(mContext, "Click", Toast.LENGTH_SHORT).show();
+//                ((SwipeLayout) (mListView.getChildAt(position - mListView.getFirstVisiblePosition()))).open(true);
             }
         });
         mListView.setOnTouchListener(new View.OnTouchListener() {
