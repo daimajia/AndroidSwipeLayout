@@ -39,7 +39,7 @@ public class SwipeLayout extends FrameLayout {
 
     private int mTouchSlop;
 
-    private DragEdge mCurrentDragEdge = DefaultDragEdge;
+    private DragEdge mCurrentDragEdge;
     private ViewDragHelper mDragHelper;
 
     private int mDragDistance = 0;
@@ -93,15 +93,19 @@ public class SwipeLayout extends FrameLayout {
         setClickToClose(a.getBoolean(R.styleable.SwipeLayout_clickToClose, mClickToClose));
 
         if ((dragEdgeChoices & DRAG_LEFT) == DRAG_LEFT) {
+            mCurrentDragEdge = DragEdge.Left;
             mDragEdges.put(DragEdge.Left, null);
         }
         if ((dragEdgeChoices & DRAG_TOP) == DRAG_TOP) {
+            mCurrentDragEdge = DragEdge.Top;
             mDragEdges.put(DragEdge.Top, null);
         }
         if ((dragEdgeChoices & DRAG_RIGHT) == DRAG_RIGHT) {
+            mCurrentDragEdge = DragEdge.Right;
             mDragEdges.put(DragEdge.Right, null);
         }
         if ((dragEdgeChoices & DRAG_BOTTOM) == DRAG_BOTTOM) {
+            mCurrentDragEdge = DragEdge.Bottom;
             mDragEdges.put(DragEdge.Bottom, null);
         }
         int ordinal = a.getInt(R.styleable.SwipeLayout_show_mode, ShowMode.PullOut.ordinal());
