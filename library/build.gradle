@@ -15,3 +15,13 @@ dependencies {
     compile 'com.android.support:support-v4:21.0.3'
 }
 apply from: './gradle-mvn-push.gradle'
+
+apply plugin: 'android-maven'
+// build a jar with source files
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+artifacts {
+    archives sourcesJar
+}
