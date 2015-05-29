@@ -503,8 +503,9 @@ public class SwipeLayout extends FrameLayout {
         ViewGroup bottom = getBottomView();
 
         if(status == Status.Close){
-            if(bottom.getVisibility() != INVISIBLE)
-                bottom.setVisibility(INVISIBLE);
+              //solve the bug which SwipeLayout was open and close immediately in hongmi
+//            if(bottom.getVisibility() != INVISIBLE)
+//                bottom.setVisibility(INVISIBLE);
         }else {
             if(bottom.getVisibility() != VISIBLE)
                 bottom.setVisibility(VISIBLE);
