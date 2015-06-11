@@ -43,15 +43,15 @@ public class SwipeLayout extends FrameLayout {
     private ViewDragHelper mDragHelper;
 
     private int mDragDistance = 0;
-    private LinkedHashMap<DragEdge, View> mDragEdges = new LinkedHashMap<DragEdge, View>();
+    private LinkedHashMap<DragEdge, View> mDragEdges = new LinkedHashMap<>();
     private ShowMode mShowMode;
 
     private float[] mEdgeSwipesOffset = new float[4];
 
-    private List<SwipeListener> mSwipeListeners = new ArrayList<SwipeListener>();
-    private List<SwipeDenier> mSwipeDeniers = new ArrayList<SwipeDenier>();
-    private Map<View, ArrayList<OnRevealListener>> mRevealListeners = new HashMap<View, ArrayList<OnRevealListener>>();
-    private Map<View, Boolean> mShowEntirely = new HashMap<View, Boolean>();
+    private List<SwipeListener> mSwipeListeners = new ArrayList<>();
+    private List<SwipeDenier> mSwipeDeniers = new ArrayList<>();
+    private Map<View, ArrayList<OnRevealListener>> mRevealListeners = new HashMap<>();
+    private Map<View, Boolean> mShowEntirely = new HashMap<>();
 
     private DoubleClickListener mDoubleClickListener;
 
