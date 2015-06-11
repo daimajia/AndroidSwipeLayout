@@ -1,2 +1,3 @@
-
-<manifest package="com.daimajia.swipe"/>
+<manifest package="com.daimajia.swipe">
+    <application />
+</manifest>
