@@ -132,10 +132,6 @@ public class SwipeLayout extends FrameLayout {
         mSwipeListeners.remove(l);
     }
 
-    public void removeAllSwipeListener() {
-        mSwipeListeners.clear();
-    }
-
     public static interface SwipeDenier {
         /*
          * Called in onInterceptTouchEvent Determines if this swipe event should
