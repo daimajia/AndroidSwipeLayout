@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -39,6 +40,7 @@ public class SwipeLayout extends FrameLayout {
 
     private int mTouchSlop;
 
+    private Status mCurrentStatus = Status.Close;
     private DragEdge mCurrentDragEdge = DefaultDragEdge;
     private ViewDragHelper mDragHelper;
 
@@ -108,6 +110,16 @@ public class SwipeLayout extends FrameLayout {
         mShowMode = ShowMode.values()[ordinal];
         a.recycle();
 
+        // restore state
+        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (mCurrentStatus == SwipeLayout.Status.Open)
+                    open(false, getDragEdge());
+                else
+                    close(false);
+            }
+        });
     }
 
     public interface SwipeListener {
@@ -1331,6 +1343,7 @@ public class SwipeLayout extends FrameLayout {
                 safeBottomView();
             }
         }
+        mCurrentStatus = Status.Open;
         invalidate();
     }
 
@@ -1386,6 +1399,7 @@ public class SwipeLayout extends FrameLayout {
                 safeBottomView();
             }
         }
+        mCurrentStatus = Status.Close;
         invalidate();
     }
 
