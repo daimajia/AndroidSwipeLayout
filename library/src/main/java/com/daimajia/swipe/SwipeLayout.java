@@ -114,9 +114,9 @@ public class SwipeLayout extends FrameLayout {
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if (mCurrentStatus == SwipeLayout.Status.Open)
+                if (mCurrentStatus.equals(Status.Open))
                     open(false, getDragEdge());
-                else
+                else if (mCurrentStatus.equals(Status.Close))
                     close(false);
             }
         });
