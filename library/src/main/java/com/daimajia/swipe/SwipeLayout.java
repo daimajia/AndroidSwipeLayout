@@ -8,6 +8,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
@@ -402,9 +403,14 @@ public class SwipeLayout extends FrameLayout {
      * save children's bounds, so they can restore the bound in {@link #onLayout(boolean, int, int, int, int)}
      */
     private void captureChildrenBound(){
-        int childrenCount = getChildCount();
-        for (int i = 0; i < childrenCount; i++) {
-            View child = getChildAt(i);
+        View currentBottomView = getCurrentBottomView();
+        if(getOpenStatus()==Status.Close){
+            mViewBoundCache.remove(currentBottomView);
+            return;
+        }
+
+        View[] views = new View[]{getSurfaceView(), currentBottomView};
+        for (View child : views) {
             Rect rect = mViewBoundCache.get(child);
             if(rect==null){
                 rect = new Rect();
@@ -795,6 +801,7 @@ public class SwipeLayout extends FrameLayout {
         View currentBottomView = getCurrentBottomView();
         Rect bottomViewRect = mViewBoundCache.get(currentBottomView);
         if(bottomViewRect == null) bottomViewRect = computeBottomLayoutAreaViaSurface(ShowMode.PullOut, surfaceRect);
+        Log.e("fax", this + ":bottomRect:"+bottomViewRect);
         if (currentBottomView != null) {
             currentBottomView.layout(bottomViewRect.left, bottomViewRect.top, bottomViewRect.right, bottomViewRect.bottom);
         }
