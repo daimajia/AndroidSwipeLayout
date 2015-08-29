@@ -909,6 +909,10 @@ public class SwipeLayout extends FrameLayout {
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 mIsBeingDragged = false;
+                ViewParent parent = getParent();
+                if (parent != null) {
+                    parent.requestDisallowInterceptTouchEvent(false);
+                }
                 mDragHelper.processTouchEvent(ev);
                 break;
             default://handle other action, such as ACTION_POINTER_DOWN/UP
@@ -937,7 +941,10 @@ public class SwipeLayout extends FrameLayout {
                 //the drag state and the direction are already judged at onInterceptTouchEvent
                 checkCanDrag(event);
                 if (mIsBeingDragged) {
-                    getParent().requestDisallowInterceptTouchEvent(true);
+                    ViewParent parent = getParent();
+                    if (parent != null) {
+                        parent.requestDisallowInterceptTouchEvent(true);
+                    }
                     mDragHelper.processTouchEvent(event);
                 }
                 break;
@@ -945,6 +952,10 @@ public class SwipeLayout extends FrameLayout {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 mIsBeingDragged = false;
+                ViewParent parent = getParent();
+                if (parent != null) {
+                    parent.requestDisallowInterceptTouchEvent(false);
+                }
                 mDragHelper.processTouchEvent(event);
                 break;
 
