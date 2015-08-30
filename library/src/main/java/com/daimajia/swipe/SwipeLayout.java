@@ -52,6 +52,7 @@ public class SwipeLayout extends FrameLayout {
     private List<SwipeDenier> mSwipeDeniers = new ArrayList<>();
     private Map<View, ArrayList<OnRevealListener>> mRevealListeners = new HashMap<>();
     private Map<View, Boolean> mShowEntirely = new HashMap<>();
+    private Map<View, Rect> mViewBoundCache = new HashMap<>();//save all children's bound, restore in onLayout
 
     private DoubleClickListener mDoubleClickListener;
 
@@ -392,8 +393,34 @@ public class SwipeLayout extends FrameLayout {
             dispatchSwipeEvent(evLeft, evTop, dx, dy);
 
             invalidate();
+
+            captureChildrenBound();
         }
     };
+
+    /**
+     * save children's bounds, so they can restore the bound in {@link #onLayout(boolean, int, int, int, int)}
+     */
+    private void captureChildrenBound(){
+        View currentBottomView = getCurrentBottomView();
+        if(getOpenStatus()==Status.Close){
+            mViewBoundCache.remove(currentBottomView);
+            return;
+        }
+
+        View[] views = new View[]{getSurfaceView(), currentBottomView};
+        for (View child : views) {
+            Rect rect = mViewBoundCache.get(child);
+            if(rect==null){
+                rect = new Rect();
+                mViewBoundCache.put(child, rect);
+            }
+            rect.left = child.getLeft();
+            rect.top = child.getTop();
+            rect.right = child.getRight();
+            rect.bottom = child.getBottom();
+        }
+    }
 
     /**
      * the dispatchRevealEvent method may not always get accurate position, it
@@ -763,30 +790,34 @@ public class SwipeLayout extends FrameLayout {
     }
 
     void layoutPullOut() {
-        Rect rect = computeSurfaceLayoutArea(false);
         View surfaceView = getSurfaceView();
+        Rect surfaceRect = mViewBoundCache.get(surfaceView);
+        if(surfaceRect == null) surfaceRect = computeSurfaceLayoutArea(false);
         if (surfaceView != null) {
-            surfaceView.layout(rect.left, rect.top, rect.right, rect.bottom);
+            surfaceView.layout(surfaceRect.left, surfaceRect.top, surfaceRect.right, surfaceRect.bottom);
             bringChildToFront(surfaceView);
         }
-        rect = computeBottomLayoutAreaViaSurface(ShowMode.PullOut, rect);
         View currentBottomView = getCurrentBottomView();
+        Rect bottomViewRect = mViewBoundCache.get(currentBottomView);
+        if(bottomViewRect == null) bottomViewRect = computeBottomLayoutAreaViaSurface(ShowMode.PullOut, surfaceRect);
         if (currentBottomView != null) {
-            currentBottomView.layout(rect.left, rect.top, rect.right, rect.bottom);
+            currentBottomView.layout(bottomViewRect.left, bottomViewRect.top, bottomViewRect.right, bottomViewRect.bottom);
         }
     }
 
     void layoutLayDown() {
-        Rect rect = computeSurfaceLayoutArea(false);
         View surfaceView = getSurfaceView();
+        Rect surfaceRect = mViewBoundCache.get(surfaceView);
+        if(surfaceRect == null) surfaceRect = computeSurfaceLayoutArea(false);
         if (surfaceView != null) {
-            surfaceView.layout(rect.left, rect.top, rect.right, rect.bottom);
+            surfaceView.layout(surfaceRect.left, surfaceRect.top, surfaceRect.right, surfaceRect.bottom);
             bringChildToFront(surfaceView);
         }
-        rect = computeBottomLayoutAreaViaSurface(ShowMode.LayDown, rect);
         View currentBottomView = getCurrentBottomView();
+        Rect bottomViewRect = mViewBoundCache.get(currentBottomView);
+        if(bottomViewRect == null) bottomViewRect = computeBottomLayoutAreaViaSurface(ShowMode.LayDown, surfaceRect);
         if (currentBottomView != null) {
-            currentBottomView.layout(rect.left, rect.top, rect.right, rect.bottom);
+            currentBottomView.layout(bottomViewRect.left, bottomViewRect.top, bottomViewRect.right, bottomViewRect.bottom);
         }
     }
 
