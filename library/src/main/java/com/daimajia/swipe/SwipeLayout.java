@@ -59,6 +59,7 @@ public class SwipeLayout extends FrameLayout {
     private boolean mSwipeEnabled = true;
     private boolean[] mSwipesEnabled = new boolean[]{true, true, true, true};
     private boolean mClickToClose = false;
+    private AttributeSet attrs;
 
     public enum DragEdge {
         Left,
@@ -82,15 +83,14 @@ public class SwipeLayout extends FrameLayout {
 
     public SwipeLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        this.attrs = attrs;
         mDragHelper = ViewDragHelper.create(this, mDragHelperCallback);
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SwipeLayout);
+        resetOffsets();
         int dragEdgeChoices = a.getInt(R.styleable.SwipeLayout_drag_edge, DRAG_RIGHT);
-        mEdgeSwipesOffset[DragEdge.Left.ordinal()] = a.getDimension(R.styleable.SwipeLayout_leftEdgeSwipeOffset, 0);
-        mEdgeSwipesOffset[DragEdge.Right.ordinal()] = a.getDimension(R.styleable.SwipeLayout_rightEdgeSwipeOffset, 0);
-        mEdgeSwipesOffset[DragEdge.Top.ordinal()] = a.getDimension(R.styleable.SwipeLayout_topEdgeSwipeOffset, 0);
-        mEdgeSwipesOffset[DragEdge.Bottom.ordinal()] = a.getDimension(R.styleable.SwipeLayout_bottomEdgeSwipeOffset, 0);
+
         setClickToClose(a.getBoolean(R.styleable.SwipeLayout_clickToClose, mClickToClose));
 
         if ((dragEdgeChoices & DRAG_LEFT) == DRAG_LEFT) {
@@ -109,6 +109,21 @@ public class SwipeLayout extends FrameLayout {
         mShowMode = ShowMode.values()[ordinal];
         a.recycle();
 
+    }
+
+    /**
+     * Reset offsets of BottomView to prevent it scrolling across the screen when
+     * Certain versions of the close method are manually used.
+     * close(true, true) at the least.
+     */
+    public void resetOffsets() {
+        TypedArray a = getContext() .obtainStyledAttributes(attrs, R.styleable.SwipeLayout);
+
+        mEdgeSwipesOffset[DragEdge.Left.ordinal()] = a.getDimension(R.styleable.SwipeLayout_leftEdgeSwipeOffset, 0);
+        mEdgeSwipesOffset[DragEdge.Right.ordinal()] = a.getDimension(R.styleable.SwipeLayout_rightEdgeSwipeOffset, 0);
+        mEdgeSwipesOffset[DragEdge.Top.ordinal()] = a.getDimension(R.styleable.SwipeLayout_topEdgeSwipeOffset, 0);
+        mEdgeSwipesOffset[DragEdge.Bottom.ordinal()] = a.getDimension(R.styleable.SwipeLayout_bottomEdgeSwipeOffset, 0);
+        a.recycle();
     }
 
     public interface SwipeListener {
