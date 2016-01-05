@@ -59,6 +59,8 @@ public class SwipeLayout extends FrameLayout {
     private boolean mSwipeEnabled = true;
     private boolean[] mSwipesEnabled = new boolean[]{true, true, true, true};
     private boolean mClickToClose = false;
+    private float mWillOpenPercentAfterOpen=0.75f;
+    private float mWillOpenPercentAfterClose=0.25f;
 
     public enum DragEdge {
         Left,
@@ -1041,6 +1043,39 @@ public class SwipeLayout extends FrameLayout {
     public void setBottomSwipeEnabled(boolean bottomSwipeEnabled) {
         this.mSwipesEnabled[DragEdge.Bottom.ordinal()] = bottomSwipeEnabled;
     }
+    /***
+     * Returns the percentage of revealing at which the view below should the view finish opening
+     * if it was already open before dragging
+     * @returns  The percentage of view revealed to trigger, default value is 0.25
+     */
+    public float getWillOpenPercentAfterOpen() {
+        return mWillOpenPercentAfterOpen;
+    }
+
+    /***
+     * Allows to stablish at what percentage of revealing the view below should the view finish opening
+     * if it was already open before dragging
+     * @param willOpenPercentAfterOpen The percentage of view revealed to trigger, default value is 0.25
+     */
+    public void setWillOpenPercentAfterOpen(float willOpenPercentAfterOpen) {
+        this.mWillOpenPercentAfterOpen = willOpenPercentAfterOpen;
+    }
+    /***
+     * Returns the percentage of revealing at which the view below should the view finish opening
+     * if it was already closed before dragging
+     * @returns  The percentage of view revealed to trigger, default value is 0.25
+     */
+    public float getWillOpenPercentAfterClose() {
+        return mWillOpenPercentAfterClose;
+    }
+    /***
+     * Allows to stablish at what percentage of revealing the view below should the view finish opening
+     * if it was already closed before dragging
+     * @param willOpenPercentAfterClose The percentage of view revealed to trigger, default value is 0.75
+     */
+    public void setWillOpenPercentAfterClose(float willOpenPercentAfterClose) {
+        this.mWillOpenPercentAfterClose = willOpenPercentAfterClose;
+    }
 
     private boolean insideAdapterView() {
         return getAdapterView() != null;
@@ -1289,7 +1324,7 @@ public class SwipeLayout extends FrameLayout {
         if (currentDragEdge == null || surfaceView == null) {
             return;
         }
-        float willOpenPercent = (isCloseBeforeDragged ? .25f : .75f);
+        float willOpenPercent = (isCloseBeforeDragged ? mWillOpenPercentAfterClose : mWillOpenPercentAfterOpen););
         if (currentDragEdge == DragEdge.Left) {
             if (xvel > minVelocity) open();
             else if (xvel < -minVelocity) close();
