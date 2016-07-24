@@ -11,9 +11,10 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:recyclerview-v7:21.0.0'
-    compile 'com.android.support:support-v4:22.1.1'
+    compile 'com.android.support:recyclerview-v7:24.0.0'
+    compile 'com.android.support:support-v4:24.0.0'
 }
+/*
 apply from: './gradle-mvn-push.gradle'
 
 apply plugin: 'android-maven'
@@ -25,3 +26,4 @@ task sourcesJar(type: Jar) {
 artifacts {
     archives sourcesJar
 }
+*/
