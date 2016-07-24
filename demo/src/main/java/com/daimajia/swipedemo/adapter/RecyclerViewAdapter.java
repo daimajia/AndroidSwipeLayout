@@ -41,6 +41,13 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
                     Toast.makeText(view.getContext(), "onItemSelected: " + textViewData.getText().toString(), Toast.LENGTH_SHORT).show();
                 }
             });
+
+            swipeLayout.setSwipeEnabled(new SwipeLayout.SwipeEnabled() {
+                @Override
+                public boolean isSwipeEnabled() {
+                    return true;
+                }
+            });
         }
     }
 
