@@ -402,15 +402,20 @@ public class SwipeLayout extends FrameLayout {
 
     /**
      * save children's bounds, so they can restore the bound in {@link #onLayout(boolean, int, int, int, int)}
+     * fix bug: issue,no save close value
+     *
      */
     private void captureChildrenBound(){
         View currentBottomView = getCurrentBottomView();
+
+        View[] views;
         if(getOpenStatus()==Status.Close){
             mViewBoundCache.remove(currentBottomView);
-            return;
+            views = new View[]{getSurfaceView()};
+        }else{
+            views = new View[]{getSurfaceView(), currentBottomView};
         }
 
-        View[] views = new View[]{getSurfaceView(), currentBottomView};
         for (View child : views) {
             Rect rect = mViewBoundCache.get(child);
             if(rect==null){
@@ -1324,7 +1329,7 @@ public class SwipeLayout extends FrameLayout {
         if (currentDragEdge == null || surfaceView == null) {
             return;
         }
-        float willOpenPercent = (isCloseBeforeDragged ? mWillOpenPercentAfterClose : mWillOpenPercentAfterOpen););
+        float willOpenPercent = (isCloseBeforeDragged ? mWillOpenPercentAfterClose : mWillOpenPercentAfterOpen);
         if (currentDragEdge == DragEdge.Left) {
             if (xvel > minVelocity) open();
             else if (xvel < -minVelocity) close();
