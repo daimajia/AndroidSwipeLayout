@@ -71,6 +71,8 @@ dependencies {
 
 ### Step 2
 
+**Make sure to use the internal adapter instead of your own!**
+
 [Wiki Usage](https://github.com/daimajia/AndroidSwipeLayout/wiki/usage)
 
 ## Wiki
