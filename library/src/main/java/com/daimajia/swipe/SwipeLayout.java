@@ -3,7 +3,6 @@ package com.daimajia.swipe;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
-import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
@@ -1270,7 +1269,6 @@ public class SwipeLayout extends FrameLayout {
     /**
      * return null if there is no bottom view
      */
-    @Nullable
     public View getCurrentBottomView() {
         List<View> bottoms = getBottomViews();
         if (mCurrentDragEdge.ordinal() < bottoms.size()) {
