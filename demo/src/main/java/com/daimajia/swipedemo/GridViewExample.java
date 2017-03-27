@@ -25,6 +25,10 @@ public class GridViewExample extends Activity{
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.e("onItemLongClick","onItemLongClick:" + position);
+
+
+
+
                 return false;
             }
         });
