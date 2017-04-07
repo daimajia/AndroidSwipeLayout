@@ -1,4 +1,4 @@
-# Android Swipe Layout
+# Android Swipe Layout [![Build Status](https://travis-ci.org/daimajia/AndroidSwipeLayout.svg?branch=master)](https://travis-ci.org/daimajia/AndroidSwipeLayout)
 
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/daimajia/AndroidSwipeLayout?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -70,6 +70,8 @@ dependencies {
 [AndroidSwipeLayout-v1.1.8.jar](https://github.com/daimajia/AndroidSwipeLayout/releases/download/v1.1.8/AndroidSwipeLayout-v1.1.8.jar)
 
 ### Step 2
+
+**Make sure to use the internal adapter instead of your own!**
 
 [Wiki Usage](https://github.com/daimajia/AndroidSwipeLayout/wiki/usage)
 
