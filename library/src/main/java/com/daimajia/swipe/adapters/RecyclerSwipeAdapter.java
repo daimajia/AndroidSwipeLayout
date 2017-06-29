@@ -19,7 +19,9 @@ public abstract class RecyclerSwipeAdapter<VH extends RecyclerView.ViewHolder> e
     public abstract VH onCreateViewHolder(ViewGroup parent, int viewType);
 
     @Override
-    public abstract void onBindViewHolder(VH viewHolder, final int position);
+    public void onBindViewHolder(VH viewHolder, final int position) {
+        mItemManger.bind(viewHolder.itemView, position);
+    }
 
     @Override
     public void notifyDatasetChanged() {
