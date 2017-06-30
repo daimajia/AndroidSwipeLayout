@@ -185,7 +185,7 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
         public void onClose(SwipeLayout layout) {
             if (mode == Attributes.Mode.Multiple) {
                 mOpenPositions.remove(position);
-            } else {
+            } else if (mOpenPosition == position) {
                 mOpenPosition = INVALID_POSITION;
             }
         }
