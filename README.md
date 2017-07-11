@@ -2,6 +2,8 @@
 
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/daimajia/AndroidSwipeLayout?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+[![Insight.io](https://insight.io/repoBadge/github.com/daimajia/AndroidSwipeLayout)](https://insight.io/github.com/daimajia/AndroidSwipeLayout)
+
 This is the brother of [AndroidViewHover](https://github.com/daimajia/AndroidViewHover).
 
 One year ago, I started to make an app named [EverMemo](https://play.google.com/store/apps/details?id=com.zhan_dui.evermemo) with my good friends. The designer gave me a design picture, the design like this:
