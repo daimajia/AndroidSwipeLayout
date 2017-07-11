@@ -1155,8 +1155,7 @@ public class SwipeLayout extends FrameLayout {
                 setOnLongClickListener(new OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        performAdapterViewItemLongClick();
-                        return true;
+                        return performAdapterViewItemLongClick();
                     }
                 });
             }
