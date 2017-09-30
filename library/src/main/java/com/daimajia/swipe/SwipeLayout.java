@@ -93,6 +93,7 @@ public class SwipeLayout extends FrameLayout {
         mEdgeSwipesOffset[DragEdge.Top.ordinal()] = a.getDimension(R.styleable.SwipeLayout_topEdgeSwipeOffset, 0);
         mEdgeSwipesOffset[DragEdge.Bottom.ordinal()] = a.getDimension(R.styleable.SwipeLayout_bottomEdgeSwipeOffset, 0);
         setClickToClose(a.getBoolean(R.styleable.SwipeLayout_clickToClose, mClickToClose));
+        setSwipeEnabled(a.getBoolean(R.styleable.SwipeLayout_swipeEnable, mSwipeEnabled));
 
         if ((dragEdgeChoices & DRAG_LEFT) == DRAG_LEFT) {
             mDragEdges.put(DragEdge.Left, null);
