@@ -11,7 +11,9 @@ android {
 }
 
 dependencies {
+    //noinspection GradleDependency,NewerVersionAvailable,GradleCompatible
     compile 'com.android.support:recyclerview-v7:25.2.0'
+    //noinspection GradleDependency,NewerVersionAvailable,GradleCompatible
     compile 'com.android.support:support-v4:25.2.0'
 }
 apply from: './gradle-mvn-push.gradle'
