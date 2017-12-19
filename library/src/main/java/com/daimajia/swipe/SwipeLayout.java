@@ -406,6 +406,7 @@ public class SwipeLayout extends FrameLayout {
         View currentBottomView = getCurrentBottomView();
         if (getOpenStatus() == Status.Close) {
             mViewBoundCache.remove(currentBottomView);
+            mViewBoundCache.remove(getSurfaceView());
             return;
         }
 
