@@ -4,16 +4,16 @@ android {
     compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
 
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
     }
 }
 
 dependencies {
     //noinspection GradleDependency,NewerVersionAvailable,GradleCompatible
-    compile 'com.android.support:recyclerview-v7:25.2.0'
+    implementation 'com.android.support:recyclerview-v7:25.2.0'
     //noinspection GradleDependency,NewerVersionAvailable,GradleCompatible
-    compile 'com.android.support:support-v4:25.2.0'
+    implementation 'com.android.support:support-v4:25.2.0'
 }
 apply from: './gradle-mvn-push.gradle'
 
