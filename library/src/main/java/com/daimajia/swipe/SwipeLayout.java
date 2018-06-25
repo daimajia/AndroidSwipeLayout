@@ -1307,7 +1307,7 @@ public class SwipeLayout extends FrameLayout {
         }
         int surfaceLeft = surfaceView.getLeft();
         int surfaceTop = surfaceView.getTop();
-        if (surfaceLeft == getPaddingLeft() && surfaceTop == getPaddingTop()) return Status.Close;
+        if (surfaceLeft == getPaddingLeft() && surfaceTop == getPaddingTop() && !mIsBeingDragged) return Status.Close;
 
         if (surfaceLeft == (getPaddingLeft() - mDragDistance) || surfaceLeft == (getPaddingLeft() + mDragDistance)
                 || surfaceTop == (getPaddingTop() - mDragDistance) || surfaceTop == (getPaddingTop() + mDragDistance))
