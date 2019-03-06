@@ -6,7 +6,7 @@ repositories {
 
 android {
     compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
-    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
+    //buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
     defaultConfig {
         minSdkVersion Integer.parseInt(project.ANDROID_BUILD_MIN_SDK_VERSION)
         targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
@@ -25,11 +25,13 @@ android {
 }
 
 dependencies {
-    compile project(":library")
-    compile 'com.android.support:recyclerview-v7:25.1.1'
-    compile 'com.daimajia.easing:library:1.0.0@aar'
-    compile 'com.daimajia.androidanimations:library:1.1.2@aar'
-    compile 'com.nineoldandroids:library:2.4.0'
+    implementation project(":library")
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    
+    implementation 'com.daimajia.easing:library:1.0.0@aar'
+    implementation 'com.daimajia.androidanimations:library:1.1.2@aar'
+    implementation 'com.nineoldandroids:library:2.4.0'
     // This dude gave a shoutout to you (daimajia) on his github page:
-    compile 'jp.wasabeef:recyclerview-animators:1.0.3@aar'
+    implementation 'jp.wasabeef:recyclerview-animators:1.0.3@aar'
 }

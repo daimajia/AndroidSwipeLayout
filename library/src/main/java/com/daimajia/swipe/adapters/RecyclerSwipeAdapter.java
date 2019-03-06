@@ -1,8 +1,7 @@
 package com.daimajia.swipe.adapters;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
-
+import android.support.v7.widget.RecyclerView;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.implments.SwipeItemMangerImpl;
 import com.daimajia.swipe.interfaces.SwipeAdapterInterface;
