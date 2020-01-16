@@ -6,9 +6,10 @@ buildscript {
         maven {
             url "https://jitpack.io"
         }
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath 'com.android.tools.build:gradle:3.5.3'
         classpath 'com.github.dcendents:android-maven-plugin:1.2'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -22,5 +23,6 @@ allprojects {
         maven {
             url "https://jitpack.io"
         }
+        google()
     }
 }

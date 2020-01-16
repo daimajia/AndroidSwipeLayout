@@ -25,11 +25,11 @@ android {
 }
 
 dependencies {
-    compile project(":library")
-    compile 'com.android.support:recyclerview-v7:25.1.1'
-    compile 'com.daimajia.easing:library:1.0.0@aar'
-    compile 'com.daimajia.androidanimations:library:1.1.2@aar'
-    compile 'com.nineoldandroids:library:2.4.0'
+    implementation project(":library")
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'com.daimajia.easing:library:1.0.0@aar'
+    implementation 'com.daimajia.androidanimations:library:1.1.2@aar'
+    implementation 'com.nineoldandroids:library:2.4.0'
     // This dude gave a shoutout to you (daimajia) on his github page:
-    compile 'jp.wasabeef:recyclerview-animators:1.0.3@aar'
+    implementation 'jp.wasabeef:recyclerview-animators:1.0.3@aar'
 }
