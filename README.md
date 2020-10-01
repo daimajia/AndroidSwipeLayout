@@ -33,10 +33,10 @@ When I start to make this library, I set some goals:
 - Can handle complicate situation, just like [this](https://camo.githubusercontent.com/d145d9a9508b3d204b70882c05bc3d9bd433883c/687474703a2f2f7777312e73696e61696d672e636e2f6c617267652f3631306463303334677731656b686f6a7379326172673230386530366e6774312e676966).
 
 
-## Usage
+## How To Use This Library 
 
 ### Step 1
-#### Gradle
+#### Add Dependices in Gradle
 
 ```groovy
 dependencies {
