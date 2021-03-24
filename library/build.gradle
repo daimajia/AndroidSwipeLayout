@@ -11,16 +11,15 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:recyclerview-v7:25.2.0'
-    compile 'com.android.support:support-v4:25.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }
-apply from: './gradle-mvn-push.gradle'
+//apply from: './gradle-mvn-push.gradle'
 
 // build a jar with source files
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-artifacts {
-    archives sourcesJar
-}
+//task sourcesJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+//    classifier = 'sources'
+//}
+//artifacts {
+//    archives sourcesJar
+//}
