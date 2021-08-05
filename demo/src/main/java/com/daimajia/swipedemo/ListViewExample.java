@@ -16,11 +16,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.util.Attributes;
 import com.daimajia.swipedemo.adapter.ListViewAdapter;
 
-public class ListViewExample extends Activity {
+public class ListViewExample extends AppCompatActivity {
 
     private ListView mListView;
     private ListViewAdapter mAdapter;

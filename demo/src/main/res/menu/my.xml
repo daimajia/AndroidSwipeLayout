@@ -13,6 +13,11 @@
         android:id="@+id/action_recycler"
         android:orderInCategory="100"
         android:title="RecyclerView" />
+
+    <item
+        android:id="@+id/action_recycler_paged"
+        android:orderInCategory="100"
+        android:title="Paged RecyclerView" />
     <item
         android:id="@+id/action_nested"
         android:title="Complicate" />

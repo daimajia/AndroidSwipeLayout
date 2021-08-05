@@ -2,7 +2,12 @@ package com.daimajia.swipe.adapters;
 
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
+import androidx.paging.PagedListAdapter;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.implments.SwipeItemMangerImpl;
@@ -12,9 +17,21 @@ import com.daimajia.swipe.util.Attributes;
 
 import java.util.List;
 
-public abstract class RecyclerSwipeAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements SwipeItemMangerInterface, SwipeAdapterInterface {
+public abstract class PagedListSwipeAdapter<T, VH extends RecyclerView.ViewHolder>
+        extends PagedListAdapter<T, VH> implements SwipeItemMangerInterface, SwipeAdapterInterface {
 
     public SwipeItemMangerImpl mItemManger = new SwipeItemMangerImpl(this);
+
+    protected PagedListSwipeAdapter(@NonNull DiffUtil.ItemCallback<T> diffCallback) {
+        super(diffCallback);
+    }
+
+
+    @Nullable
+    @Override
+    public T getItem(int position) {
+        return super.getItem(position);
+    }
 
     @Override
     public abstract VH onCreateViewHolder(ViewGroup parent, int viewType);
@@ -76,4 +93,5 @@ public abstract class RecyclerSwipeAdapter<VH extends RecyclerView.ViewHolder> e
     public void setMode(Attributes.Mode mode) {
         mItemManger.setMode(mode);
     }
+
 }

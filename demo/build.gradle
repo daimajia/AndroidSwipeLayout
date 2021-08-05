@@ -5,7 +5,7 @@ repositories {
 }
 
 android {
-    compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
+    compileSdkVersion 28
     buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
     defaultConfig {
         minSdkVersion Integer.parseInt(project.ANDROID_BUILD_MIN_SDK_VERSION)
@@ -25,11 +25,29 @@ android {
 }
 
 dependencies {
-    compile project(":library")
-    compile 'com.android.support:recyclerview-v7:25.1.1'
-    compile 'com.daimajia.easing:library:1.0.0@aar'
-    compile 'com.daimajia.androidanimations:library:1.1.2@aar'
-    compile 'com.nineoldandroids:library:2.4.0'
+    def glide_version = "4.3.1"
+    def view_model_version = "1.1.0"
+    def support_version = "27.1.0"
+
+    implementation project(":library")
+    implementation "com.android.support:appcompat-v7:$support_version"
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.daimajia.easing:library:1.0.0@aar'
+    implementation 'com.daimajia.androidanimations:library:1.1.2@aar'
+    implementation 'com.nineoldandroids:library:2.4.0'
     // This dude gave a shoutout to you (daimajia) on his github page:
-    compile 'jp.wasabeef:recyclerview-animators:1.0.3@aar'
+    implementation 'jp.wasabeef:recyclerview-animators:1.0.3@aar'
+
+    //adding glide
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+
+    //adding retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
+    //adding view model
+    implementation "android.arch.lifecycle:extensions:$view_model_version"
+    implementation "android.arch.lifecycle:viewmodel:$view_model_version"
+    implementation 'androidx.paging:paging-runtime:2.1.2'
 }

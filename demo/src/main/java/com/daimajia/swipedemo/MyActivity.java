@@ -10,10 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.daimajia.swipe.SwipeLayout;
 import com.nineoldandroids.view.ViewHelper;
 
-public class MyActivity extends Activity {
+public class MyActivity extends AppCompatActivity {
 
     private SwipeLayout sample1, sample2, sample3;
 
@@ -183,6 +185,8 @@ public class MyActivity extends Activity {
             return true;
         } else if (id == R.id.action_recycler) {
             startActivity(new Intent(this, RecyclerViewExample.class));
+        } else if (id == R.id.action_recycler_paged) {
+            startActivity(new Intent(this, RecyclerViewPagedExample.class));
         }
         return super.onOptionsItemSelected(item);
     }
