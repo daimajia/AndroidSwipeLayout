@@ -5,14 +5,16 @@ android {
     buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
+        compileSdkVersion 28
         minSdkVersion 9
         targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
     }
 }
 
 dependencies {
-    compile 'com.android.support:recyclerview-v7:25.2.0'
-    compile 'com.android.support:support-v4:25.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.paging:paging-runtime:2.1.2'
 }
 apply from: './gradle-mvn-push.gradle'
 

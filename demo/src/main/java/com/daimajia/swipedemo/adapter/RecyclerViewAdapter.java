@@ -1,7 +1,6 @@
 package com.daimajia.swipedemo.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -61,7 +62,7 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(SimpleViewHolder viewHolder, int position) {
         String item = mDataset.get(position);
         viewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
         viewHolder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {

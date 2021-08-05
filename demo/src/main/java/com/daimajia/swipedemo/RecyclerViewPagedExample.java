@@ -5,24 +5,25 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.daimajia.swipe.util.Attributes;
-import com.daimajia.swipedemo.adapter.RecyclerViewAdapter;
-import com.daimajia.swipedemo.adapter.util.DividerItemDecoration;
+import com.daimajia.swipedemo.adapter.PagedItemAdapter;
+import com.daimajia.swipedemo.models.Item;
+import com.daimajia.swipedemo.retrofit.ItemViewModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import jp.wasabeef.recyclerview.animators.FadeInLeftAnimator;
-
-public class RecyclerViewExample extends AppCompatActivity {
+public class RecyclerViewPagedExample extends AppCompatActivity {
 
     /**
      * RecyclerView: The new recycler view replaces the list view. Its more modular and therefore we
@@ -50,40 +51,31 @@ public class RecyclerViewExample extends AppCompatActivity {
             }
         }
 
-        // Layout Managers:
+        //setting up recyclerview
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
 
-        // Item Decorator:
-        recyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.divider)));
-        recyclerView.setItemAnimator(new FadeInLeftAnimator());
+        //getting our ItemViewModel
+        ItemViewModel itemViewModel = ViewModelProviders.of(this).get(ItemViewModel.class);
 
-        // Adapter:
-        String[] adapterData = new String[]{"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"};
-        mDataSet = new ArrayList<String>(Arrays.asList(adapterData));
-        mAdapter = new RecyclerViewAdapter(this, mDataSet);
-        ((RecyclerViewAdapter) mAdapter).setMode(Attributes.Mode.Single);
-        recyclerView.setAdapter(mAdapter);
+        //creating the Adapter
+        final PagedItemAdapter adapter = new PagedItemAdapter(this);
 
-        /* Listeners */
-        recyclerView.setOnScrollListener(onScrollListener);
+
+        //observing the itemPagedList from view model
+        itemViewModel.itemPagedList.observe(this, new Observer<PagedList<Item>>() {
+            @Override
+            public void onChanged(@Nullable PagedList<Item> items) {
+
+                //in case of any changes
+                //submitting the items to adapter
+                adapter.submitList(items);
+            }
+        });
+
+        //setting the adapter
+        recyclerView.setAdapter(adapter);
     }
-
-    /**
-     * Substitute for our onScrollListener for RecyclerView
-     */
-    RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
-        @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
-            Log.e("ListView", "onScrollStateChanged");
-        }
-
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-            // Could hide open views here if you wanted. //
-        }
-    };
 
 
     @Override

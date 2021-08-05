@@ -7,10 +7,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.daimajia.swipe.util.Attributes;
 import com.daimajia.swipedemo.adapter.GridViewAdapter;
 
-public class GridViewExample extends Activity{
+public class GridViewExample extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
